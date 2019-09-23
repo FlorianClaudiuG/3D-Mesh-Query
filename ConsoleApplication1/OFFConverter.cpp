@@ -24,7 +24,7 @@ void OFFConverter::ConvertOFFToPLY(string filename)
 			nfaces = line.substr(delim, delim2 + 1);
 			cout << nfaces;
 		}
-	} while (line.c_str()[0] == '#');
+	} while (line.c_str()[0] == '#' || line.c_str()[0] == ' ' || line.c_str()[0] == '\n');
 
 	string plyHeader = "ply\nformat ascii 1.0\nelement vertex ";
 	plyHeader.append(nverts);

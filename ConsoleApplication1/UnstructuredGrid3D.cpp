@@ -17,20 +17,25 @@ void UnstructuredGrid3D::setPoint(int i,float* p)
 	pointsZ[i] = p[2];
 }
 
+void UnstructuredGrid3D::getBoundingBox(float& minX, float& maxX, float& minY, float& maxY, float& minZ, float& maxZ)
+{
+	for (int i = 0; i < numPoints(); ++i)							//1. Determine the bounding-box of all points in the grid
+	{
+		float p[3];
+		getPoint(i, p);
+		minX = min(p[0], minX); maxX = max(p[0], maxX);
+		minY = min(p[1], minY); maxY = max(p[1], maxY);
+		minZ = min(p[2], minZ); maxZ = max(p[2], maxZ);
+	}
+}
+
 void UnstructuredGrid3D::normalize()						//Normalize the grid in the [-1,1] cube
 {
 	float minX= 1.0e6,minY= 1.0e6,minZ= 1.0e6;
 	float maxX=-1.0e6,maxY=-1.0e6,maxZ=-1.0e6;
 	
-	for(int i=0;i<numPoints();++i)							//1. Determine the bounding-box of all points in the grid
-	{
-		float p[3];
-		getPoint(i,p);
-		minX = min(p[0], minX); maxX = max(p[0], maxX);
-		minY = min(p[1],minY); maxY = max(p[1],maxY);
-		minZ = min(p[2],minZ); maxZ = max(p[2],maxZ);
-	}
-	
+	getBoundingBox(minX, maxX, minY, maxY, minZ, maxZ);
+
 	float sizeX = maxX-minX;								//2. Compute a single scaling factor that best fits the grid
 	sizeX = (sizeX)? 1/sizeX : 1;							//   in the [-1,1] cube. Using a single factor for x,y, and z
 	float sizeY = maxY-minY;								//   ensures that the object is scaled while keeping its
@@ -40,6 +45,9 @@ void UnstructuredGrid3D::normalize()						//Normalize the grid in the [-1,1] cub
 	
 	float scale = min(sizeX,min(sizeY,sizeZ));
 	
+	float totalX = 0; float totalY = 0; float totalZ = 0; // Used to calculate average coordinates after normalization
+	int n = numPoints();
+
 	for(int i=0;i<numPoints();++i)							//3. Use the scaling factor computed above to scale all grid
 	{														//   points in the [-1,1] cube
 		float p[3];
@@ -51,6 +59,8 @@ void UnstructuredGrid3D::normalize()						//Normalize the grid in the [-1,1] cub
 		
 		setPoint(i,p);
 	}
+
+	setAverages(totalX / n, totalY / n, totalZ / n);
 }
 
 

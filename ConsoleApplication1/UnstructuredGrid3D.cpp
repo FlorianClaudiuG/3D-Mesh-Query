@@ -56,6 +56,8 @@ void UnstructuredGrid3D::normalize()						//Normalize the grid in the [-1,1] cub
 		p[0] = 2*((p[0]-minX)*scale-0.5);
 		p[1] = 2*((p[1]-minY)*scale-0.5);
 		p[2] = 2*((p[2]-minZ)*scale-0.5);
+
+		totalX += p[0]; totalY += p[1]; totalZ += p[2];
 		
 		setPoint(i,p);
 	}

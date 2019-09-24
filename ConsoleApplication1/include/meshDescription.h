@@ -14,11 +14,12 @@ public:
 	
 	void setNrVerts(int n) { nrVerts = n; };
 	void setNrFaces(int n) { nrFaces = n; };
+
 private:
 	string a; string directory; string file;
 	int nrVerts;
 	int nrFaces;
-	float avgX, avgY, avgZ;
+	float avgX = 5, avgY = 5, avgZ = 5;
 	float minX = 1.0e6, minY = 1.0e6, minZ = 1.0e6;
 	float maxX = -1.0e6, maxY = -1.0e6, maxZ = -1.0e6;
 }; 

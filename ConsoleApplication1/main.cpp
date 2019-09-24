@@ -1,10 +1,12 @@
 #include <GL/freeglut.h>									//GLUT library
+#include <experimental/filesystem>							//for looping through the database directories 
 #include <iostream>
 #include "include/UnstructuredGrid3D.h"							//the 3D unstructured grid class
 #include "include/MeshRenderer.h"								//a simple renderer for 3D unstructured grids, demonstrating flat/smooth shading
 #include "include/PlyReader.h"									//a reader that initializes UnstructuredGrid3D objects with meshes stored in the PLY file format
 #include "include/zpr.h"										//library for interactively manipulating the OpenGL camera (viewpoint) using the mouse
 #include "OFFConvertor.h"
+#include "include/meshDescription.h"
 
 float fov = 120;										//Perspective projection parameters
 float z_near = 0.1;
@@ -88,6 +90,35 @@ void draw()												//Render the 3D mesh (GLUT callback function)
 	renderer.draw(*grid);
 }
 
+void generateDatabaseOverview(string outputDest, string dbLocation)
+{
+	string path = dbLocation;
+	namespace fs = std::experimental::filesystem;
+	UnstructuredGrid3D* mesh;
+	meshDescription::writeColumnString(outputDest);
+
+	for (const auto& entry : fs::directory_iterator(path)) {
+		string directoryName = entry.path().filename().string(); //name of current directory
+		for (const auto& entry2 : fs::directory_iterator(entry.path())) {
+			string directoryName2 = entry2.path().filename().string();
+			string pathName = entry2.path().string();
+			string fileName = pathName + "\\" + directoryName2 + ".off";
+
+			OFFConverter* converter = new OFFConverter();
+			converter->ConvertOFFToPLY(fileName);
+
+			PlyReader rdr;										
+			mesh = rdr.read((pathName + "\\" + directoryName2 + ".ply").c_str());
+
+			mesh->normalize();
+			meshDescription newMesh = meshDescription(mesh, directoryName, directoryName2);
+			newMesh.writeDescriptionsToFile(outputDest);
+			delete mesh;
+			delete converter;
+		}
+
+	}
+}
 
 int main(int argc, char* argv[])							//Main program
 {
@@ -116,6 +147,9 @@ int main(int argc, char* argv[])							//Main program
 
 	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
 	grid = rdr.read(filename);
+
+	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
+	//generateDatabaseOverview("output/description.txt", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/psb_v1/benchmark/db");
 
 	grid->normalize();									//7.  Normalize the mesh in the [-1,1] cube. This makes setting the OpenGL projection easier.
 	grid->computeFaceNormals();							//8.  Compute face and vertex normals for the mesh. This allows us to shade the mesh next.

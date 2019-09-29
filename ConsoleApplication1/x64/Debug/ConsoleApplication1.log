@@ -1,0 +1,23 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ConsoleApplication1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  main.cpp
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(23,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(26,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+  MeshRenderer.cpp
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\main.cpp(10,19): warning C4305:  'initializing': truncation from 'double' to 'float'
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(23,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(26,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\MeshRenderer.cpp(51,26): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\MeshRenderer.cpp(111,26): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
+  PlyReader.cpp
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\MeshRenderer.cpp(152,26): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(23,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(26,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+  UnstructuredGrid3D.cpp
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\PlyReader.cpp(36,11): warning C4101:  'k': unreferenced local variable
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(23,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(26,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\UnstructuredGrid3D.cpp(48,11): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\UnstructuredGrid3D.cpp(49,11): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+C:\Users\claud\Documents\Github\3D-Mesh-Query\ConsoleApplication1\UnstructuredGrid3D.cpp(50,11): warning C4244:  '=': conversion from 'double' to 'float', possible loss of data
+  ConsoleApplication1.vcxproj -> C:\Users\claud\Documents\Github\3D-Mesh-Query\x64\Debug\3D Model Query System.exe

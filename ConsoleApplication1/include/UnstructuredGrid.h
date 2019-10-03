@@ -6,9 +6,6 @@
 
 using namespace std;
 
-
-
-
 class UnstructuredGrid : public Grid
 {
 public: 
@@ -44,6 +41,3 @@ ScalarAttributes	scalars;
 vector<float>		pointsX,pointsY;
 vector<int>			cells;
 };
-
-
-

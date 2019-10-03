@@ -48,6 +48,30 @@
     <ClCompile Include="OFFConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\MeshDecimation\DistancePointTriangle.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\MeshDecimation\SurfaceMesh.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\MeshDecimation\SurfaceMeshIO.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\MeshDecimation\SurfaceNormals.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\MeshDecimation\SurfaceSimplification.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="meshdescription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlyWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Supersampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -90,6 +114,51 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OFFConverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\BoundingBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\DistancePointTriangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\Heap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\MatVec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\NormalCone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\Properties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\Quadric.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\SurfaceMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\SurfaceMeshIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\SurfaceNormals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\SurfaceSimplification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\meshDescription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlyWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Supersampler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

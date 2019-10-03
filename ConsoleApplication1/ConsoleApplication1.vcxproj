@@ -152,14 +152,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\MeshDecimation\DistancePointTriangle.cpp" />
+    <ClCompile Include="include\MeshDecimation\SurfaceMesh.cpp" />
+    <ClCompile Include="include\MeshDecimation\SurfaceMeshIO.cpp" />
+    <ClCompile Include="include\MeshDecimation\SurfaceNormals.cpp" />
+    <ClCompile Include="include\MeshDecimation\SurfaceSimplification.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="meshdescription.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="OFFConverter.cpp" />
     <ClCompile Include="plyfile.cpp" />
     <ClCompile Include="PlyReader.cpp" />
+    <ClCompile Include="PlyWriter.cpp" />
     <ClCompile Include="ScalarAttributes.cpp" />
     <ClCompile Include="SimpleRenderer.cpp" />
+    <ClCompile Include="Supersampler.cpp" />
     <ClCompile Include="UnstructuredGrid.cpp" />
     <ClCompile Include="UnstructuredGrid3D.cpp" />
     <ClCompile Include="zpr.cpp" />
@@ -169,6 +177,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\MeshDecimation\BoundingBox.h" />
+    <ClInclude Include="include\MeshDecimation\DistancePointTriangle.h" />
+    <ClInclude Include="include\MeshDecimation\Heap.h" />
+    <ClInclude Include="include\MeshDecimation\MatVec.h" />
+    <ClInclude Include="include\MeshDecimation\NormalCone.h" />
+    <ClInclude Include="include\MeshDecimation\Properties.h" />
+    <ClInclude Include="include\MeshDecimation\Quadric.h" />
+    <ClInclude Include="include\MeshDecimation\SurfaceMesh.h" />
+    <ClInclude Include="include\MeshDecimation\SurfaceMeshIO.h" />
+    <ClInclude Include="include\MeshDecimation\SurfaceNormals.h" />
+    <ClInclude Include="include\MeshDecimation\SurfaceSimplification.h" />
+    <ClInclude Include="include\MeshDecimation\Types.h" />
+    <ClInclude Include="include\meshDescription.h" />
     <ClInclude Include="include\MeshRenderer.h" />
     <ClInclude Include="include\ply.h" />
     <ClInclude Include="include\PlyReader.h" />
@@ -181,6 +202,8 @@
     <ClInclude Include="include\VectorAttributes.h" />
     <ClInclude Include="include\zpr.h" />
     <ClInclude Include="OFFConverter.h" />
+    <ClInclude Include="PlyWriter.h" />
+    <ClInclude Include="Supersampler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -7,6 +7,9 @@
 //
 // SPDX-License-Identifier: MIT-with-employer-disclaimer
 //=============================================================================
+#ifdef _MSC_VER
+#define _CRT_SECURE_NO_WARNINGS 1
+#endif
 
 #include "SurfaceMeshIO.h"
 

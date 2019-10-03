@@ -22,6 +22,8 @@ void				getBoundingBox(float& minX, float& maxX, float& minY, float& maxY, float
 
 void				normalize();
 
+void				centerOnBary();
+
 void				computeFaceNormals();
 
 void				computeVertexNormals();

@@ -7,6 +7,8 @@
 #include "include/zpr.h"										//library for interactively manipulating the OpenGL camera (viewpoint) using the mouse
 #include "OFFConvertor.h"
 #include "include/meshDescription.h"
+#include "include/FourStepNorm.h"
+
 
 float fov = 120;										//Perspective projection parameters
 float z_near = 0.1;
@@ -132,10 +134,10 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/m2.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/bunny.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
-	OFFConverter* converter = new OFFConverter();
-	converter->ConvertOFFToPLY("DATA/m2.off");
+	//OFFConverter* converter = new OFFConverter();
+	//converter->ConvertOFFToPLY("DATA/m2.off");
 
 	glutInit(&argc, argv);								//1.  Initialize the GLUT toolkit
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -151,9 +153,12 @@ int main(int argc, char* argv[])							//Main program
 	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
 	//generateDatabaseOverview("output/description.txt", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/psb_v1/benchmark/db");
 
-	grid->normalize();									//7.  Normalize the mesh in the [-1,1] cube. This makes setting the OpenGL projection easier.
-	grid->computeFaceNormals();							//8.  Compute face and vertex normals for the mesh. This allows us to shade the mesh next.
-	grid->computeVertexNormals();
+	//Perform 4 step normalization on the model
+	FourStepNorm normalizer;
+	normalizer.centerOnBary(grid); //Step 1. center on the barycenter (average x,y,z)
+	normalizer.PCA(grid); //Step 2. do PCA and use eigenvectors to translate all vertices
+	normalizer.flipTest(grid); //Step 3. make sure most most mass (number triangles is on the let side)
+	normalizer.normalizeInCube(grid); //Step 4. normalize the model
 
 	glutMouseFunc(mouseclick);							//9.  Bind the mouse click and mouse drag (click-and-move) events to callbacks. This allows us
 	glutMotionFunc(mousemotion);							//    next to control the viewpoint interactively.

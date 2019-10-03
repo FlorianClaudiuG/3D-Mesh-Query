@@ -29,6 +29,30 @@ void UnstructuredGrid3D::getBoundingBox(float& minX, float& maxX, float& minY, f
 	}
 }
 
+void UnstructuredGrid3D::centerOnBary()
+{
+	float totalX = 0; float totalY = 0; float totalZ = 0;
+	for (int i = 0; i < numPoints(); ++i)							//3. Use the scaling factor computed above to scale all grid
+	{														//   points in the [-1,1] cube
+		float p[3];
+		getPoint(i, p);
+		totalX += p[0]; totalY += p[1]; totalZ += p[2];
+	}
+	totalX /= numPoints(); totalY /= numPoints(); totalZ /= numPoints();
+
+	for (int i = 0; i < numPoints(); ++i)							//3. Use the scaling factor computed above to scale all grid
+	{														//   points in the [-1,1] cube
+		float p[3];
+		getPoint(i, p);
+		p[0] = p[0] - totalX;
+		p[1] = p[1] - totalY;
+		p[2] = p[2] - totalZ;
+
+		setPoint(i, p);
+	}
+	setAverages(totalX, totalY, totalZ);
+}
+
 void UnstructuredGrid3D::normalize()						//Normalize the grid in the [-1,1] cube
 {
 	float minX= 1.0e6,minY= 1.0e6,minZ= 1.0e6;

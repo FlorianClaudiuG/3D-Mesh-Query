@@ -105,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -141,7 +141,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -152,11 +152,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FourStepNorm.cpp" />
     <ClCompile Include="include\MeshDecimation\DistancePointTriangle.cpp" />
     <ClCompile Include="include\MeshDecimation\SurfaceMesh.cpp" />
     <ClCompile Include="include\MeshDecimation\SurfaceMeshIO.cpp" />
     <ClCompile Include="include\MeshDecimation\SurfaceNormals.cpp" />
     <ClCompile Include="include\MeshDecimation\SurfaceSimplification.cpp" />
+    <ClCompile Include="include\PCA\alglibinternal.cpp" />
+    <ClCompile Include="include\PCA\alglibmisc.cpp" />
+    <ClCompile Include="include\PCA\ap.cpp" />
+    <ClCompile Include="include\PCA\dataanalysis.cpp" />
+    <ClCompile Include="include\PCA\diffequations.cpp" />
+    <ClCompile Include="include\PCA\fasttransforms.cpp" />
+    <ClCompile Include="include\PCA\integration.cpp" />
+    <ClCompile Include="include\PCA\interpolation.cpp" />
+    <ClCompile Include="include\PCA\linalg.cpp" />
+    <ClCompile Include="include\PCA\optimization.cpp" />
+    <ClCompile Include="include\PCA\solvers.cpp" />
+    <ClCompile Include="include\PCA\specialfunctions.cpp" />
+    <ClCompile Include="include\PCA\statistics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="meshdescription.cpp" />
@@ -176,6 +190,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\FourStepNorm.h" />
     <ClInclude Include="include\Grid.h" />
     <ClInclude Include="include\MeshDecimation\BoundingBox.h" />
     <ClInclude Include="include\MeshDecimation\DistancePointTriangle.h" />
@@ -191,6 +206,20 @@
     <ClInclude Include="include\MeshDecimation\Types.h" />
     <ClInclude Include="include\meshDescription.h" />
     <ClInclude Include="include\MeshRenderer.h" />
+    <ClInclude Include="include\PCA\alglibinternal.h" />
+    <ClInclude Include="include\PCA\alglibmisc.h" />
+    <ClInclude Include="include\PCA\ap.h" />
+    <ClInclude Include="include\PCA\dataanalysis.h" />
+    <ClInclude Include="include\PCA\diffequations.h" />
+    <ClInclude Include="include\PCA\fasttransforms.h" />
+    <ClInclude Include="include\PCA\integration.h" />
+    <ClInclude Include="include\PCA\interpolation.h" />
+    <ClInclude Include="include\PCA\linalg.h" />
+    <ClInclude Include="include\PCA\optimization.h" />
+    <ClInclude Include="include\PCA\solvers.h" />
+    <ClInclude Include="include\PCA\specialfunctions.h" />
+    <ClInclude Include="include\PCA\statistics.h" />
+    <ClInclude Include="include\PCA\stdafx.h" />
     <ClInclude Include="include\ply.h" />
     <ClInclude Include="include\PlyReader.h" />
     <ClInclude Include="include\Point3d.h" />

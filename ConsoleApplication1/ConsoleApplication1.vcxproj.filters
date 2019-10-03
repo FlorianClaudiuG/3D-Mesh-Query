@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\PCA">
+      <UniqueIdentifier>{b45a1808-96b8-4bcd-bf60-ba0a7879c3e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MeshDecimation">
+      <UniqueIdentifier>{495b7597-70ef-4381-8087-092f7baf1c5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MeshRenderer.cpp">
@@ -49,27 +55,63 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\MeshDecimation\DistancePointTriangle.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClCompile>
     <ClCompile Include="include\MeshDecimation\SurfaceMesh.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClCompile>
     <ClCompile Include="include\MeshDecimation\SurfaceMeshIO.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClCompile>
     <ClCompile Include="include\MeshDecimation\SurfaceNormals.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClCompile>
     <ClCompile Include="include\MeshDecimation\SurfaceSimplification.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\alglibinternal.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\alglibmisc.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\ap.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\dataanalysis.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\diffequations.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\fasttransforms.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\integration.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\interpolation.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\linalg.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\optimization.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\solvers.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\specialfunctions.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="include\PCA\statistics.cpp">
+      <Filter>Header Files\PCA</Filter>
+    </ClCompile>
+    <ClCompile Include="FourStepNorm.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="meshdescription.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlyWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Supersampler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,49 +158,88 @@
     <ClInclude Include="OFFConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\MeshDecimation\Types.h">
+      <Filter>Header Files\MeshDecimation</Filter>
+    </ClInclude>
     <ClInclude Include="include\MeshDecimation\BoundingBox.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\DistancePointTriangle.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\Heap.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\MatVec.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\NormalCone.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\Properties.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\Quadric.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\SurfaceMesh.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\SurfaceMeshIO.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\SurfaceNormals.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\SurfaceSimplification.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
-    <ClInclude Include="include\MeshDecimation\Types.h">
+    <ClInclude Include="include\PCA\stdafx.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\alglibinternal.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\alglibmisc.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\ap.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\dataanalysis.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\diffequations.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\fasttransforms.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\integration.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\interpolation.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\linalg.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\optimization.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\solvers.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\specialfunctions.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PCA\statistics.h">
+      <Filter>Header Files\PCA</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FourStepNorm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\meshDescription.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlyWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Supersampler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

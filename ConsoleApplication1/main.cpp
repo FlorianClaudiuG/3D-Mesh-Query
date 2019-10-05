@@ -5,8 +5,9 @@
 #include "include/MeshRenderer.h"								//a simple renderer for 3D unstructured grids, demonstrating flat/smooth shading
 #include "include/PlyReader.h"									//a reader that initializes UnstructuredGrid3D objects with meshes stored in the PLY file format
 #include "include/zpr.h"										//library for interactively manipulating the OpenGL camera (viewpoint) using the mouse
-#include "OFFConvertor.h"
 #include "include/meshDescription.h"
+#include "OFFConvertor.h"
+#include "PlyWriter.h"
 #include "include/FourStepNorm.h"
 
 
@@ -113,6 +114,7 @@ void generateDatabaseOverview(string outputDest, string dbLocation)
 			mesh = rdr.read((pathName + "\\" + directoryName2 + ".ply").c_str());
 
 			mesh->normalize();
+
 			meshDescription newMesh = meshDescription(mesh, directoryName, directoryName2);
 			newMesh.writeDescriptionsToFile(outputDest);
 			delete mesh;
@@ -148,7 +150,10 @@ int main(int argc, char* argv[])							//Main program
 	setCamera();
 
 	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
+	PlyWriter writer;
 	grid = rdr.read(filename);
+
+	//writer.WritePlyFile(filename, grid);
 
 	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
 	//generateDatabaseOverview("output/description.txt", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/psb_v1/benchmark/db");

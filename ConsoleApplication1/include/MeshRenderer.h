@@ -34,8 +34,3 @@ void			drawC1Cells(UnstructuredGrid3D&);
 
 DRAW_STYLE		draw_style;
 };
-
-
-
-						
-

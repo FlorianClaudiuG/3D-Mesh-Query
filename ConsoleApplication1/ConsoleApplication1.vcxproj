@@ -178,8 +178,10 @@
     <ClCompile Include="OFFConverter.cpp" />
     <ClCompile Include="plyfile.cpp" />
     <ClCompile Include="PlyReader.cpp" />
+    <ClCompile Include="PlyWriter.cpp" />
     <ClCompile Include="ScalarAttributes.cpp" />
     <ClCompile Include="SimpleRenderer.cpp" />
+    <ClCompile Include="Supersampler.cpp" />
     <ClCompile Include="UnstructuredGrid.cpp" />
     <ClCompile Include="UnstructuredGrid3D.cpp" />
     <ClCompile Include="zpr.cpp" />
@@ -229,6 +231,8 @@
     <ClInclude Include="include\VectorAttributes.h" />
     <ClInclude Include="include\zpr.h" />
     <ClInclude Include="OFFConverter.h" />
+    <ClInclude Include="PlyWriter.h" />
+    <ClInclude Include="Supersampler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

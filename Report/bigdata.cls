@@ -126,8 +126,8 @@
 \pagestyle{fancy}
 \fancyhead{}
 \fancyfoot{}
-\fancyhead[RO]{\sf Big Data from Utrecht University}
-\fancyhead[LE]{\sf Big Data 2019}
+\fancyhead[RO]{\sf Utrecht University}
+\fancyhead[LE]{\sf Multimedia Retrieval 2019}
 \renewcommand{\headrulewidth}{1pt}
 
 \endinput

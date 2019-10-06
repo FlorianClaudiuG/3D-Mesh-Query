@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  4 OCT 2019 22:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  6 OCT 2019 23:45
 entering extended mode
 **./Report.tex
 (Report.tex
@@ -263,111 +263,97 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 12.
 ("C:\Program Files\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 36.
-
-("C:\Program Files\MiKTeX 2.9\tex/latex/base\omscmr.fd"
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 36.
- [1{C:/Users/Diego/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
-
-
-]
-<Pictures/verticesHist.png, id=15, 351.81438pt x 202.25563pt>
+<Pictures/verticesHist.png, id=1, 351.81438pt x 202.25563pt>
 File: Pictures/verticesHist.png Graphic file (type png)
 <use Pictures/verticesHist.png>
-Package pdftex.def Info: Pictures/verticesHist.png  used on input line 55.
+Package pdftex.def Info: Pictures/verticesHist.png  used on input line 32.
 (pdftex.def)             Requested size: 231.91124pt x 133.32246pt.
-<Pictures/preSub.png, id=16, 752.8125pt x 752.8125pt>
-File: Pictures/preSub.png Graphic file (type png)
-<use Pictures/preSub.png>
-Package pdftex.def Info: Pictures/preSub.png  used on input line 67.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/postSub.png, id=18, 752.8125pt x 752.8125pt>
-File: Pictures/postSub.png Graphic file (type png)
-<use Pictures/postSub.png>
-Package pdftex.def Info: Pictures/postSub.png  used on input line 71.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part2/Step0.png, id=19, 752.8125pt x 752.8125pt>
-File: Pictures/Part2/Step0.png Graphic file (type png)
-<use Pictures/Part2/Step0.png>
-Package pdftex.def Info: Pictures/Part2/Step0.png  used on input line 85.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part2/step1.png, id=20, 752.8125pt x 752.8125pt>
-File: Pictures/Part2/step1.png Graphic file (type png)
-<use Pictures/Part2/step1.png>
-Package pdftex.def Info: Pictures/Part2/step1.png  used on input line 89.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part2/step2.png, id=21, 752.8125pt x 752.8125pt>
-File: Pictures/Part2/step2.png Graphic file (type png)
-<use Pictures/Part2/step2.png>
-Package pdftex.def Info: Pictures/Part2/step2.png  used on input line 93.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part2/step3.png, id=22, 752.8125pt x 752.8125pt>
-File: Pictures/Part2/step3.png Graphic file (type png)
-<use Pictures/Part2/step3.png>
-Package pdftex.def Info: Pictures/Part2/step3.png  used on input line 97.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Overfull \hbox (7.85326pt too wide) detected at line 157
+Underfull \vbox (badness 3375) has occurred while \output is active []
+
+ [1{C:/Users/Diego/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+
+]
+<Pictures/triangle.png, id=10, 472.01344pt x 316.93407pt>
+File: Pictures/triangle.png Graphic file (type png)
+<use Pictures/triangle.png>
+Package pdftex.def Info: Pictures/triangle.png  used on input line 41.
+(pdftex.def)             Requested size: 231.91124pt x 155.71977pt.
+<Pictures/preSub.png, id=12, 752.8125pt x 752.8125pt>
+File: Pictures/preSub.png Graphic file (type png)
+<use Pictures/preSub.png>
+Package pdftex.def Info: Pictures/preSub.png  used on input line 59.
+(pdftex.def)             Requested size: 69.57407pt x 69.56514pt.
+<Pictures/postSub.png, id=13, 752.8125pt x 752.8125pt>
+File: Pictures/postSub.png Graphic file (type png)
+<use Pictures/postSub.png>
+Package pdftex.def Info: Pictures/postSub.png  used on input line 63.
+(pdftex.def)             Requested size: 69.57407pt x 69.56514pt.
+<Pictures/postSub2.png, id=14, 752.8125pt x 752.8125pt>
+File: Pictures/postSub2.png Graphic file (type png)
+<use Pictures/postSub2.png>
+Package pdftex.def Info: Pictures/postSub2.png  used on input line 67.
+(pdftex.def)             Requested size: 69.57407pt x 69.56514pt.
+<Pictures/Part2/Step0.png, id=15, 752.8125pt x 752.8125pt>
+File: Pictures/Part2/Step0.png Graphic file (type png)
+<use Pictures/Part2/Step0.png>
+Package pdftex.def Info: Pictures/Part2/Step0.png  used on input line 81.
+(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
+<Pictures/Part2/step1.png, id=16, 752.8125pt x 752.8125pt>
+File: Pictures/Part2/step1.png Graphic file (type png)
+<use Pictures/Part2/step1.png>
+Package pdftex.def Info: Pictures/Part2/step1.png  used on input line 85.
+(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
+<Pictures/Part2/step2.png, id=17, 752.8125pt x 752.8125pt>
+File: Pictures/Part2/step2.png Graphic file (type png)
+<use Pictures/Part2/step2.png>
+Package pdftex.def Info: Pictures/Part2/step2.png  used on input line 89.
+(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
+<Pictures/Part2/step3.png, id=18, 752.8125pt x 752.8125pt>
+File: Pictures/Part2/step3.png Graphic file (type png)
+<use Pictures/Part2/step3.png>
+Package pdftex.def Info: Pictures/Part2/step3.png  used on input line 93.
+(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[2 <./Pictures/verticesHist.png> <./Pictures/triangle.png> <./Pictures/preSub.p
+ng> <./Pictures/postSub.png> <./Pictures/postSub2.png>]
+Overfull \hbox (7.85326pt too wide) detected at line 153
 \OML/cmm/m/it/10 x \OT1/cmr/m/n/10 = [] \OML/cmm/m/it/10 y \OT1/cmr/m/n/10 = []
  \OML/cmm/m/it/10 z \OT1/cmr/m/n/10 = [] \OML/cmm/m/it/10 M \OT1/cmr/m/n/10 = [
 ]
  []
 
-[2 <./Pictures/verticesHist.png> <./Pictures/preSub.png> <./Pictures/postSub.pn
-g>] [3 <./Pictures/Part2/Step0.png> <./Pictures/Part2/step1.png> <./Pictures/Pa
-rt2/step2.png> <./Pictures/Part2/step3.png>] [4]
-Overfull \hbox (30.58356pt too wide) detected at line 291
-\OML/cmm/m/it/10 h[] \OT1/cmr/m/n/10 = [] [] = [] [] []
- []
-
-
-Overfull \hbox (9.12619pt too wide) detected at line 297
-\OMS/cmsy/m/n/10 L[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 h\OT1/cmr/m/n/10 ) = [] [
-] [] = [] \OMS/cmsy/m/n/10   [] [] \OML/cmm/m/it/10 f\OT1/cmr/m/n/10 (\OML/cmm/
-m/it/10 x\OT1/cmr/m/n/10 )\OML/cmm/m/it/10 h\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 x
-\OT1/cmr/m/n/10 )
- []
-
-[5] (Report.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+[3 <./Pictures/Part2/Step0.png> <./Pictures/Part2/step1.png> <./Pictures/Part2/
+step2.png> <./Pictures/Part2/step3.png>] (Report.aux) ) 
 Here is how much of TeX's memory you used:
- 3798 strings out of 492895
- 55616 string characters out of 3133479
- 131219 words of memory out of 3000000
- 7649 multiletter control sequences out of 15000+200000
- 10880 words of font info for 42 fonts, out of 3000000 for 9000
+ 3767 strings out of 492895
+ 55334 string characters out of 3133479
+ 130246 words of memory out of 3000000
+ 7628 multiletter control sequences out of 15000+200000
+ 7434 words of font info for 29 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 49i,11n,45p,1411b,440s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fon
-ts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
-public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/am
-sfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr8.pfb><
-C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/Program Files/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/cm/cmsy5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/p
-ublic/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/sy
-mbols/msbm10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/symbo
-ls/msbm7.pfb>
-Output written on Report.pdf (5 pages, 516188 bytes).
+ 49i,10n,45p,1380b,440s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX
+ 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
+msfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/c
+m/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pf
+b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Prog
+ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on Report.pdf (3 pages, 541974 bytes).
 PDF statistics:
- 104 PDF objects out of 1000 (max. 8388607)
+ 70 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

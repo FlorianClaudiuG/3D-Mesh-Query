@@ -4,7 +4,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 
 \title{Multimedia Retrieval}
-\author{Diego Renders}
+\author{Diego Renders (5740894) and Claudiu Gheorghica}
 \date{Oktober 2019}
 
 
@@ -44,26 +44,30 @@ Supersampling is done in this implementation by splitting a larger triangle into
 
 To ensure the triangles obtained like this are not outliers in terms of their size, the cells in the model were first sorted by their area inside a vector, from smallest to largest. The area of each cell was calculated using the following formula:
 
-\begin equation
-\[S = \frac{|AB||AC|sin(\theta)}{2}\]
-\end equation
+\begin{equation}
+S = \frac{|AB||AC|sin(\theta)}{2}
+\end{equation}
 
 Thus, at each step, only the triangle with the largest surface is split up into smaller triangles. The original triangle is removed from the vector, and the smaller triangles are inserted at positions that do not disturb the ordered property of the data structure.
 
 \subsection{Subsampling}
-For the task of subsampling the Polygon Mesh Processing (pmp) library is used. The SurfaceSimplification class is used to perform mesh decimation, taking as input the mesh and a target number of vertices. To demonstrate that this algorithm works correctly for our models a pre and post visualisation is shown in figure 2. This is the largest model in the dataset with 316.498 faces and 160.940 vertices. The post decimation model contains 78.473 faces and 40.000 vertices. Even though the model only has a fourth of its original vertices, it clearly retains its characteristics. Therefore we can conclude that the algorithm is a suitable tool for this project.
+For the task of subsampling the Polygon Mesh Processing (pmp) library is used. The SurfaceSimplification class is used to perform mesh decimation, taking as input the mesh and a target number of vertices. To demonstrate that this algorithm works correctly for our models a pre and post visualisation is shown in figure 2. This is the largest model in the dataset with 316.498 faces and 160.940 vertices. The post decimation model contains 78.473 faces and 40.000 vertices in the middle picture and 20.000 vertices in the right picture. Even though the model only has a fourth of its original vertices in the second case, it clearly retains its characteristics. And even when the vertex count is brought down to 20.000 vertices it is hard to distinguish them. Therefore we can conclude that the algorithm is a suitable tool for this project.
 
 \begin{figure}[h!]
   \centering
-  \begin{subfigure}[b]{0.4\linewidth}
+  \begin{subfigure}[b]{0.3\linewidth}
     \includegraphics[width=\linewidth]{Pictures/preSub.png}
-    \caption{Pre decimation}
+    \caption{160k vertices}
   \end{subfigure}
-  \begin{subfigure}[b]{0.4\linewidth}
+  \begin{subfigure}[b]{0.3\linewidth}
     \includegraphics[width=\linewidth]{Pictures/postSub.png}
-    \caption{Post decimation}
+    \caption{40k vertices}
   \end{subfigure}
-  \caption{Model m303 before and after mesh decimation}
+  \begin{subfigure}[b]{0.3\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/postSub2.png}
+    \caption{20k vertices}
+  \end{subfigure}
+  \caption{Results of mesh decimation for model m303}
   \label{fig:decimatedMesh}
 \end{figure}
 

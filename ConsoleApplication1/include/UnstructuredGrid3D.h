@@ -2,11 +2,11 @@
 
 #include "UnstructuredGrid.h"
 #include "VectorAttributes.h"
+#include <iostream>
+#include <algorithm>
+#include <math.h>
 
 using namespace std;
-
-
-
 
 class UnstructuredGrid3D : public UnstructuredGrid
 {
@@ -36,6 +36,8 @@ VectorAttributes&	getPointNormals()
 
 void				setAverages(float x, float y, float z) { avgX = x; avgY = y; avgZ = z; }
 void				getAverages(float& x, float& y, float& z) { x = avgX; y = avgY; z = avgZ; }
+float				getCellArea(int cell);
+void				updateCellsByArea();
 
 private:
 
@@ -43,6 +45,7 @@ float				avgX, avgY, avgZ;	//averages of coordinates
 vector<float>		pointsZ;
 VectorAttributes    pointNormals;
 VectorAttributes    faceNormals;
+
 };
 
 

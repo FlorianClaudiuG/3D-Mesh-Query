@@ -3,6 +3,7 @@
 #include "Grid.h"
 #include "ScalarAttributes.h"
 #include <vector>
+#include <math.h>
 
 using namespace std;
 

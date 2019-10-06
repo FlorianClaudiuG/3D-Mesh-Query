@@ -19,3 +19,5 @@ Release
 *.vbproj.user
 ipch
 *sdf
+.vs/MeshReader/v16/Browse.VC.opendb
+.vs/MeshReader/v16/Browse.VC.db

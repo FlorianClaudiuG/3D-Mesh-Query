@@ -9,6 +9,7 @@
 #include "OFFConvertor.h"
 #include "PlyWriter.h"
 #include "include/FourStepNorm.h"
+#include "Supersampler.h"
 
 
 float fov = 120;										//Perspective projection parameters
@@ -136,7 +137,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/bunny.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/triangle.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY("DATA/m2.off");
@@ -151,20 +152,24 @@ int main(int argc, char* argv[])							//Main program
 
 	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
 	PlyWriter writer;
-	grid = rdr.read(filename);
+	Supersampler ss;
 
+	grid = rdr.read(filename);
+	//ss.addTriangle(*grid, 0);
+
+	writer.WritePlyFile(filename, grid);
 	//writer.WritePlyFile(filename, grid);
 
 	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
 	//generateDatabaseOverview("output/description.txt", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/psb_v1/benchmark/db");
-
+	/*/
 	//Perform 4 step normalization on the model
 	FourStepNorm normalizer;
 	normalizer.centerOnBary(grid); //Step 1. center on the barycenter (average x,y,z)
 	normalizer.PCA(grid); //Step 2. do PCA and use eigenvectors to translate all vertices
 	normalizer.flipTest(grid); //Step 3. make sure most most mass (number triangles is on the let side)
 	normalizer.normalizeInCube(grid); //Step 4. normalize the model
-
+	*/
 	glutMouseFunc(mouseclick);							//9.  Bind the mouse click and mouse drag (click-and-move) events to callbacks. This allows us
 	glutMotionFunc(mousemotion);							//    next to control the viewpoint interactively.
 	glutKeyboardFunc(keyboard);

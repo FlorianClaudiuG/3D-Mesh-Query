@@ -1,6 +1,4 @@
 #include "include/UnstructuredGrid3D.h"
-#include <iostream>
-#include <algorithm>
 
 void UnstructuredGrid3D::getPoint(int i,float* p)
 {
@@ -12,6 +10,13 @@ void UnstructuredGrid3D::getPoint(int i,float* p)
 
 void UnstructuredGrid3D::setPoint(int i,float* p)
 {
+	if (i >= numPoints())
+	{
+		//Only works for increasing its size 1 at a time.
+		pointsX.resize(numPoints() + 1);
+		pointsY.resize(numPoints() + 1);
+		pointsZ.resize(numPoints() + 1);
+	}
 	pointsX[i] = p[0];
 	pointsY[i] = p[1];
 	pointsZ[i] = p[2];
@@ -149,3 +154,71 @@ void UnstructuredGrid3D::computeVertexNormals()				//Compute vertex normals for 
 	}
 }
 
+float UnstructuredGrid3D::getCellArea(int cell)
+{
+	int vertices[3]{};
+	getCell(cell, vertices);
+	
+	float p1[3], p2[3], p3[3];
+	getPoint(vertices[0], p1);
+	getPoint(vertices[1], p2);
+	getPoint(vertices[2], p3);
+
+	Point3d A(p1);
+	Point3d B(p2);
+	Point3d C(p3);
+	
+	Point3d AB;
+	AB.x = B.x - A.x;
+	AB.y = B.y - A.y;
+	AB.z = B.z - A.z;
+
+	Point3d AC;
+	AC.x = C.x - A.x;
+	AC.y = C.y - A.y;
+	AC.z = C.z - A.z;
+
+	float normsum = (AB.norm() * AC.norm());
+	float theta = acos(AB.dot(AC) / normsum);
+	float area = 0.5f * normsum * sin(theta);
+
+	return area;
+}
+
+void UnstructuredGrid3D::updateCellsByArea()
+{
+	struct Cell 
+	{
+		int index;
+		float area;
+	};
+
+	vector<Cell> list;
+	list.resize(numCells());
+
+	for (int i = 0; i < numCells(); i++)
+	{
+		Cell temp;
+		temp.index = i;
+		temp.area = getCellArea(i);
+		int len = list.size();
+		if (len > 0)
+		{
+			for (int j = 0; j < len; j++)
+			{
+				if (temp.area < list[j].area)
+				{
+					list.insert(list.begin() + j -1, temp);
+					break;
+				}
+			}
+		}
+		else
+		{
+			list.push_back(temp);
+		}
+		
+		//list.push_back(temp);
+		
+	}
+}

@@ -27,6 +27,10 @@ int	UnstructuredGrid::getCell(int cell,int* vertices)
 
 void UnstructuredGrid::setCell(int cell,int* vertices)
 {
+	if (cell >= numCells())
+	{
+		cells.resize((numCells() + 1) * 3);
+	}
 	cells[3*cell]   = vertices[0];
 	cells[3*cell+1] = vertices[1];
 	cells[3*cell+2] = vertices[2];	

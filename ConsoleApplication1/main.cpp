@@ -11,6 +11,10 @@
 #include "include/FourStepNorm.h"
 #include "Supersampler.h"
 
+//Files for pmp (used for mesh decimation)
+#include "include/MeshDecimation/SurfaceMesh.h"
+#include "include/MeshDecimation/SurfaceMeshIO.h"
+#include "include/MeshDecimation/SurfaceSimplification.h"
 
 float fov = 120;										//Perspective projection parameters
 float z_near = 0.1;
@@ -123,6 +127,59 @@ void generateDatabaseOverview(string outputDest, string dbLocation)
 		}
 
 	}
+}
+
+UnstructuredGrid3D* decimateMesh(string fileName, int targetVertCount)
+{
+	pmp::SurfaceMesh* mesh = new pmp::SurfaceMesh();
+
+	pmp::SurfaceMeshIO surfMesh(fileName, pmp::IOFlags());
+	surfMesh.read(*mesh);
+
+	cout << mesh->n_faces() << " " << mesh->n_vertices() << endl;
+	if (mesh->n_vertices() > targetVertCount) {
+		pmp::SurfaceSimplification* simplifier = new pmp::SurfaceSimplification(*mesh);
+		simplifier->simplify(targetVertCount);
+	}
+
+	int i = 0;
+	UnstructuredGrid3D* g = new UnstructuredGrid3D(mesh->n_vertices(), mesh->n_faces());
+	//convert to unstructuredGrid3D
+	for (auto v : mesh->vertices())
+	{
+		float l[3];
+		pmp::Point p = mesh->position(v);
+		l[0] = p[0];
+		l[1] = p[1];
+		l[2] = p[2];
+		g->setPoint(i, l);
+		i++;
+	}
+
+	i = 0;
+	for (pmp::SurfaceMesh::FaceIterator fit = mesh->faces_begin();
+		fit != mesh->faces_end(); ++fit)
+	{
+		int V[3];
+		int j = 0;
+
+		pmp::SurfaceMesh::VertexAroundFaceCirculator fvit = mesh->vertices(*fit),
+			fvend = fvit;
+		do
+		{
+			V[j] = (*fvit).idx();
+			j++;
+		} while (++fvit != fvend);
+		g->setCell(i, V);
+		i++;
+	}
+
+	g->normalize();
+	g->computeFaceNormals();							//8.  Compute face and vertex normals for the mesh. This allows us to shade the mesh next.
+	g->computeVertexNormals();
+	cout << mesh->n_faces() << " " << mesh->n_vertices() << endl;
+
+	return g;
 }
 
 int main(int argc, char* argv[])							//Main program

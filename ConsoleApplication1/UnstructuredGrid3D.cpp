@@ -179,46 +179,43 @@ float UnstructuredGrid3D::getCellArea(int cell)
 	AC.z = C.z - A.z;
 
 	float normsum = (AB.norm() * AC.norm());
-	float theta = acos(AB.dot(AC) / normsum);
+	float theta = acos(AB.dot(AC) / (normsum + 0.000000000001f));
 	float area = 0.5f * normsum * sin(theta);
 
 	return area;
 }
 
-void UnstructuredGrid3D::updateCellsByArea()
+vector<Cell> UnstructuredGrid3D::sortCellsByArea()
 {
-	struct Cell 
-	{
-		int index;
-		float area;
-	};
-
-	vector<Cell> list;
-	list.resize(numCells());
+	vector<Cell> vec;
 
 	for (int i = 0; i < numCells(); i++)
 	{
 		Cell temp;
 		temp.index = i;
 		temp.area = getCellArea(i);
-		int len = list.size();
-		if (len > 0)
+		bool inserted = false;
+
+		if (i > 0)
 		{
-			for (int j = 0; j < len; j++)
+			for (int j = 0; j < i; j++)
 			{
-				if (temp.area < list[j].area)
+				if (temp.area <= vec[j].area)
 				{
-					list.insert(list.begin() + j -1, temp);
+					vec.insert(vec.begin() + j, temp);
+					inserted = true;
 					break;
 				}
+			}
+			if (!inserted)
+			{
+				vec.push_back(temp);
 			}
 		}
 		else
 		{
-			list.push_back(temp);
+			vec.push_back(temp);
 		}
-		
-		//list.push_back(temp);
-		
 	}
+	return vec;
 }

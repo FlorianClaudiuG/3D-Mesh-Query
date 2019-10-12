@@ -114,6 +114,15 @@
     <ClCompile Include="meshdescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlyWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Supersampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DatabaseReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -240,6 +249,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\meshDescription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlyWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Supersampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,6 +8,12 @@
 
 using namespace std;
 
+struct Cell
+{
+	int index;
+	float area;
+};
+
 class UnstructuredGrid3D : public UnstructuredGrid
 {
 public: 
@@ -37,7 +43,7 @@ VectorAttributes&	getPointNormals()
 void				setAverages(float x, float y, float z) { avgX = x; avgY = y; avgZ = z; }
 void				getAverages(float& x, float& y, float& z) { x = avgX; y = avgY; z = avgZ; }
 float				getCellArea(int cell);
-void				updateCellsByArea();
+vector<Cell>		sortCellsByArea();	//returns a vector of cells sorted by area
 
 private:
 

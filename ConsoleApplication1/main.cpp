@@ -6,10 +6,11 @@
 #include "include/PlyReader.h"									//a reader that initializes UnstructuredGrid3D objects with meshes stored in the PLY file format
 #include "include/zpr.h"										//library for interactively manipulating the OpenGL camera (viewpoint) using the mouse
 #include "include/meshDescription.h"
-#include "OFFConvertor.h"
+#include "OFFConverter.h"
 #include "PlyWriter.h"
 #include "include/FourStepNorm.h"
 #include "Supersampler.h"
+#include <fstream>
 
 //Files for pmp (used for mesh decimation)
 #include "include/MeshDecimation/SurfaceMesh.h"
@@ -182,6 +183,60 @@ UnstructuredGrid3D* decimateMesh(string fileName, int targetVertCount)
 	return g;
 }
 
+void createDatabase(string path, int targetVertexCount)
+{
+	namespace fs = std::experimental::filesystem;
+	UnstructuredGrid3D* mesh;
+	ofstream errlog("errlog.txt");
+
+	for (const auto& entry : fs::directory_iterator(path))
+	{
+		string directoryName = entry.path().filename().string();
+		for (const auto& entry2 : fs::directory_iterator(entry.path()))
+		{
+			string directoryName2 = entry2.path().filename().string();
+			string pathName = entry2.path().string();
+			string fileName = pathName + "\\" + directoryName2 + ".off";
+
+			try
+			{
+				mesh = decimateMesh(fileName, targetVertexCount);
+			}
+			catch (exception e)
+			{
+				cout << "File " << directoryName2 << " cannot be read/decimated!\nError: " << e.what() << "\n";
+				errlog << "File " << directoryName2 << " cannot be read/decimated!\nError: " << e.what() << "\n";
+				continue;
+			}
+
+			mesh->normalize();
+
+			if (mesh->numPoints() < targetVertexCount)
+			{
+				Supersampler ss;
+				try
+				{
+					ss.supersample(*mesh, targetVertexCount);
+				}
+				catch (exception e)
+				{
+					cout << "File " << directoryName2 << " cannot be supersampled!\nError: " << e.what() << "\n";
+					errlog << "File " << directoryName2 << " cannot be supersampled!\nError: " << e.what() << "\n";
+					continue;
+				}
+			}
+
+			string databaseFile = "ShapeDB\\" + directoryName2 + ".off";
+
+			OFFConverter* converter = new OFFConverter();
+			converter->WriteFileOFF(*mesh, databaseFile);
+
+			delete mesh;
+			delete converter;
+		}
+	}
+}
+
 int main(int argc, char* argv[])							//Main program
 {
 	cout << "3D unstructured grid (mesh) visualization." << endl;
@@ -194,7 +249,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/triangle.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/m43.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY("DATA/m2.off");
@@ -207,14 +262,24 @@ int main(int argc, char* argv[])							//Main program
 	zprInit(0, 0, 0);										//5.  Initialize the viewpoint interaction-tool to look at the point (0,0,0)
 	setCamera();
 
+	createDatabase("InputShapes/benchmark/db", 10000);
+
 	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
 	PlyWriter writer;
 	Supersampler ss;
 
-	grid = rdr.read(filename);
+	//OFFConverter* converter = new OFFConverter();
+	//converter->ConvertOFFToPLY(filename);
+	
+	//const char* newfile = "DATA/m43.ply";
+
+	//grid = rdr.read(filename);
 	//ss.addTriangle(*grid, 0);
 
-	writer.WritePlyFile(filename, grid);
+	//ss.supersample(*grid, 10000);
+	//ss.supersample(*grid, 10000);
+
+	//writer.WritePlyFile(filename, grid);
 	//writer.WritePlyFile(filename, grid);
 
 	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db

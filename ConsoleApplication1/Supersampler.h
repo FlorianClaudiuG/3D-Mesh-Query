@@ -15,6 +15,6 @@ public:
 	}
 
 	void supersample(UnstructuredGrid3D& grid, int target);
-	void addTriangle(UnstructuredGrid3D& grid, int cell);
+	vector<Cell> addTriangle(UnstructuredGrid3D& grid, int cell);
 };
 

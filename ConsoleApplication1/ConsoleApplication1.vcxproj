@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DatabaseReader.cpp" />
     <ClCompile Include="FourStepNorm.cpp" />
     <ClCompile Include="include\MeshDecimation\DistancePointTriangle.cpp" />
     <ClCompile Include="include\MeshDecimation\SurfaceMesh.cpp" />
@@ -190,6 +191,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DatabaseReader.h" />
     <ClInclude Include="include\FourStepNorm.h" />
     <ClInclude Include="include\Grid.h" />
     <ClInclude Include="include\MeshDecimation\BoundingBox.h" />

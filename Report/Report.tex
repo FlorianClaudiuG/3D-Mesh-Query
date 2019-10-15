@@ -209,4 +209,110 @@ A visualization is excluded, however the effectiveness of this step can easily b
 
 \newpage
 
+\section{Part 1}
+
+There are two different types of features used to describe the meshes. The first are scalar features which consist of a single float. And the second are the histogram features, which for a histogram with $n$ bins contain $n$ float values representing the fraction of values contained in each bin. 
+For extracting the histogram features random numbers will be generated. This is done by using the c++ function rand(). For the features that require multiple random numbers it is possible to generate duplicates, which would create large outliers. Therefore the numbers are re-sampled if there are any duplicates. Furthermore for obtaining the values of the histograms 20.000 of these samples will be taken for all histogram features.
+The definition of these features, and how they will be normalized is discussed in the following subsections.
+
+\subsection{Surface area}
+The surface area of the mesh is the sum of all the face areas. In the dataset all the faces are triangles, therefore the surface area is the sum of all these triangles. The area of a triangle is calculated using the $triangle_area$ function provide by the $pmp$ library. The area of a triangle $t$ with vertices $u$, $v$, and $w$ is defined as followed:
+\begin{equation}
+area(t) = 0.5 * N((t_v-t_u) \times (t_w-t_u))
+\end{equation}
+Where $N(x)$ is the Euclidean norm of a vector $x$. The surface area feature $F_{SA}$ for a given mesh $M$ is than
+\begin{equation}
+F_{SA}(M) = \sum\limits_{i} area(t_i).
+\end{equation}
+where $t_i$ is the ith triangle of mesh M. The minimum value this feature can have is 0, but it does not have a maximum.
+
+\subsection{bounding box volume}
+The bounding box of a mesh is a rectangle that can be represented as two points, the opposite corners $bot$ and $top$. The volume $V$ is easily calculated as the $width \dot length \dot height$
+\[
+bot =
+\begin{bmatrix}
+x_{min} \\
+y_{min} \\
+z_{min} \\
+\end{bmatrix}
+top =
+\begin{bmatrix}
+x_{max} \\
+y_{max} \\
+z_{max} \\
+\end{bmatrix}
+\]
+\begin{equation}
+V(bot,top) = (x_{max} - x_{min}) \cdot (y_{max}-y_{min}) \cdot (z_{max}-z_{min})
+\end{equation}
+The bounding box volume feature $F_{BBV}$ for a mesh $M$ with its bounding box opposite corners $M_{bot}$ and $M_{top}$ is
+\begin{equation}
+F_{BBV}(M) = V(M_{bot},M_{top})
+\end{equation}
+The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube.
+
+\subsection{Eccentricity}
+The eccentricity of a mesh the ratio of the biggest eigenvalue of the covariance matrix to the smallest. The alglib library is once again used to do PCA and obtain the eigenvalues of the shape covariance matrix. For the eigenvalues $e_1$, $e_2$, and $e_3$ where $e_1$ is the largest value and $e_3$ the smallest, the eccentricity is
+\begin{equation}
+F_{EC}(M) = M_{e_3} / M_{e_1}
+\end{equation}
+Where $M_{e_3}$ and $M_{e_1}$ are the smallest and largest eigenvectors of mesh $M$ respectively. This describes the relation between the biggest and smallest eigenvectors, or also between the number of points spread in the x direction and the z direction. An object like a sphere or a head will have a high eccentricity, because their vertices are not spread out in a single direction. The picture of the head in figure 5 has an eccentricity of 0.72, while the leopard on the right has an eccentricity of 0.03.
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Part3/eccHead.png}
+    \caption{m303}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Part3/eccLeo.png}
+    \caption{m94}
+  \end{subfigure}
+  \caption{Two models with different eccentricity values}
+  \label{fig:eccentricity}
+\end{figure}
+The eccentricity can go close to 0 for long objects or reach 1 for a perfect spherical form. Furthermore, this feature could also be extended to also describe the relation ratio between the other eigenvalues, $M_{e_2}$ / $M_{e_1}$ or $M_{e_3}$ / $M_{e_2}$.
+
+\subsection{D1 - distance to barycenter}
+This feature calculates the distance between a randomly generated point and the barycenter. The distance $D$ between two vectors $u$ and $v$ is calculated as follows
+\begin{equation}
+D(u,v) = \sqrt{\sum\limits_{i=1}^3 (u_i - v_i)^2}
+\end{equation}
+The minimum distance is obviously 0, and the maximum distance is equal to the diameter of a unit cube, $\sqrt{3}$, which is an unlikely scenario.
+
+\subsection{D2 - distance between two points}
+This time two random points are generated and the same distance function as for the D1 feature is used.
+The min and maximum distances are the same as the previous feature.
+
+\subsection{D3 - area of a random triangle}
+To get a random triangle three random points are generated. The area of this triangle is calculated the same way as was done for calculating the total surface area. The square root of this value is than added to the histogram.
+For the area of a triangle the minimum value is 0.
+
+\subsection{D4 - are of a random tetrahedron}
+Four random points $a$, $b$, $c$, and $d$ are generated that together will make the tetrahedron. The formula used for calculating the volume is:
+\begin{equation}
+V(a,b,c,d) = \frac{|(a - d) \cdot ((b - d) \times (c - d))|}{6}
+\end{equation}
+
+\subsection{A3 - angle between 3 random vertices}
+The last histogram features uses three random points $u$, $v$, and $w$ to calculate the angle between them. These three points create a triangle that has three angles, however the order in which they are generated determines which angle is chosen. Therefore all three possible angles are calculates, and the maximum of those is chosen. For each angle the distance is chosen by using two vectors that share a similar point. For example, the vectors $a = v-u$ and $b = w-u$ give one possible angle of the triangle. The formula used for calculating an angle given two vectors is as follows:
+\begin{equation}
+Angle(a,b) = atan2(N(a \times b), (a \cdot b))
+\end{equation}
+Where N gives the euclidean norm of a vector, and atan2 the angle in the euclidean plane. The minimum value that the angle could be is 0, and the maximum is $\pi$.
+
+\section{Matching}
+All the features discussed in the previous section are calculated for each mesh and put in a single feature vector $x = (x_1,...,x_n)$ where each $x_i$ is a single feature. To compare different meshes the distance is to be calculated between their two feature vector. If feature vector $x$ is compared with a different feature vector $y = (y_1,...y_3)$, each of their features will be compared individually and the sum of these distances will be regarded as the distance between the two feature vectors.
+
+\subsection{Distance calculation}
+Each feature has $m$ values, for scalar features $m = 1$ because it only has value, the $m$ for histogram features is equal to the number of bins of that histogram. The distance function $L_p(x,y)$ gives the total euclidean distance between two feature vectors $x$ and $y$
+\begin{equation}
+L(x,y) = \left(\sum\limits_{i=1}^nd(x_i,d_i)^2\right)^{1/2}
+\end{equation}
+Where $d$ is the distance function between two features
+\begin{equation}
+d(x_i,y_i) = \frac{\left(\sum\limits_{j=1}^m|x_{i,j}-y_{i,j}|^2\right)^{1/2}}{m}
+\end{equation}
+Where $x_{i,j}$ is the jth value of the ith feature of feature vector $x$. The sum of all the distances between feature values is divided by $m$ so that each feature has the same weight, i.e. a histogram with 8 values should not be weighted 8 time as much as a scalar value which has only 1 value.  
+
 \end{document}

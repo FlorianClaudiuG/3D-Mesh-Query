@@ -75,9 +75,6 @@ void FourStepNorm::PCA(UnstructuredGrid3D* g)
 		g->setPoint(i, T);
 	}
 	totalX /= g->numPoints(); totalY /= g->numPoints(); totalZ /= g->numPoints();
-	cout << totalX << endl;
-	cout << totalY << endl;
-	cout << totalZ << endl;
 }
 
 void FourStepNorm::flipTest(UnstructuredGrid3D* g)
@@ -148,8 +145,6 @@ void FourStepNorm::normalizeInCube(UnstructuredGrid3D* g)
 	float largestDim = max(maxX - minX, max(maxY - minY, maxZ - minZ));
 	float scaleFactor = 1 / largestDim;
 
-	cout << largestDim << endl;
-	cout << scaleFactor << endl;
 	for (int i = 0; i < g->numPoints(); ++i)							//3. Use the scaling factor computed above to scale all grid
 	{														//   points in the [-0.5,0.5] cube
 		float p[3];

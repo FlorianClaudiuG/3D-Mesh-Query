@@ -48,25 +48,26 @@ void OFFConverter::ConvertOFFToPLY(string filename)
 
 void OFFConverter::WriteFileOFF(UnstructuredGrid3D& grid, std::string outputPath)
 {
-	ofstream fout(outputPath);
-	cout << outputPath;
+	ofstream myfile;
+	myfile.open(outputPath, ios::out | ios::trunc);
 
-	fout << "OFF\n";
-	fout << grid.numPoints() << " " << grid.numCells() << "\n";	//ignore edge count
+
+	myfile << "OFF\n";
+	myfile << grid.numPoints() << " " << grid.numCells() << "  0\n";	//ignore edge count
 	//vertices
 	for (int i = 0; i < grid.numPoints(); i++)
 	{
 		float p[3];
 		grid.getPoint(i, p);
-		fout << p[0] << " " << p[1] << " " << p[2] << "\n";
+		myfile << p[0] << " " << p[1] << " " << p[2] << "\n";
 	}
 	//assume triangles
 	for (int i = 0; i < grid.numCells(); i++)
 	{
 		int c[3];
 		grid.getCell(i, c);
-		fout << "3 " << c[0] << " " << c[1] << " " << c[2] << "\n";
+		myfile << "3 " << c[0] << " " << c[1] << " " << c[2] << "\n";
 	}
 
-	fout.close();
+	myfile.close();
 }

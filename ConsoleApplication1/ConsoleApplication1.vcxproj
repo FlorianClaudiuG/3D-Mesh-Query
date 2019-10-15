@@ -153,7 +153,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseReader.cpp" />
+    <ClCompile Include="featureExtraction.cpp" />
     <ClCompile Include="FourStepNorm.cpp" />
+    <ClCompile Include="include\MeshDecimation\DifferentialGeometry.cpp" />
     <ClCompile Include="include\MeshDecimation\DistancePointTriangle.cpp" />
     <ClCompile Include="include\MeshDecimation\SurfaceMesh.cpp" />
     <ClCompile Include="include\MeshDecimation\SurfaceMeshIO.cpp" />
@@ -177,6 +179,7 @@
     <ClCompile Include="meshdescription.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="OFFConverter.cpp" />
+    <ClCompile Include="OffReader.cpp" />
     <ClCompile Include="plyfile.cpp" />
     <ClCompile Include="PlyReader.cpp" />
     <ClCompile Include="PlyWriter.cpp" />
@@ -192,9 +195,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseReader.h" />
+    <ClInclude Include="include\featureExtraction.h" />
     <ClInclude Include="include\FourStepNorm.h" />
     <ClInclude Include="include\Grid.h" />
     <ClInclude Include="include\MeshDecimation\BoundingBox.h" />
+    <ClInclude Include="include\MeshDecimation\DifferentialGeometry.h" />
     <ClInclude Include="include\MeshDecimation\DistancePointTriangle.h" />
     <ClInclude Include="include\MeshDecimation\Heap.h" />
     <ClInclude Include="include\MeshDecimation\MatVec.h" />
@@ -208,6 +213,7 @@
     <ClInclude Include="include\MeshDecimation\Types.h" />
     <ClInclude Include="include\meshDescription.h" />
     <ClInclude Include="include\MeshRenderer.h" />
+    <ClInclude Include="include\OffReader.h" />
     <ClInclude Include="include\PCA\alglibinternal.h" />
     <ClInclude Include="include\PCA\alglibmisc.h" />
     <ClInclude Include="include\PCA\ap.h" />

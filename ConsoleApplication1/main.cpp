@@ -8,6 +8,7 @@
 #include "include/meshDescription.h"
 #include "OFFConverter.h"
 #include "PlyWriter.h"
+#include "include/OffReader.h"
 #include "include/FourStepNorm.h"
 #include "Supersampler.h"
 #include <fstream>
@@ -17,7 +18,7 @@
 #include "include/MeshDecimation/SurfaceMeshIO.h"
 #include "include/MeshDecimation/SurfaceSimplification.h"
 
-float fov = 120;										//Perspective projection parameters
+float fov = 80;										//Perspective projection parameters
 float z_near = 0.1;
 float z_far = 30;
 
@@ -58,9 +59,9 @@ void mousemotion(int x, int y)							//Callback for mouse move events. We use th
 
 void setCamera()
 {
-	float eye_x = -1, eye_y = -1, eye_z = -1;				//Modelview (camera extrinsic) parameters
+	float eye_x = 1.2, eye_y = 1.2, eye_z = -1.0f;				//Modelview (camera extrinsic) parameters
 	float c_x = 0, c_y = 0, c_z = 0;
-	float up_x = 0, up_y = 0, up_z = 1;
+	float up_x = 0, up_y = 0, up_z = -1;
 	glMatrixMode(GL_MODELVIEW);							//1. Set the modelview matrix (including the camera position and view direction)
 	glLoadIdentity();
 	gluLookAt(eye_x, eye_y, eye_z, c_x, c_y, c_z, up_x, up_y, up_z);
@@ -189,6 +190,10 @@ void createDatabase(string path, int targetVertexCount)
 	UnstructuredGrid3D* mesh;
 	ofstream errlog("errlog.txt");
 
+	OffReader ofr;//6.  Read a 3D mesh stored in a file in the PLY format
+	//grid = rdr.read(filename);
+	
+
 	for (const auto& entry : fs::directory_iterator(path))
 	{
 		string directoryName = entry.path().filename().string();
@@ -197,19 +202,9 @@ void createDatabase(string path, int targetVertexCount)
 			string directoryName2 = entry2.path().filename().string();
 			string pathName = entry2.path().string();
 			string fileName = pathName + "\\" + directoryName2 + ".off";
-
-			try
-			{
-				mesh = decimateMesh(fileName, targetVertexCount);
-			}
-			catch (exception e)
-			{
-				cout << "File " << directoryName2 << " cannot be read/decimated!\nError: " << e.what() << "\n";
-				errlog << "File " << directoryName2 << " cannot be read/decimated!\nError: " << e.what() << "\n";
-				continue;
-			}
-
-			mesh->normalize();
+			cout << fileName << endl;
+			
+			mesh = ofr.ReadOffFile(fileName.c_str());
 
 			if (mesh->numPoints() < targetVertexCount)
 			{
@@ -226,10 +221,18 @@ void createDatabase(string path, int targetVertexCount)
 				}
 			}
 
-			string databaseFile = "ShapeDB\\" + directoryName2 + ".off";
+			FourStepNorm normalizer;
+			normalizer.centerOnBary(mesh); //Step 1. center on the barycenter (average x,y,z)
+			normalizer.PCA(mesh); //Step 2. do PCA and use eigenvectors to translate all vertices
+			normalizer.flipTest(mesh); //Step 3. make sure most most mass (number triangles is on the let side)
+			normalizer.normalizeInCube(mesh); //Step 4. normalize the model
 
+			string databaseFile = "ShapeDB/benchmark/db/" +directoryName + "/" + directoryName2 + "/" + directoryName2 + ".off";
+			
 			OFFConverter* converter = new OFFConverter();
 			converter->WriteFileOFF(*mesh, databaseFile);
+
+			fs::remove_all(pathName);
 
 			delete mesh;
 			delete converter;
@@ -249,10 +252,10 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/m43.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/m2.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
-	//converter->ConvertOFFToPLY("DATA/m2.off");
+	//converter->ConvertOFFToPLY(filename);
 
 	glutInit(&argc, argv);								//1.  Initialize the GLUT toolkit
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -262,7 +265,7 @@ int main(int argc, char* argv[])							//Main program
 	zprInit(0, 0, 0);										//5.  Initialize the viewpoint interaction-tool to look at the point (0,0,0)
 	setCamera();
 
-	createDatabase("InputShapes/benchmark/db", 10000);
+	//createDatabase("InputShapes/benchmark/db", 20000);
 
 	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
 	PlyWriter writer;
@@ -273,10 +276,10 @@ int main(int argc, char* argv[])							//Main program
 	
 	//const char* newfile = "DATA/m43.ply";
 
-	//grid = rdr.read(filename);
+	grid = rdr.read(filename);
 	//ss.addTriangle(*grid, 0);
 
-	//ss.supersample(*grid, 10000);
+	//ss.supersample(*grid, 20000);
 	//ss.supersample(*grid, 10000);
 
 	//writer.WritePlyFile(filename, grid);
@@ -284,14 +287,17 @@ int main(int argc, char* argv[])							//Main program
 
 	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
 	//generateDatabaseOverview("output/description.txt", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/psb_v1/benchmark/db");
-	/*/
+	
 	//Perform 4 step normalization on the model
 	FourStepNorm normalizer;
 	normalizer.centerOnBary(grid); //Step 1. center on the barycenter (average x,y,z)
 	normalizer.PCA(grid); //Step 2. do PCA and use eigenvectors to translate all vertices
 	normalizer.flipTest(grid); //Step 3. make sure most most mass (number triangles is on the let side)
 	normalizer.normalizeInCube(grid); //Step 4. normalize the model
-	*/
+	
+	grid->computeVertexNormals();
+	grid->computeFaceNormals();
+
 	glutMouseFunc(mouseclick);							//9.  Bind the mouse click and mouse drag (click-and-move) events to callbacks. This allows us
 	glutMotionFunc(mousemotion);							//    next to control the viewpoint interactively.
 	glutKeyboardFunc(keyboard);

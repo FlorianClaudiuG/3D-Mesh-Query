@@ -301,5 +301,18 @@ Angle(a,b) = atan2(N(a \times b), (a \cdot b))
 \end{equation}
 Where N gives the euclidean norm of a vector, and atan2 the angle in the euclidean plane. The minimum value that the angle could be is 0, and the maximum is $\pi$.
 
+\section{Matching}
+All the features discussed in the previous section are calculated for each mesh and put in a single feature vector $x = (x_1,...,x_n)$ where each $x_i$ is a single feature. To compare different meshes the distance is to be calculated between their two feature vector. If feature vector $x$ is compared with a different feature vector $y = (y_1,...y_3)$, each of their features will be compared individually and the sum of these distances will be regarded as the distance between the two feature vectors.
+
+\subsection{Distance calculation}
+Each feature has $m$ values, for scalar features $m = 1$ because it only has value, the $m$ for histogram features is equal to the number of bins of that histogram. The distance function $L_p(x,y)$ gives the total euclidean distance between two feature vectors $x$ and $y$
+\begin{equation}
+L(x,y) = \left(\sum\limits_{i=1}^nd(x_i,d_i)^2\right)^{1/2}
+\end{equation}
+Where $d$ is the distance function between two features
+\begin{equation}
+d(x_i,y_i) = \frac{\left(\sum\limits_{j=1}^m|x_{i,j}-y_{i,j}|^2\right)^{1/2}}{m}
+\end{equation}
+Where $x_{i,j}$ is the jth value of the ith feature of feature vector $x$. The sum of all the distances between feature values is divided by $m$ so that each feature has the same weight, i.e. a histogram with 8 values should not be weighted 8 time as much as a scalar value which has only 1 value.  
 
 \end{document}

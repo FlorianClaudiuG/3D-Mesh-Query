@@ -104,8 +104,8 @@ void MeshRenderer::drawGrid(UnstructuredGrid3D& g)		//Draw 'g' without shading
 
 	glColor3f(1.0, 0.0, 0.0); // red x
 	glBegin(GL_LINES);
-	glVertex3f(0.5f, 0.0f, 0.0f);
-	glVertex3f(-0.5f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
 
 	glEnd();
 	glFlush();
@@ -113,8 +113,8 @@ void MeshRenderer::drawGrid(UnstructuredGrid3D& g)		//Draw 'g' without shading
 	// y 
 	glColor3f(0.0, 1.0, 0.0); // green y
 	glBegin(GL_LINES);
-	glVertex3f(0.0, 0.5f, 0.0f);
-	glVertex3f(0.0, -0.5f, 0.0f);
+	glVertex3f(0.0, 1.0f, 0.0f);
+	glVertex3f(0.0, 0.0f, 0.0f);
 
 	glEnd();
 	glFlush();
@@ -122,8 +122,8 @@ void MeshRenderer::drawGrid(UnstructuredGrid3D& g)		//Draw 'g' without shading
 	// z 
 	glColor3f(0.0, 0.0, 1.0); // blue z
 	glBegin(GL_LINES);
-	glVertex3f(0.0, 0.0f, -0.5f);
-	glVertex3f(0.0, 0.0f, 0.5f);
+	glVertex3f(0.0, 0.0f, 0.0f);
+	glVertex3f(0.0, 0.0f, 1.0f);
 
 	glEnd();
 }

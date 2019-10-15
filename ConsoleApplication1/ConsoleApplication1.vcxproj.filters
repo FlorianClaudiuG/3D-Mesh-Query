@@ -123,6 +123,15 @@
     <ClCompile Include="DatabaseReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OffReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="featureExtraction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\MeshDecimation\DifferentialGeometry.cpp">
+      <Filter>Header Files\MeshDecimation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -259,6 +268,15 @@
     </ClInclude>
     <ClInclude Include="DatabaseReader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OffReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\featureExtraction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MeshDecimation\DifferentialGeometry.h">
+      <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

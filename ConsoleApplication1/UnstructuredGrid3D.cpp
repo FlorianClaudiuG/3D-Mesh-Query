@@ -219,3 +219,89 @@ vector<Cell> UnstructuredGrid3D::sortCellsByArea()
 	}
 	return vec;
 }
+
+float UnstructuredGrid3D::computeCircularity()
+{
+
+	float area = getTotalArea();
+	float volume = getVolume();
+	float compactness = pow(area, 3) / pow(volume, 2);
+	if (compactness > 0)
+		return 1.0f / compactness;
+	else
+		return 1;
+}
+
+float UnstructuredGrid3D::getTotalArea()
+{
+	float area = 0;
+
+	for (int i = 0; i < numCells(); i++)
+	{
+		area += getCellArea(i);
+	}
+
+	return area;
+}
+
+float UnstructuredGrid3D::getVolume()
+{
+	float volume = 0;
+
+	for (int i = 0; i < numCells(); i++)
+	{
+		int vertices[3];
+		getCell(i, vertices);
+
+		float p1[3], p2[3], p3[3];
+
+		getPoint(vertices[0], p1);
+		getPoint(vertices[1], p2);
+		getPoint(vertices[2], p3);
+
+		volume += signedVolumeOfTetrahedron(p1, p2, p3);
+	}
+
+	return abs(volume);
+}
+
+float UnstructuredGrid3D::signedVolumeOfTetrahedron(float* p1, float* p2, float* p3)
+{
+	float v321 = p3[0] * p2[1] * p1[2];
+	float v231 = p2[0] * p3[1] * p1[2];
+	float v312 = p3[0] * p1[1] * p2[2];
+	float v132 = p1[0] * p3[1] * p2[2];
+	float v213 = p2[0] * p1[1] * p3[2];
+	float v123 = p1[0] * p2[1] * p3[2];
+
+	return (1.0f / 6.0f) * (-v321 + v231 + v312 - v132 - v213 + v123);
+}
+
+float UnstructuredGrid3D::getDiameter()
+{
+		float maxDist = 0;
+		//int maxPoints[2];
+		for (int i = 0; i < numPoints(); i++)
+		{
+			for (int j = i; j < numPoints(); j++)
+			{
+				float distance = getDistance(i, j);
+				if (distance > maxDist)
+				{
+					//maxPoints[0] = i;
+					//maxPoints[1] = j;
+					maxDist = distance;
+				}
+			}
+		}
+		return maxDist;
+}
+
+float UnstructuredGrid3D::getDistance(int x, int y)
+{
+	float p1[3];
+	float p2[3];
+	getPoint(x, p1);
+	getPoint(y, p2);
+	return sqrt(pow(p1[0] - p2[0], 2) + pow(p1[1] - p2[1], 2) + pow(p1[2] - p2[2], 2));
+}

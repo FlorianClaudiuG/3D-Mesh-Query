@@ -13,6 +13,7 @@ public:
 	float* bins =0;
 
 	virtual string getFeatureString() =0;
+	~feature();
 protected:
 	feature() {}
 };
@@ -24,14 +25,11 @@ public:
 	
 	histFeature(int n, float min, float max, float* values, int nvalues, string nName);
 	histFeature(int nbins, float* binValues);
-	~histFeature();
 	string getFeatureString();
 };
 
 class scalarFeature : public feature {
 public:
-	
-
 	scalarFeature(float v, string nName);
 	string getFeatureString();
 };

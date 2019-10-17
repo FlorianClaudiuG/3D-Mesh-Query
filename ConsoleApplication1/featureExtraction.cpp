@@ -17,7 +17,8 @@ histFeature::histFeature(int n, float min, float max, float* values, int nvalues
 	
 
 	float binsize = (maxVal - minVal) / nElements;
-	
+	int assignedValues = 0;//keep track of number assigned values
+
 	for (int i = 0; i < nvalues; i++) {
 		float threshold = minVal + binsize;
 		bool assigned = false;
@@ -28,6 +29,7 @@ histFeature::histFeature(int n, float min, float max, float* values, int nvalues
 				bins[j] = bins[j] + 1;
 				assigned = true;
 				j++;
+				assignedValues++;
 			}
 			else {
 				threshold += binsize;
@@ -36,7 +38,7 @@ histFeature::histFeature(int n, float min, float max, float* values, int nvalues
 		}
 	}
 	for (int i = 0; i < nElements; i++) {
-		bins[i] /= nvalues;//normalize so that total value of histogram of 
+		bins[i] /= assignedValues;//normalize so that total value of histogram of 
 	}
 	delete[] values;//wont be needed anymore
 	//cout << "should be: " << 1 << ", is really: " << nAssigned << endl;
@@ -56,7 +58,8 @@ gridFeatures::~gridFeatures(){
 		delete features[i];}
 }
 
-histFeature::~histFeature(){	
+feature::~feature()
+{
 	delete[] bins;
 }
 
@@ -100,7 +103,7 @@ gridFeatures::gridFeatures(string featString, int* binnrs, int nScalar, int nHis
 		getline(ss, item, delimeter);
 		features[i] = new scalarFeature(stof(item), "");
 	}
-	cout << featString << endl;
+
 	for (int i = nScalar; i < nHist+nScalar; i++) {
 		int size = binnrs[i-nScalar];
 		float* numbers = new float[size];
@@ -129,6 +132,10 @@ bool checkDuplicates(int* v, int n) {
 		}
 	}
 	return false;
+}
+
+float standardization(float i, float avg, float stddev) {
+	return ((i - avg) / stddev);
 }
 
 //calculate distan
@@ -169,6 +176,8 @@ scalarFeature* surfaceArea(UnstructuredGrid3D* g){
 
 		totalArea += triangleArea(a, b, c);
 	}
+	totalArea = standardization(totalArea, 1.53768275, 1.648700958);
+
 	scalarFeature* f = new scalarFeature(totalArea, "SA");
 	return f;
 }
@@ -184,6 +193,8 @@ scalarFeature* boundingBoxVolume(UnstructuredGrid3D* g)
 	float c = maxZ - minZ;
 	float volume = (a * b * c);
 	
+	volume = standardization(volume, 0.261523862, 0.2203638);
+
 	scalarFeature* f = new scalarFeature(volume, "BV");
 	return f;
 }
@@ -213,6 +224,9 @@ scalarFeature* eccentricity(UnstructuredGrid3D* g){
 	eigenVector.setlength(3, 3);
 	pcabuildbasis(input, numberPoints, 3, info, eigenValues, eigenVector);
 	float val = eigenValues[2] / eigenValues[0];
+	
+	val = standardization(val, 0.148089259, 0.182812364);
+
 	scalarFeature* f = new scalarFeature(val, "Ecc");
 	return f;
 }
@@ -276,7 +290,10 @@ histFeature* D1(UnstructuredGrid3D* g, int n, int nBins) {
 
 		values[i] = newValue;
 	}
-	histFeature* h = new histFeature(nBins, 0, sqrt(2), values, n,"D1");
+	float tmax = sqrt(2);
+	float binSize = tmax / 20;//20 bins each bin is 1/20
+	histFeature* h = new histFeature(nBins, 0, binSize*15, values, n,"D1");//*15 because only first 15 bins used
+	
 	return h;
 }
 
@@ -307,7 +324,7 @@ histFeature* D2(UnstructuredGrid3D* g, int n, int nBins) {
 		float newValue = distancePoint(p, q);//calculate distance
 		values[i] = newValue;
 	}
-
+	
 	histFeature* h = new histFeature(nBins, 0, sqrt(2), values, n,"D2");
 	return h;
 }
@@ -344,7 +361,8 @@ histFeature* A3(UnstructuredGrid3D* g, int n, int nBins) {
 	}
 	
 	double PI = 3.14159265358979323846;  /* pi */
-	histFeature* h = new histFeature(nBins, 0, PI, values, n, "A3");
+	double binSize = PI / 20;
+	histFeature* h = new histFeature(nBins, 6*binSize, PI, values, n, "A3");
 	return h;
 }
 
@@ -378,8 +396,9 @@ histFeature* D3(UnstructuredGrid3D* g, int n, int nBins) {
 		float newValue = sqrt(triangleArea(p,q,v));//
 		values[i] = newValue;
 	}
-
-	histFeature* h = new histFeature(nBins, 0, sqrt(2), values, n, "D3");
+	float tmax = sqrt(2);
+	float binSize = tmax / 20;
+	histFeature* h = new histFeature(nBins, 0, binSize*12, values, n, "D3");//*12 because takes first 12 bins
 	return h;
 }
 
@@ -419,8 +438,9 @@ histFeature* D4(UnstructuredGrid3D* g, int n, int nBins)
 		float newValue = cbrt(tetraArea(p, q, v,w));//
 		values[i] = newValue;
 	}
-
-	histFeature* h = new histFeature(nBins, 0, sqrt(2), values, n, "D4");
+	float tmax = sqrt(2);
+	float binSize = tmax / 20;
+	histFeature* h = new histFeature(nBins, 0, binSize*8, values, n, "D4");
 	return h;
 }
 
@@ -453,7 +473,7 @@ float FeatureDistanceHist(feature* f1, feature* f2)
 	}
 	//d = d / 2.0;//maximum distance between two normalized is 2. diving by 2 means that max distance is 1, 0-1 is the range in which
 	//most of the features are calculated.
-	return sqrt(d);
+	return d;
 }
 
 float getFeatureDistance(feature* f1, feature* f2)
@@ -473,6 +493,7 @@ float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2)
 	float d = 0;
 	for (int i = 0; i < fv1->nFeatures; i++) {
 		d += getFeatureDistance(fv1->features[i], fv2->features[i]);
+		//cout <<to_string(i) << ": " <<  to_string(getFeatureDistance(fv1->features[i], fv2->features[i])) << endl;
 	}
 	return sqrt(d);
 }

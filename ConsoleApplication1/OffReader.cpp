@@ -8,6 +8,9 @@ typedef struct Face
 {
 	int nverts;    /* number of vertex indices in list */
 	int* verts;              /* vertex index list */
+	~Face() {
+		delete[] verts;
+	};
 } Face;
 
 UnstructuredGrid3D* OffReader::ReadOffFile(const char* filename)

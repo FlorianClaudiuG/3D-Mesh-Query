@@ -224,7 +224,7 @@ Where $N(x)$ is the Euclidean norm of a vector $x$. The surface area feature $F_
 \begin{equation}
 F_{SA}(M) = \sum\limits_{i} area(t_i).
 \end{equation}
-where $t_i$ is the ith triangle of mesh M. The minimum value this feature can have is 0, but it does not have a maximum.
+where $t_i$ is the ith triangle of mesh M. The minimum value this feature can have is 0, but does not have a clear theoretical maximum. The maximum as is displayed in table ? is 32.96, with an average of 1.54, and standard deviation of 1.65, which shows that this feature has large outliers. Therefore the feature cannot be normalized by extent normalization, and instead standardization has to be used. 
 
 \subsection{bounding box volume}
 The bounding box of a mesh is a rectangle that can be represented as two points, the opposite corners $bot$ and $top$. The volume $V$ is easily calculated as the $width \dot length \dot height$
@@ -249,7 +249,18 @@ The bounding box volume feature $F_{BBV}$ for a mesh $M$ with its bounding box o
 \begin{equation}
 F_{BBV}(M) = V(M_{bot},M_{top})
 \end{equation}
-The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube.
+The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube. Which is verified by the numbers in table ? for the BBV feature. This means that the feature is inherently normalized. 
+
+\begin{center}
+    \begin{tabular}{ | l | l | l | l | l |}
+    \hline
+    & min & Max & Avg & Stddev \\ \hline
+    SA & 0.02194 & 32.961956 & 1.53768275 & 1.648700958 \\ \hline
+    BBV & 0.001874 & 0.986091 & 0.261523862 & 0.2203638 \\ \hline
+    ECC & 0.000004 & 0.956016 & 0.148089259 & 0.182812364 \\ \hline
+
+    \end{tabular}
+\end{center}
 
 \subsection{Eccentricity}
 The eccentricity of a mesh the ratio of the biggest eigenvalue of the covariance matrix to the smallest. The alglib library is once again used to do PCA and obtain the eigenvalues of the shape covariance matrix. For the eigenvalues $e_1$, $e_2$, and $e_3$ where $e_1$ is the largest value and $e_3$ the smallest, the eccentricity is

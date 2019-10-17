@@ -1,7 +1,5 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ConsoleApplication1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  main.cpp
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(21,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(24,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+  featureExtraction.cpp
 C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\BoundingBox.h(80,42): warning C4244:  'return': conversion from 'double' to 'pmp::Scalar', possible loss of data
 C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\SurfaceMesh.h(1512,1): warning C4267:  'argument': conversion from 'size_t' to 'pmp::IndexType', possible loss of data
 C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\SurfaceMesh.h(1530,1): warning C4267:  'argument': conversion from 'size_t' to 'pmp::IndexType', possible loss of data
@@ -11,11 +9,18 @@ C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\incl
 C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\SurfaceMesh.h(1829,1): warning C4267:  'argument': conversion from 'size_t' to 'pmp::IndexType', possible loss of data
 C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\SurfaceMesh.h(1830,1): warning C4267:  'argument': conversion from 'size_t' to 'pmp::IndexType', possible loss of data
 C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\SurfaceMesh.h(1849,1): warning C4267:  'argument': conversion from 'size_t' to 'pmp::IndexType', possible loss of data
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\NormalCone.h(61,1): warning C4305:  '=': truncation from 'double' to 'pmp::Scalar'
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\NormalCone.h(70,26): warning C4244:  '=': conversion from 'double' to 'pmp::Scalar', possible loss of data
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\NormalCone.h(73,31): warning C4244:  'initializing': conversion from 'double' to 'pmp::Scalar', possible loss of data
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\main.cpp(22,19): warning C4305:  'initializing': truncation from 'double' to 'float'
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\main.cpp(62,19): warning C4305:  'initializing': truncation from 'double' to 'float'
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\main.cpp(62,32): warning C4305:  'initializing': truncation from 'double' to 'float'
-C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\main.cpp(148,85): warning C4267:  'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\MeshDecimation\DifferentialGeometry.h(58,21): warning C4244:  'return': conversion from 'double' to 'pmp::Scalar', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(21,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\include\UnstructuredGrid.h(24,6): warning C4267:  'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(179,64): warning C4305:  'argument': truncation from 'double' to 'float'
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(196,57): warning C4305:  'argument': truncation from 'double' to 'float'
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(226,12): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(228,53): warning C4305:  'argument': truncation from 'double' to 'float'
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(250,10): warning C4244:  'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(293,13): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(328,49): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(365,53): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(365,43): warning C4244:  'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(399,13): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\ConsoleApplication1\featureExtraction.cpp(441,13): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
   ConsoleApplication1.vcxproj -> C:\Users\Diego\OneDrive\Documenten\GitHub\3D-Mesh-Query\x64\Debug\3D Model Query System.exe

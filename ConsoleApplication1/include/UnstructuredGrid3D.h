@@ -44,6 +44,12 @@ void				setAverages(float x, float y, float z) { avgX = x; avgY = y; avgZ = z; }
 void				getAverages(float& x, float& y, float& z) { x = avgX; y = avgY; z = avgZ; }
 float				getCellArea(int cell);
 vector<Cell>		sortCellsByArea();	//returns a vector of cells sorted by area
+float				computeCircularity();
+float				getTotalArea();
+float				getVolume();
+float				signedVolumeOfTetrahedron(float* p1, float* p2, float* p3);
+float				getDiameter();
+float				getDistance(int x, int y);
 
 private:
 

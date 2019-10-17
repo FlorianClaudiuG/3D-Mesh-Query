@@ -252,7 +252,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/m2.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/m955.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY(filename);
@@ -273,10 +273,11 @@ int main(int argc, char* argv[])							//Main program
 
 	//OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY(filename);
-	
+	//return 1;
 	//const char* newfile = "DATA/m43.ply";
-
+	
 	grid = rdr.read(filename);
+	cout << grid->getVolume() << "\n";
 	//ss.addTriangle(*grid, 0);
 
 	//ss.supersample(*grid, 20000);
@@ -298,13 +299,17 @@ int main(int argc, char* argv[])							//Main program
 	grid->computeVertexNormals();
 	grid->computeFaceNormals();
 
+	cout << grid->getVolume() << "\n";
+	cout << grid->getDistance(0, 1) << " " << grid->getDistance(1, 2) << " " << grid->getDistance(0, 2) << "\n";
+	cout << grid->computeCircularity() << "\n";
+
 	glutMouseFunc(mouseclick);							//9.  Bind the mouse click and mouse drag (click-and-move) events to callbacks. This allows us
 	glutMotionFunc(mousemotion);							//    next to control the viewpoint interactively.
 	glutKeyboardFunc(keyboard);
 	glutDisplayFunc(draw);								//10. Add a drawing callback to the window	
 	glutReshapeFunc(viewing);							//11. Add a resize callback to the window
 	glutMainLoop();										//12. Start the event loop that displays the graph and handles window-resize events
-
+	
 	return 0;
 }
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  14 OCT 2019 18:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  18 OCT 2019 13:10
 entering extended mode
 **./Report.tex
 (Report.tex
@@ -175,7 +175,23 @@ Package caption3 Info: TeX engine: e-TeX on input line 64.
 Package: inputenc 2018/08/11 v1.3c Input encoding file
 \inpenc@prehook=\toks23
 \inpenc@posthook=\toks24
-) (Report.aux)
+) (Report.aux
+
+LaTeX Warning: Label `fig:eccentricity' multiply defined.
+
+
+LaTeX Warning: Label `fig:eccentricity' multiply defined.
+
+
+LaTeX Warning: Label `fig:eccentricity' multiply defined.
+
+
+LaTeX Warning: Label `fig:eccentricity' multiply defined.
+
+
+LaTeX Warning: Label `fig:eccentricity' multiply defined.
+
+)
 \openout1 = `Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
@@ -190,8 +206,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
-
-("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
+ ("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count109
 \scratchdimen=\dimen121
@@ -333,7 +348,7 @@ Overfull \hbox (7.85326pt too wide) detected at line 153
 
 [3 <./Pictures/Part2/Step0.png> <./Pictures/Part2/step1.png> <./Pictures/Part2/
 step2.png> <./Pictures/Part2/step3.png>]
-Overfull \hbox (6.21056pt too wide) detected at line 247
+Overfull \hbox (6.21056pt too wide) detected at line 258
 \OML/cmm/m/it/10 V\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 bot; top\OT1/cmr/m/n/10 ) =
  (\OML/cmm/m/it/10 x[] \OMS/cmsy/m/n/10   \OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 )
  \OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[] \OMS/cmsy/m/n/10   \O
@@ -341,39 +356,93 @@ ML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 (\OML/cm
 m/m/it/10 z[] \OMS/cmsy/m/n/10   \OML/cmm/m/it/10 z[]\OT1/cmr/m/n/10 )
  []
 
+
+Overfull \hbox (35.86725pt too wide) in paragraph at lines 266--274
+ [] 
+ []
+
 <Pictures/Part3/eccHead.png, id=39, 752.8125pt x 752.8125pt>
 File: Pictures/Part3/eccHead.png Graphic file (type png)
 <use Pictures/Part3/eccHead.png>
-Package pdftex.def Info: Pictures/Part3/eccHead.png  used on input line 264.
+Package pdftex.def Info: Pictures/Part3/eccHead.png  used on input line 286.
 (pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
 <Pictures/Part3/eccLeo.png, id=40, 752.8125pt x 752.8125pt>
 File: Pictures/Part3/eccLeo.png Graphic file (type png)
 <use Pictures/Part3/eccLeo.png>
-Package pdftex.def Info: Pictures/Part3/eccLeo.png  used on input line 268.
+Package pdftex.def Info: Pictures/Part3/eccLeo.png  used on input line 290.
 (pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-[4 <./Pictures/Part3/eccHead.png> <./Pictures/Part3/eccLeo.png>] [5]
-(Report.aux) ) 
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[4]
+<Pictures/Part3/D1.png, id=45, 241.40187pt x 145.04187pt>
+File: Pictures/Part3/D1.png Graphic file (type png)
+<use Pictures/Part3/D1.png>
+Package pdftex.def Info: Pictures/Part3/D1.png  used on input line 329.
+(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
+<Pictures/Part3/D2.png, id=46, 241.40187pt x 145.04187pt>
+File: Pictures/Part3/D2.png Graphic file (type png)
+<use Pictures/Part3/D2.png>
+Package pdftex.def Info: Pictures/Part3/D2.png  used on input line 338.
+(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[5 <./Pictures/Part3/eccHead.png> <./Pictures/Part3/eccLeo.png> <./Pictures/Par
+t3/D1.png>]
+<Pictures/Part3/D3.png, id=53, 241.40187pt x 145.04187pt>
+File: Pictures/Part3/D3.png Graphic file (type png)
+<use Pictures/Part3/D3.png>
+Package pdftex.def Info: Pictures/Part3/D3.png  used on input line 348.
+(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
+<Pictures/Part3/D4.png, id=54, 241.40187pt x 145.04187pt>
+File: Pictures/Part3/D4.png Graphic file (type png)
+<use Pictures/Part3/D4.png>
+Package pdftex.def Info: Pictures/Part3/D4.png  used on input line 360.
+(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Pictures/Part3/A3.png, id=55, 241.40187pt x 144.54pt>
+File: Pictures/Part3/A3.png Graphic file (type png)
+<use Pictures/Part3/A3.png>
+Package pdftex.def Info: Pictures/Part3/A3.png  used on input line 373.
+(pdftex.def)             Requested size: 231.91124pt x 138.86266pt.
+
+Underfull \vbox (badness 1231) has occurred while \output is active []
+
+ [6 <./Pictures/Part3/D2.png> <./Pictures/Part3/D3.png> <./Pictures/Part3/D4.pn
+g> <./Pictures/Part3/A3.png>] [7
+
+] (Report.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3779 strings out of 492895
- 55630 string characters out of 3133479
- 130272 words of memory out of 3000000
- 7637 multiletter control sequences out of 15000+200000
+ 3804 strings out of 492895
+ 56175 string characters out of 3133479
+ 132312 words of memory out of 3000000
+ 7657 multiletter control sequences out of 15000+200000
  7434 words of font info for 29 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 49i,10n,45p,1380b,440s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex1
-0.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C
-:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
-1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmss10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx1
-0.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on Report.pdf (5 pages, 724415 bytes).
+ 49i,11n,45p,1380b,440s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmr5.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
+fonts/cm/cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/c
+mr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb>
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on Report.pdf (7 pages, 812409 bytes).
 PDF statistics:
- 84 PDF objects out of 1000 (max. 8388607)
+ 101 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

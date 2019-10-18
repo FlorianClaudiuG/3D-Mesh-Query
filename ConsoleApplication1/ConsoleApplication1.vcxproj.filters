@@ -132,6 +132,9 @@
     <ClCompile Include="include\MeshDecimation\DifferentialGeometry.cpp">
       <Filter>Header Files\MeshDecimation</Filter>
     </ClCompile>
+    <ClCompile Include="Matching.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="include\MeshDecimation\DifferentialGeometry.h">
       <Filter>Header Files\MeshDecimation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Matching.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

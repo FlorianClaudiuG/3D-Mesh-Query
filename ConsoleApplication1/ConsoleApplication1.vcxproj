@@ -176,6 +176,7 @@
     <ClCompile Include="include\PCA\statistics.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Matching.cpp" />
     <ClCompile Include="meshdescription.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="OFFConverter.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="include\featureExtraction.h" />
     <ClInclude Include="include\FourStepNorm.h" />
     <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\Matching.h" />
     <ClInclude Include="include\MeshDecimation\BoundingBox.h" />
     <ClInclude Include="include\MeshDecimation\DifferentialGeometry.h" />
     <ClInclude Include="include\MeshDecimation\DistancePointTriangle.h" />

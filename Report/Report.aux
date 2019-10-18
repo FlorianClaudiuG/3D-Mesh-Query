@@ -11,22 +11,36 @@
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{fig:decimatedMesh}{{3}{2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Four step normalization}{2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Step 1. Center on the barycenter}{2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.1}Center on the barycenter}{2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Visualization of the Four step normalization pipeline.\relax }}{3}\protected@file@percent }
 \newlabel{fig:bunny}{{4}{3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Step 2. PCA}{3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}Step 3. Fliptest}{3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}Step 4. Normalization}{3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Part 1}{4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Surface area}{4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}bounding box volume}{4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Eccentricity}{4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Two models with different eccentricity values\relax }}{4}\protected@file@percent }
-\newlabel{fig:eccentricity}{{5}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}D1 - distance to barycenter}{4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}D2 - distance between two points}{4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}D3 - area of a random triangle}{5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}D4 - are of a random tetrahedron}{5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.8}A3 - angle between 3 random vertices}{5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Matching}{5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Distance calculation}{5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.2}PCA}{3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.3}Fliptest}{3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.5.4}Normalization}{3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Verifying the normalization}{4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Feature Extraction}{4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Scalar features}{4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}Surface area}{4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2}bounding box volume}{4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.3}Eccentricity}{4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Two models with different eccentricity values\relax }}{5}\protected@file@percent }
+\newlabel{fig:eccentricity}{{5}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.4}Normalizing scalar features}{5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Histogram features}{5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}D1 - distance to barycenter}{5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Histogram distributions for feature D1 for different classes. Yellow = air planes, Blue = leopards\relax }}{5}\protected@file@percent }
+\newlabel{fig:eccentricity}{{6}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}D2 - distance between two points}{5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}D3 - area of a random triangle}{5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Histogram distributions for feature D2 for different classes. Yellow = air planes, Blue = leopards\relax }}{6}\protected@file@percent }
+\newlabel{fig:eccentricity}{{7}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Histogram distributions for feature D3 for different classes. Yellow = air planes, Blue = leopards\relax }}{6}\protected@file@percent }
+\newlabel{fig:eccentricity}{{8}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}D4 - are of a random tetrahedron}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.5}A3 - angle between 3 random vertices}{6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Histogram distributions for feature A3 for different classes. Yellow = air planes, Blue = leopards\relax }}{6}\protected@file@percent }
+\newlabel{fig:eccentricity}{{9}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Histogram distributions for feature A3 for different classes. Yellow = air planes, Blue = leopards\relax }}{6}\protected@file@percent }
+\newlabel{fig:eccentricity}{{10}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Matching}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Distance calculation}{7}\protected@file@percent }

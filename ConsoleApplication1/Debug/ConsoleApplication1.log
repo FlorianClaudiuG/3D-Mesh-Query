@@ -1,3 +1,0 @@
-﻿  main.cpp
-C:\Users\Diego\source\repos\MeshReader\ConsoleApplication1\main.cpp(10,19): warning C4305:  'initializing': truncation from 'double' to 'float'
-  ConsoleApplication1.vcxproj -> C:\Users\Diego\source\repos\MeshReader\Debug\ConsoleApplication1.exe

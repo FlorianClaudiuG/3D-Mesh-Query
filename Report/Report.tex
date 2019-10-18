@@ -97,7 +97,7 @@ Next each mesh will go through the four step normalization pipeline so that it i
   \label{fig:bunny}
 \end{figure}
 
-\subsection{Step 1. Center on the barycenter}
+\subsubsection{Center on the barycenter}
 
 For the first step the barycenter $b$ is calculated, which is the average x, y, and z coordinates of all vertices in the mesh. Next, each vertex $v$ is translated, by subtracting these averages from each of its points resulting in the new vertex position $u$.
 \[
@@ -122,7 +122,7 @@ b_z \\
 
 The result can be verified by calculating the average coordinates again, which should be 0 after the normalization.
 
-\subsection{Step 2. PCA}
+\subsubsection{PCA}
 Prinicipal component analysis is done using the arglib library. The three eigenvectors $e_1$, $e_2$, and $e_3$ are returned by the algorithm. A translation matrix M is than created using the vectors $x$, $y$, and $z$, that represent the axises of the normal coordinate system.
 
 \[
@@ -172,7 +172,7 @@ v_z \\
 
 The result of the translation can easily be verified. Doing PCA again on the translated mesh returns three eigenvectors that now correspond with the $x$, $y$, and $z$ axis.
 
-\subsection{Step 3. Fliptest}
+\subsubsection{Fliptest}
 The eigenvectors used for the translation in the previous step are unoriented and thus give no information about to which side the model should be directed. Using the fliptest it is ensured that the majority of the mass resides in the negative half-space. Mass in this case is not indicated by the number of the vertices but also takes momentum into consideration, i.e. vertices farther away from the origin have a higher weight. Three variables are introduced: $w_x$, $w_y$, and $w_z$ that indicate the total weight of each of three coordinates. 
 \begin{equation}
 w_i = \sum sign(C_{t,i})(C_{t,i})^2
@@ -187,7 +187,7 @@ sign(w_x) & 0 & 0 \\
 \end{bmatrix}
 \]
 
-\subsection{Step 4. Normalization}
+\subsubsection{Normalization}
 The last step scales the model in the unit volume, i.e. it can fit in a unit cube. First the min and max of the $x$,$y$, and $z$ coordinates of the axis-aligned bounding box is found. Next the largest distance $\delta$ between the min and max of these coordinates is used for the scaling factor $s = \frac{1}{\delta}$. Finally each vertex $v$ is multiplied with this factor to obtain the new vertex $u$.
 
 \[
@@ -209,13 +209,24 @@ A visualization is excluded, however the effectiveness of this step can easily b
 
 \newpage
 
-\section{Part 1}
+\subsection{Verifying the normalization}
+Next for each model in the database the following steps are performed: 
+1. if the model has > 20.000 vertices use mesh decimation with target number of vertices set to 20.000.
+2. if the model has < 20.000 vertices use supersampling with target number of vertices set to 20.000.
+3. Center the model on its barycenter.
+4. Perform PCA and use align the eigenvectors with the x, y, and z axis.
+5. Flip the model if necessary.
+6. Normalize in a unit cube.
+In total 21 files were unable to processed, leaving a total of 1796 models in the new dataset. To verify that all the steps were performed correctly a new overview of the database can be created. The minimum number of vertices is 20.000, the maximum is 22963, the average is 200006, and standard deviation 116.61. These numbers show that the subsampling and supersampling worked correctly. There are a few models with a higher than average vertex count, because they were unable to processed by the $pmp$ mesh decimation algorithm. However they are still included in the final dataset because their vertex count is close enough to 20.000.
+
+\section{Feature Extraction}
 
 There are two different types of features used to describe the meshes. The first are scalar features which consist of a single float. And the second are the histogram features, which for a histogram with $n$ bins contain $n$ float values representing the fraction of values contained in each bin. 
-For extracting the histogram features random numbers will be generated. This is done by using the c++ function rand(). For the features that require multiple random numbers it is possible to generate duplicates, which would create large outliers. Therefore the numbers are re-sampled if there are any duplicates. Furthermore for obtaining the values of the histograms 20.000 of these samples will be taken for all histogram features.
-The definition of these features, and how they will be normalized is discussed in the following subsections.
 
-\subsection{Surface area}
+The definition of these features is discussed in the following subsections.
+\subsection{Scalar features}
+
+\subsubsection{Surface area}
 The surface area of the mesh is the sum of all the face areas. In the dataset all the faces are triangles, therefore the surface area is the sum of all these triangles. The area of a triangle is calculated using the $triangle_area$ function provide by the $pmp$ library. The area of a triangle $t$ with vertices $u$, $v$, and $w$ is defined as followed:
 \begin{equation}
 area(t) = 0.5 * N((t_v-t_u) \times (t_w-t_u))
@@ -226,7 +237,7 @@ F_{SA}(M) = \sum\limits_{i} area(t_i).
 \end{equation}
 where $t_i$ is the ith triangle of mesh M. The minimum value this feature can have is 0, but does not have a clear theoretical maximum. The maximum as is displayed in table ? is 32.96, with an average of 1.54, and standard deviation of 1.65, which shows that this feature has large outliers. Therefore the feature cannot be normalized by extent normalization, and instead standardization has to be used. 
 
-\subsection{bounding box volume}
+\subsubsection{bounding box volume}
 The bounding box of a mesh is a rectangle that can be represented as two points, the opposite corners $bot$ and $top$. The volume $V$ is easily calculated as the $width \dot length \dot height$
 \[
 bot =
@@ -249,7 +260,7 @@ The bounding box volume feature $F_{BBV}$ for a mesh $M$ with its bounding box o
 \begin{equation}
 F_{BBV}(M) = V(M_{bot},M_{top})
 \end{equation}
-The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube. Which is verified by the numbers in table ? for the BBV feature. This means that the feature is inherently normalized. 
+The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube. Which is verified by the numbers in table ? for the BBV feature. 
 
 \begin{center}
     \begin{tabular}{ | l | l | l | l | l |}
@@ -262,7 +273,7 @@ The minimum value a bounding box can have is 0 when the mesh has no faces, and 1
     \end{tabular}
 \end{center}
 
-\subsection{Eccentricity}
+\subsubsection{Eccentricity}
 The eccentricity of a mesh the ratio of the biggest eigenvalue of the covariance matrix to the smallest. The alglib library is once again used to do PCA and obtain the eigenvalues of the shape covariance matrix. For the eigenvalues $e_1$, $e_2$, and $e_3$ where $e_1$ is the largest value and $e_3$ the smallest, the eccentricity is
 \begin{equation}
 F_{EC}(M) = M_{e_3} / M_{e_1}
@@ -282,35 +293,87 @@ Where $M_{e_3}$ and $M_{e_1}$ are the smallest and largest eigenvectors of mesh 
   \caption{Two models with different eccentricity values}
   \label{fig:eccentricity}
 \end{figure}
-The eccentricity can go close to 0 for long objects or reach 1 for a perfect spherical form. Furthermore, this feature could also be extended to also describe the relation ratio between the other eigenvalues, $M_{e_2}$ / $M_{e_1}$ or $M_{e_3}$ / $M_{e_2}$.
+The eccentricity can go close to 0 for long objects or reach 1 for a perfect spherical form. Furthermore, this feature could also be extended to also describe the relation ratio between the other eigenvalues, $M_{e_2}$ / $M_{e_1}$ or $M_{e_3}$ / $M_{e_2}$. 
 
-\subsection{D1 - distance to barycenter}
+\subsubsection{Normalizing scalar features}
+The three features bounding box volume, eccentricity, and compactness all fall in the range [0,1]. If the surface area feature is also to be normalized in this range, extent normalization has to be used by using its minimum and maximum value. However this feature has large outliers. For example the minimum of 1 and maximum of 36 is used to normalize, the distance between a surface area of 3 and 1 would become 0.0571. Even though these 2 meshes would be very different in terms of surface area, their distance does not reflect this. Therefore standardization is used for this feature, and to be consistent, it will also be used for all the other scalar features. 
+Each new feature value will be calculated with the following formula
+\begin{equation}
+f'_{i,j} = \frac{f_{i,j} - \mu_i}{\delta_i},\quad i \in \{SA,BBV,ECC,DI,C\}
+\end{equation}
+Where $\mu_i$ is the average for feature i, $\delta_i$ the standard deviation, and $f_{i,j}$ the feature value for the $jth$ mesh. This standardization changes  the average of a feature to 0 and the standard deviation to 1. Meaning that if two different feature values differ one standard deviation from each other, there distance will be one. The table below shows the new description values of the different scalar features.
+
+\begin{center}
+    \begin{tabular}{ | l | l | l | l | l |}
+    \hline
+    & min & Max & Avg & Stddev \\ \hline
+    SA & -0.919356 & 19.06002 & 0 & 1 \\ \hline
+    BBV & -1.178278 & 3.28805 & 0 & 1 \\ \hline
+    ECC & -0.810042 & 4.419431 & 0 & 1 \\ \hline
+    \end{tabular}
+\end{center}
+
+\subsection{Histogram features}
+For extracting the histogram features random numbers will be generated. This is done by using the c++ function rand(). For the features that require multiple random numbers it is possible to generate duplicates, which would create large outliers. Therefore the numbers are re-sampled if there are any duplicates. Furthermore for obtaining the values of the histograms 20.000 of these samples will be taken for all histogram features.
+For each histogram feature they will first be generated using a minimum and maximum value based on their theoretical maximum. These results will than be used to adjust the minimum and maximum so that there wont be any bins that are universally unused. The number of bins used bins that will finally be used is set at 12.
+
+\subsubsection{D1 - distance to barycenter}
 This feature calculates the distance between a randomly generated point and the barycenter. The distance $D$ between two vectors $u$ and $v$ is calculated as follows
 \begin{equation}
 D(u,v) = \sqrt{\sum\limits_{i=1}^3 (u_i - v_i)^2}
 \end{equation}
-The minimum distance is obviously 0, and the maximum distance is equal to the diameter of a unit cube, $\sqrt{3}$, which is an unlikely scenario.
+The minimum distance is obviously 0, and the maximum distance is equal to the diameter of a unit cube, $\sqrt{3}$, which is an unrealistic scenario.
+In order the evaluate the quality of the features, the histogram distributions of different classes will be plotted on a graph. The blue lines represent the histogram distributions of models m93, m94, m95, m96, and m97, which are all leopard like animals. And the yellow lines are models m1120, m1121, m1122, m1123, and m1124, which are air planes. These graphs will be made for each of the histogram features. 
 
-\subsection{D2 - distance between two points}
-This time two random points are generated and the same distance function as for the D1 feature is used.
-The min and maximum distances are the same as the previous feature.
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{Pictures/Part3/D1.png}
+    \caption{Histogram distributions for feature D1 for different classes. Yellow = air planes, Blue = leopards}
+  \label{fig:eccentricity}
+\end{figure}
 
-\subsection{D3 - area of a random triangle}
-To get a random triangle three random points are generated. The area of this triangle is calculated the same way as was done for calculating the total surface area. The square root of this value is than added to the histogram.
+\subsubsection{D2 - distance between two points}
+This time two random points are generated and the same distance function as for the D1 feature is used. The min and maximum distances are the same as the previous feature, all though the distances will generally be higher.
+
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{Pictures/Part3/D2.png}
+    \caption{Histogram distributions for feature D2 for different classes. Yellow = air planes, Blue = leopards}
+  \label{fig:eccentricity}
+\end{figure}
+
+\subsubsection{D3 - area of a random triangle}
+To get a random triangle three random points are generated. The area of this triangle is calculated the same way as was done for calculating the total surface area. The square root of this value is than added to the histogram. 
 For the area of a triangle the minimum value is 0.
 
-\subsection{D4 - are of a random tetrahedron}
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{Pictures/Part3/D3.png}
+    \caption{Histogram distributions for feature D3 for different classes. Yellow = air planes, Blue = leopards}
+  \label{fig:eccentricity}
+\end{figure}
+
+\subsubsection{D4 - are of a random tetrahedron}
 Four random points $a$, $b$, $c$, and $d$ are generated that together will make the tetrahedron. The formula used for calculating the volume is:
 \begin{equation}
 V(a,b,c,d) = \frac{|(a - d) \cdot ((b - d) \times (c - d))|}{6}
 \end{equation}
 
-\subsection{A3 - angle between 3 random vertices}
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{Pictures/Part3/D4.png}
+    \caption{Histogram distributions for feature A3 for different classes. Yellow = air planes, Blue = leopards}
+  \label{fig:eccentricity}
+\end{figure}
+
+\subsubsection{A3 - angle between 3 random vertices}
 The last histogram features uses three random points $u$, $v$, and $w$ to calculate the angle between them. These three points create a triangle that has three angles, however the order in which they are generated determines which angle is chosen. Therefore all three possible angles are calculates, and the maximum of those is chosen. For each angle the distance is chosen by using two vectors that share a similar point. For example, the vectors $a = v-u$ and $b = w-u$ give one possible angle of the triangle. The formula used for calculating an angle given two vectors is as follows:
 \begin{equation}
 Angle(a,b) = atan2(N(a \times b), (a \cdot b))
 \end{equation}
 Where N gives the euclidean norm of a vector, and atan2 the angle in the euclidean plane. The minimum value that the angle could be is 0, and the maximum is $\pi$.
+
+\begin{figure}[h!]
+    \includegraphics[width=\linewidth]{Pictures/Part3/A3.png}
+    \caption{Histogram distributions for feature A3 for different classes. Yellow = air planes, Blue = leopards}
+  \label{fig:eccentricity}
+\end{figure}
 
 \section{Matching}
 All the features discussed in the previous section are calculated for each mesh and put in a single feature vector $x = (x_1,...,x_n)$ where each $x_i$ is a single feature. To compare different meshes the distance is to be calculated between their two feature vector. If feature vector $x$ is compared with a different feature vector $y = (y_1,...y_3)$, each of their features will be compared individually and the sum of these distances will be regarded as the distance between the two feature vectors.

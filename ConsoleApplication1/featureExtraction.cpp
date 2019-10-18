@@ -224,7 +224,7 @@ scalarFeature* eccentricity(UnstructuredGrid3D* g){
 	eigenVector.setlength(3, 3);
 	pcabuildbasis(input, numberPoints, 3, info, eigenValues, eigenVector);
 	float val = eigenValues[2] / eigenValues[0];
-	
+
 	val = standardization(val, 0.148089259, 0.182812364);
 
 	scalarFeature* f = new scalarFeature(val, "Ecc");
@@ -256,7 +256,7 @@ scalarFeature* compactness(UnstructuredGrid3D* g)
 }
 
 scalarFeature* diameter(UnstructuredGrid3D* g) {
-	scalarFeature* f = new scalarFeature(1.0f, "di");
+	scalarFeature* f = new scalarFeature(g->getDiameter(), "di");
 	return f;
 }
 
@@ -473,7 +473,7 @@ float FeatureDistanceHist(feature* f1, feature* f2)
 	}
 	//d = d / 2.0;//maximum distance between two normalized is 2. diving by 2 means that max distance is 1, 0-1 is the range in which
 	//most of the features are calculated.
-	return d;
+	return sqrt(d);
 }
 
 float getFeatureDistance(feature* f1, feature* f2)

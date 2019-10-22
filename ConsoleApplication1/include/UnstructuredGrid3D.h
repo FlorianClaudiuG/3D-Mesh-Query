@@ -48,7 +48,7 @@ float				computeCircularity();
 float				getTotalArea();
 float				getVolume();
 float				signedVolumeOfTetrahedron(float* p1, float* p2, float* p3);
-float				getDiameter();
+float				getDiameter(int samplePoints);
 float				getDistance(int x, int y);
 
 private:

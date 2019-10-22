@@ -1,6 +1,7 @@
 #include <GL/freeglut.h>									//GLUT library
 #include <experimental/filesystem>							//for looping through the database directories 
 #include <iostream>
+#include <fstream>
 #include "include/UnstructuredGrid3D.h"							//the 3D unstructured grid class
 #include "include/MeshRenderer.h"								//a simple renderer for 3D unstructured grids, demonstrating flat/smooth shading
 #include "include/PlyReader.h"									//a reader that initializes UnstructuredGrid3D objects with meshes stored in the PLY file format
@@ -11,7 +12,7 @@
 #include "include/OffReader.h"
 #include "include/FourStepNorm.h"
 #include "Supersampler.h"
-#include <fstream>
+#include "PSBClaParse.h"
 
 //Files for pmp (used for mesh decimation)
 #include "include/MeshDecimation/SurfaceMesh.h"
@@ -276,6 +277,20 @@ int main(int argc, char* argv[])							//Main program
 	//return 1;
 	//const char* newfile = "DATA/m43.ply";
 	
+	char classFilePath1[50] = "../classification/v1/coarse1/coarse1.cla";
+	char classFilePath2[50] = "../classification/v1/coarse1/coarse1Train.cla";
+
+	PSBCategoryList* categories = parseFile(classFilePath1);
+
+	for (int i = 0; i < categories->_numCategories; i++)
+	{
+		cout << "Category " << i << ": " << categories->_categories[i]->_fullName << " and name " << categories->_categories[i]->_name << "\n";
+		if (categories->_categories[i]->_numModels > 0)
+		{
+			cout << categories->_categories[i]->_models[0] << "\n";
+		}
+	}
+
 	grid = rdr.read(filename);
 	cout << grid->getVolume() << "\n";
 	//ss.addTriangle(*grid, 0);

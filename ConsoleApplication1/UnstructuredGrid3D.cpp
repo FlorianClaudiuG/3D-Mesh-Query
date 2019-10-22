@@ -229,10 +229,7 @@ float UnstructuredGrid3D::computeCircularity()
 	cout << "volume: " << volume << endl;
 	float compactness = pow(area, 3) / pow(volume, 2);
 	cout << "compactness: " << compactness << endl;
-	if (compactness > 0)
-		return 1.0f / compactness;
-	else
-		return 1;
+	return 1.0f / compactness + 0.000000001f;
 }
 
 float UnstructuredGrid3D::getTotalArea()
@@ -280,11 +277,15 @@ float UnstructuredGrid3D::signedVolumeOfTetrahedron(float* p1, float* p2, float*
 	return (1.0f / 6.0f) * (-v321 + v231 + v312 - v132 - v213 + v123);
 }
 
-float UnstructuredGrid3D::getDiameter()
+float UnstructuredGrid3D::getDiameter(int sampleSize)
 {
 		float maxDist = 0;
-		const int sampleSize = 2000;
-		int randomIndex[sampleSize];
+		if (sampleSize == 0)
+		{
+			sampleSize = numPoints();
+		}
+		vector<int> randomIndex;
+		randomIndex.resize(sampleSize);
 		srand(0);
 		for (int i = 0; i < sampleSize; i++) {
 			randomIndex[i] = rand() % numPoints();//get random existing index
@@ -299,20 +300,6 @@ float UnstructuredGrid3D::getDiameter()
 			}
 		}
 
-		/*
-		for (int i = 0; i < numPoints(); i++)
-		{
-			for (int j = i; j < numPoints(); j++)
-			{
-				float distance = getDistance(i, j);
-				if (distance > maxDist)
-				{
-					//maxPoints[0] = i;
-					//maxPoints[1] = j;
-					maxDist = distance;
-				}
-			}
-		}*/
 		return maxDist;
 }
 

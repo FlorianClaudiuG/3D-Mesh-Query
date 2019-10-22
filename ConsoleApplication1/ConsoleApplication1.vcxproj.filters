@@ -135,6 +135,9 @@
     <ClCompile Include="Matching.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PSBClaParse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -282,6 +285,9 @@
       <Filter>Header Files\MeshDecimation</Filter>
     </ClInclude>
     <ClInclude Include="include\Matching.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSBClaParse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

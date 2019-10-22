@@ -256,7 +256,7 @@ scalarFeature* compactness(UnstructuredGrid3D* g)
 }
 
 scalarFeature* diameter(UnstructuredGrid3D* g) {
-	scalarFeature* f = new scalarFeature(g->getDiameter(), "di");
+	scalarFeature* f = new scalarFeature(g->getDiameter(2000), "di");
 	return f;
 }
 

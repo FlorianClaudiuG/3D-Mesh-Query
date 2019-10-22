@@ -184,6 +184,7 @@
     <ClCompile Include="plyfile.cpp" />
     <ClCompile Include="PlyReader.cpp" />
     <ClCompile Include="PlyWriter.cpp" />
+    <ClCompile Include="PSBClaParse.cpp" />
     <ClCompile Include="ScalarAttributes.cpp" />
     <ClCompile Include="SimpleRenderer.cpp" />
     <ClCompile Include="Supersampler.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="include\zpr.h" />
     <ClInclude Include="OFFConverter.h" />
     <ClInclude Include="PlyWriter.h" />
+    <ClInclude Include="PSBClaParse.h" />
     <ClInclude Include="Supersampler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -253,7 +253,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/m955.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/m0.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY(filename);
@@ -277,10 +277,9 @@ int main(int argc, char* argv[])							//Main program
 	//return 1;
 	//const char* newfile = "DATA/m43.ply";
 	
-	char classFilePath1[50] = "../classification/v1/coarse1/coarse1.cla";
-	char classFilePath2[50] = "../classification/v1/coarse1/coarse1Train.cla";
-
-	PSBCategoryList* categories = parseFile(classFilePath1);
+	char classFilePath[50] = "../classification/v1/coarse1/coarse1.cla";
+	/*
+	PSBCategoryList* categories = parseFile(classFilePath);
 
 	for (int i = 0; i < categories->_numCategories; i++)
 	{
@@ -289,7 +288,7 @@ int main(int argc, char* argv[])							//Main program
 		{
 			cout << categories->_categories[i]->_models[0] << "\n";
 		}
-	}
+	}*/
 
 	grid = rdr.read(filename);
 	cout << grid->getVolume() << "\n";

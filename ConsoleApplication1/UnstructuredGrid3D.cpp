@@ -227,9 +227,9 @@ float UnstructuredGrid3D::computeCircularity()
 	cout << "area: " << area << endl;
 	float volume = getVolume();
 	cout << "volume: " << volume << endl;
-	float compactness = pow(area, 3) / pow(volume, 2);
+	float compactness = pow(area, 3) / (pow(volume, 2) * 36.0f * 3.14159265f);
 	cout << "compactness: " << compactness << endl;
-	return 1.0f / compactness + 0.000000001f;
+	return 1.0f / compactness + 0.0000001f;
 }
 
 float UnstructuredGrid3D::getTotalArea()

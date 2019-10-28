@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.10.4)  25 OCT 2019 13:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.28)  28 OCT 2019 22:37
 entering extended mode
 **./Report.tex
 (Report.tex
-LaTeX2e <2018-12-01>
+LaTeX2e <2019-10-01>
 (bigdata.cls
 
 LaTeX Warning: You have requested document class `bigdata',
@@ -10,9 +10,9 @@ LaTeX Warning: You have requested document class `bigdata',
 
 Document Class: eurocg14 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/base\article.cls"
-Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
+Document Class: article 2019/08/27 v1.4j Standard LaTeX document class
 ("C:\Program Files\MiKTeX 2.9\tex/latex/base\size10.clo"
-File: size10.clo 2018/09/03 v1.4i Standard LaTeX file (size option)
+File: size10.clo 2019/08/27 v1.4j Standard LaTeX file (size option)
 )
 \c@part=\count80
 \c@section=\count81
@@ -44,7 +44,7 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks16
 )
 ("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\graphics.sty"
-Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2019/07/20 v1.3b Standard LaTeX Graphics (DPC,SPQR)
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/graphics\trig.sty"
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
@@ -52,7 +52,7 @@ Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 ("C:\Program Files\MiKTeX 2.9\tex/latex/graphics-cfg\graphics.cfg"
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 99.
+Package graphics Info: Driver file: pdftex.def on input line 105.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/graphics-def\pdftex.def"
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
@@ -68,11 +68,12 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \@emptytoks=\toks17
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
 ("C:\Program Files\MiKTeX 2.9\tex/latex/amsmath\amsmath.sty"
-Package: amsmath 2018/12/01 v2.17b AMS math features
+Package: amsmath 2019/04/01 v2.17c AMS math features
 \@mathmargin=\skip45
 
 For additional information on amsmath, use the `?' option.
@@ -92,20 +93,20 @@ Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 Package: amsopn 2016/03/08 v2.02 operator names
 )
 \inf@bad=\count88
-LaTeX Info: Redefining \frac on input line 223.
+LaTeX Info: Redefining \frac on input line 227.
 \uproot@=\count89
 \leftroot@=\count90
-LaTeX Info: Redefining \overline on input line 385.
+LaTeX Info: Redefining \overline on input line 389.
 \classnum@=\count91
 \DOTSCASE@=\count92
-LaTeX Info: Redefining \ldots on input line 482.
-LaTeX Info: Redefining \dots on input line 485.
-LaTeX Info: Redefining \cdots on input line 606.
+LaTeX Info: Redefining \ldots on input line 486.
+LaTeX Info: Redefining \dots on input line 489.
+LaTeX Info: Redefining \cdots on input line 610.
 \Mathstrutbox@=\box27
 \strutbox@=\box28
 \big@size=\dimen107
-LaTeX Font Info:    Redeclaring font encoding OML on input line 729.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 730.
+LaTeX Font Info:    Redeclaring font encoding OML on input line 733.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 734.
 \macc@depth=\count93
 \c@MaxMatrixCols=\count94
 \dotsspace@=\muskip10
@@ -126,10 +127,10 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 730.
 \multlinegap=\skip46
 \multlinetaggap=\skip47
 \mathdisplay@stack=\toks22
-LaTeX Info: Redefining \[ on input line 2844.
-LaTeX Info: Redefining \] on input line 2845.
+LaTeX Info: Redefining \[ on input line 2855.
+LaTeX Info: Redefining \] on input line 2856.
 )
-("C:\Program Files\MiKTeX 2.9\tex/latex/fancyhdr\fancyhdr.sty"
+(C:\Users\claud\AppData\Roaming\MiKTeX\2.9\tex/latex/fancyhdr\fancyhdr.sty
 Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footer
 s
 \f@nch@headwidth=\skip48
@@ -142,13 +143,13 @@ s
 \f@nch@O@olf=\skip55
 \f@nch@O@orf=\skip56
 )
-("C:\Program Files\MiKTeX 2.9\tex/latex/caption\subcaption.sty"
+(C:\Users\claud\AppData\Roaming\MiKTeX\2.9\tex/latex/caption\subcaption.sty
 Package: subcaption 2019/09/01 v1.3a Sub-captions (AR)
 
-("C:\Program Files\MiKTeX 2.9\tex/latex/caption\caption.sty"
+(C:\Users\claud\AppData\Roaming\MiKTeX\2.9\tex/latex/caption\caption.sty
 Package: caption 2019/09/01 v3.3d Customizing captions (AR)
 
-("C:\Program Files\MiKTeX 2.9\tex/latex/caption\caption3.sty"
+(C:\Users\claud\AppData\Roaming\MiKTeX\2.9\tex/latex/caption\caption3.sty
 Package: caption3 2019/09/01 v1.8d caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 64.
 \captionmargin=\dimen114
@@ -194,19 +195,20 @@ LaTeX Warning: Label `fig:eccentricity' multiply defined.
 )
 \openout1 = `Report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
- ("C:\Program Files\MiKTeX 2.9\tex/context/base/mkii\supp-pdf.mkii"
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+
+(C:\Users\claud\AppData\Roaming\MiKTeX\2.9\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count109
 \scratchdimen=\dimen121
@@ -268,175 +270,154 @@ G,.JBIG2,.JB2,.eps]
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for U+msa on input line 12.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 13.
+
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 12.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 13.
+
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-<Pictures/verticesHist.png, id=1, 351.81438pt x 202.25563pt>
-File: Pictures/verticesHist.png Graphic file (type png)
-<use Pictures/verticesHist.png>
-Package pdftex.def Info: Pictures/verticesHist.png  used on input line 32.
-(pdftex.def)             Requested size: 231.91124pt x 133.32246pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-Underfull \vbox (badness 3375) has occurred while \output is active []
-
- [1{C:/Users/Diego/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+) [1{C:/Users/claud/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
 ]
+<Pictures/verticesHist.png, id=9, 351.81438pt x 202.25563pt>
+File: Pictures/verticesHist.png Graphic file (type png)
+<use Pictures/verticesHist.png>
+Package pdftex.def Info: Pictures/verticesHist.png  used on input line 33.
+(pdftex.def)             Requested size: 487.8225pt x 280.44627pt.
 <Pictures/triangle.png, id=10, 472.01344pt x 316.93407pt>
 File: Pictures/triangle.png Graphic file (type png)
 <use Pictures/triangle.png>
-Package pdftex.def Info: Pictures/triangle.png  used on input line 41.
-(pdftex.def)             Requested size: 231.91124pt x 155.71977pt.
-<Pictures/preSub.png, id=12, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/triangle.png  used on input line 42.
+(pdftex.def)             Requested size: 487.8225pt x 327.55318pt.
+ [2 <./Pictures/verticesHist.png>]
+<Pictures/preSub.png, id=15, 752.8125pt x 752.8125pt>
 File: Pictures/preSub.png Graphic file (type png)
 <use Pictures/preSub.png>
-Package pdftex.def Info: Pictures/preSub.png  used on input line 59.
-(pdftex.def)             Requested size: 69.57407pt x 69.56514pt.
-<Pictures/postSub.png, id=13, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/preSub.png  used on input line 60.
+(pdftex.def)             Requested size: 146.34824pt x 146.3441pt.
+<Pictures/postSub.png, id=16, 752.8125pt x 752.8125pt>
 File: Pictures/postSub.png Graphic file (type png)
 <use Pictures/postSub.png>
-Package pdftex.def Info: Pictures/postSub.png  used on input line 63.
-(pdftex.def)             Requested size: 69.57407pt x 69.56514pt.
-<Pictures/postSub2.png, id=14, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/postSub.png  used on input line 64.
+(pdftex.def)             Requested size: 146.34824pt x 146.3441pt.
+<Pictures/postSub2.png, id=17, 752.8125pt x 752.8125pt>
 File: Pictures/postSub2.png Graphic file (type png)
 <use Pictures/postSub2.png>
-Package pdftex.def Info: Pictures/postSub2.png  used on input line 67.
-(pdftex.def)             Requested size: 69.57407pt x 69.56514pt.
-<Pictures/Part2/Step0.png, id=15, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/postSub2.png  used on input line 68.
+(pdftex.def)             Requested size: 146.34824pt x 146.3441pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[3 <./Pictures/triangle.png>]
+<Pictures/Part2/Step0.png, id=24, 752.8125pt x 752.8125pt>
 File: Pictures/Part2/Step0.png Graphic file (type png)
 <use Pictures/Part2/Step0.png>
-Package pdftex.def Info: Pictures/Part2/Step0.png  used on input line 81.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part2/step1.png, id=16, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/Part2/Step0.png  used on input line 82.
+(pdftex.def)             Requested size: 195.126pt x 195.1293pt.
+<Pictures/Part2/step1.png, id=25, 752.8125pt x 752.8125pt>
 File: Pictures/Part2/step1.png Graphic file (type png)
 <use Pictures/Part2/step1.png>
-Package pdftex.def Info: Pictures/Part2/step1.png  used on input line 85.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part2/step2.png, id=17, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/Part2/step1.png  used on input line 86.
+(pdftex.def)             Requested size: 195.126pt x 195.1293pt.
+<Pictures/Part2/step2.png, id=26, 752.8125pt x 752.8125pt>
 File: Pictures/Part2/step2.png Graphic file (type png)
 <use Pictures/Part2/step2.png>
-Package pdftex.def Info: Pictures/Part2/step2.png  used on input line 89.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part2/step3.png, id=18, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/Part2/step2.png  used on input line 90.
+(pdftex.def)             Requested size: 195.126pt x 195.1293pt.
+<Pictures/Part2/step3.png, id=27, 752.8125pt x 752.8125pt>
 File: Pictures/Part2/step3.png Graphic file (type png)
 <use Pictures/Part2/step3.png>
-Package pdftex.def Info: Pictures/Part2/step3.png  used on input line 93.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
+Package pdftex.def Info: Pictures/Part2/step3.png  used on input line 94.
+(pdftex.def)             Requested size: 195.126pt x 195.1293pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2 <./Pictures/verticesHist.png> <./Pictures/triangle.png> <./Pictures/preSub.p
-ng> <./Pictures/postSub.png> <./Pictures/postSub2.png>]
-Overfull \hbox (7.85326pt too wide) detected at line 153
-\OML/cmm/m/it/10 x \OT1/cmr/m/n/10 = [] \OML/cmm/m/it/10 y \OT1/cmr/m/n/10 = []
- \OML/cmm/m/it/10 z \OT1/cmr/m/n/10 = [] \OML/cmm/m/it/10 M \OT1/cmr/m/n/10 = [
-]
- []
-
-[3 <./Pictures/Part2/Step0.png> <./Pictures/Part2/step1.png> <./Pictures/Part2/
-step2.png> <./Pictures/Part2/step3.png>]
-Overfull \hbox (6.21056pt too wide) detected at line 258
-\OML/cmm/m/it/10 V\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 bot; top\OT1/cmr/m/n/10 ) =
- (\OML/cmm/m/it/10 x[] \OMS/cmsy/m/n/10   \OML/cmm/m/it/10 x[]\OT1/cmr/m/n/10 )
- \OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[] \OMS/cmsy/m/n/10   \O
-ML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ) \OMS/cmsy/m/n/10  \OT1/cmr/m/n/10 (\OML/cm
-m/m/it/10 z[] \OMS/cmsy/m/n/10   \OML/cmm/m/it/10 z[]\OT1/cmr/m/n/10 )
- []
-
-
-Overfull \hbox (35.86725pt too wide) in paragraph at lines 266--274
- [] 
- []
-
-<Pictures/Part3/eccHead.png, id=39, 752.8125pt x 752.8125pt>
+[4 <./Pictures/preSub.png> <./Pictures/postSub.png> <./Pictures/postSub2.png>]
+[5 <./Pictures/Part2/Step0.png> <./Pictures/Part2/step1.png> <./Pictures/Part2/
+step2.png> <./Pictures/Part2/step3.png>] [6]
+<Pictures/Part3/eccHead.png, id=48, 752.8125pt x 752.8125pt>
 File: Pictures/Part3/eccHead.png Graphic file (type png)
 <use Pictures/Part3/eccHead.png>
-Package pdftex.def Info: Pictures/Part3/eccHead.png  used on input line 286.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-<Pictures/Part3/eccLeo.png, id=40, 752.8125pt x 752.8125pt>
+Package pdftex.def Info: Pictures/Part3/eccHead.png  used on input line 285.
+(pdftex.def)             Requested size: 195.126pt x 195.1293pt.
+<Pictures/Part3/eccLeo.png, id=49, 752.8125pt x 752.8125pt>
 File: Pictures/Part3/eccLeo.png Graphic file (type png)
 <use Pictures/Part3/eccLeo.png>
-Package pdftex.def Info: Pictures/Part3/eccLeo.png  used on input line 290.
-(pdftex.def)             Requested size: 92.76308pt x 92.75735pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[4]
-<Pictures/Part3/D1.png, id=45, 241.40187pt x 145.04187pt>
+Package pdftex.def Info: Pictures/Part3/eccLeo.png  used on input line 289.
+(pdftex.def)             Requested size: 195.126pt x 195.1293pt.
+ [7 <./Pictures/Part3/eccHead.png> <./Pictures/Part3/eccLeo.png>] [8]
+<Pictures/Part3/D1.png, id=62, 241.40187pt x 145.04187pt>
 File: Pictures/Part3/D1.png Graphic file (type png)
 <use Pictures/Part3/D1.png>
-Package pdftex.def Info: Pictures/Part3/D1.png  used on input line 329.
-(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
-<Pictures/Part3/D2.png, id=46, 241.40187pt x 145.04187pt>
+Package pdftex.def Info: Pictures/Part3/D1.png  used on input line 368.
+(pdftex.def)             Requested size: 487.8225pt x 293.13052pt.
+<Pictures/Part3/D2.png, id=63, 241.40187pt x 145.04187pt>
 File: Pictures/Part3/D2.png Graphic file (type png)
 <use Pictures/Part3/D2.png>
-Package pdftex.def Info: Pictures/Part3/D2.png  used on input line 338.
-(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
+Package pdftex.def Info: Pictures/Part3/D2.png  used on input line 377.
+(pdftex.def)             Requested size: 487.8225pt x 293.13052pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[5 <./Pictures/Part3/eccHead.png> <./Pictures/Part3/eccLeo.png> <./Pictures/Par
-t3/D1.png>]
-<Pictures/Part3/D3.png, id=53, 241.40187pt x 145.04187pt>
+<Pictures/Part3/D3.png, id=64, 241.40187pt x 145.04187pt>
 File: Pictures/Part3/D3.png Graphic file (type png)
 <use Pictures/Part3/D3.png>
-Package pdftex.def Info: Pictures/Part3/D3.png  used on input line 348.
-(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
-<Pictures/Part3/D4.png, id=54, 241.40187pt x 145.04187pt>
+Package pdftex.def Info: Pictures/Part3/D3.png  used on input line 387.
+(pdftex.def)             Requested size: 487.8225pt x 293.13052pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Pictures/Part3/D4.png, id=65, 241.40187pt x 145.04187pt>
 File: Pictures/Part3/D4.png Graphic file (type png)
 <use Pictures/Part3/D4.png>
-Package pdftex.def Info: Pictures/Part3/D4.png  used on input line 360.
-(pdftex.def)             Requested size: 231.91124pt x 139.34483pt.
+Package pdftex.def Info: Pictures/Part3/D4.png  used on input line 399.
+(pdftex.def)             Requested size: 487.8225pt x 293.13052pt.
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[9 <./Pictures/Part3/D1.png>] [10 <./Pictures/Part3/D2.png> <./Pictures/Part3/D
+3.png>]
+<Pictures/Part3/A3.png, id=72, 241.40187pt x 144.54pt>
+File: Pictures/Part3/A3.png Graphic file (type png)
+<use Pictures/Part3/A3.png>
+Package pdftex.def Info: Pictures/Part3/A3.png  used on input line 412.
+(pdftex.def)             Requested size: 487.8225pt x 292.11623pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Pictures/Part3/A3.png, id=55, 241.40187pt x 144.54pt>
-File: Pictures/Part3/A3.png Graphic file (type png)
-<use Pictures/Part3/A3.png>
-Package pdftex.def Info: Pictures/Part3/A3.png  used on input line 373.
-(pdftex.def)             Requested size: 231.91124pt x 138.86266pt.
-
-Underfull \vbox (badness 1231) has occurred while \output is active []
-
- [6 <./Pictures/Part3/D2.png> <./Pictures/Part3/D3.png> <./Pictures/Part3/D4.pn
-g> <./Pictures/Part3/A3.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 396--405
+[11 <./Pictures/Part3/D4.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 435--444
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 396--405
+Underfull \hbox (badness 10000) in paragraph at lines 435--444
 
  []
 
-[7] (Report.aux)
+[12 <./Pictures/Part3/A3.png>] [13] (Report.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3804 strings out of 492895
- 56175 string characters out of 3133479
- 132312 words of memory out of 3000000
- 7657 multiletter control sequences out of 15000+200000
- 7434 words of font info for 29 fonts, out of 3000000 for 9000
+ 4120 strings out of 492452
+ 59956 string characters out of 3129807
+ 131778 words of memory out of 3000000
+ 8415 multiletter control sequences out of 15000+200000
+ 7780 words of font info for 30 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 49i,11n,45p,1380b,440s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 53i,11n,50p,1380b,440s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Program Files/MiKTe
@@ -448,10 +429,11 @@ cmr7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.pfb><
 C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/Progr
 am Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmssbx10.pfb><C:/Program Fil
 es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on Report.pdf (7 pages, 826028 bytes).
+X 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on Report.pdf (13 pages, 842149 bytes).
 PDF statistics:
- 105 PDF objects out of 1000 (max. 8388607)
+ 128 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

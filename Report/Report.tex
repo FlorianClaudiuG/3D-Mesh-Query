@@ -1,12 +1,13 @@
 \documentclass{bigdata}
 \usepackage[utf8]{inputenc}
+
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
 \title{Multimedia Retrieval}
 \author{Diego Renders (5740894) and Florian-Claudiu Gheorghica (6924123)}
-\date{Oktober 2019}
-
+\date{October 2019}
+\onecolumn
 
 \begin{document}
 \maketitle
@@ -22,7 +23,7 @@
 \subsection{File reading}
 
 The files from the Princeton Shape Benchmark (PSB) were all provided in the OFF file format and an OFF reader was initially considered as a starting point. However, as a PLY format reader was likely to be necessary in the long-term, an OFF-to-PLY converter was written in order to enforce PLY as the default format for the application.
-This converter simply creates a PLY header filled with data from the OFF file, then copies the vertex and face data over. While not a scalable approach for more complex OFF files, the converter was able to successfully process the entire PSB database.
+This converter simply creates a PLY header using data from the OFF file, then copies the vertex and face data over. While not a scalable approach for more complex OFF files, the converter was able to successfully process the entire PSB database.
 
 \subsection{Database evaluation}
 The database contains around 1800 models in OFF file format. All of the models contain only triangles as faces. The distribution of faces is shown in figure ?. The average number of vertices is 4221, the minimum 10, and the maximum 160940. The histogram, along with the average, shows that most of the models have a vertex count of smaller than twenty thousand. In order to successfully perform the upcoming steps of feature extraction the models need to have approximately the same number of vertices. Two actions can be undertaken to achieve this, supersampling and subsampling. Supersample the models with a low vertex count, and subsample the models with a large vertex count. A target number of vertices has to be chosen for this. One solution could be to choose the average. However because several of the meshes have a very high resolution (a hundred thousand vertices), subsampling this to reach the four thousand required vertices would ruin the original shape. Therefore the target vertices is chosen to be higher than the average, so that the higher resolution models retain their characteristics. The only downside for choosing a higher target number of vertices is an increase in computation time. The target number of vertices is set at forty thousand, and the methodology for supersampling and subsampling is explained in the following two sections.
@@ -207,8 +208,6 @@ v_z \\
 
 A visualization is excluded, however the effectiveness of this step can easily be verified by looking at the resulting bounding box of the model.
 
-\newpage
-
 \subsection{Verifying the normalization}
 Next for each model in the database the following steps are performed: 
 1. if the model has > 20.000 vertices use mesh decimation with target number of vertices set to 20.000.
@@ -224,7 +223,7 @@ In total 21 files were unable to processed, leaving a total of 1796 models in th
 There are two different types of features used to describe the meshes. The first are  features which consist of a single float. And the second are the histogram features, which for a histogram with $n$ bins contain $n$ float values representing the fraction of values contained in each bin. 
 
 The definition of these features is discussed in the following subsections.
-\subsection{ features}
+\subsection{Features}
 
 \subsubsection{Surface area}
 The surface area of the mesh is the sum of all the face areas. In the dataset all the faces are triangles, therefore the surface area is the sum of all these triangles. The area of a triangle is calculated using the $triangle_area$ function provide by the $pmp$ library. The area of a triangle $t$ with vertices $u$, $v$, and $w$ is defined as followed:
@@ -237,7 +236,7 @@ F_{SA}(M) = \sum\limits_{i} area(t_i).
 \end{equation}
 where $t_i$ is the ith triangle of mesh M. The minimum value this feature can have is 0, but does not have a clear theoretical maximum. The maximum as is displayed in table ? is 32.96, with an average of 1.54, and standard deviation of 1.65, which shows that this feature has large outliers. Therefore the feature cannot be normalized by extent normalization, and instead standardization has to be used. 
 
-\subsubsection{bounding box volume}
+\subsubsection{Bounding Box Volume}
 The bounding box of a mesh is a rectangle that can be represented as two points, the opposite corners $bot$ and $top$. The volume $V$ is easily calculated as the $width \dot length \dot height$
 \[
 bot =
@@ -295,13 +294,53 @@ Where $M_{e_3}$ and $M_{e_1}$ are the smallest and largest eigenvectors of mesh 
 \end{figure}
 The eccentricity can go close to 0 for long objects or reach 1 for a perfect spherical form. Furthermore, this feature could also be extended to also describe the relation ratio between the other eigenvalues, $M_{e_2}$ / $M_{e_1}$ or $M_{e_3}$ / $M_{e_2}$. 
 
+\subsubsection{Circularity and Compactness}
+
+Circularity is the inverse of compactness, a measure which represents how compact a shape is. From this perspective, circularity shows how "circular" a shape is. In 2D, compactness is minimized by a perfect circle, where its value is 1. The formula for 2D compactness is constructed as the dimensionless ratio between a shape's perimeter ($P$) and area ($A$), with constants added to the denominator such that it produces the value 1 for a circle. The formula is the following:
+
+\begin{equation}
+C_{2D} = \frac{P^2}{4{\pi}A}
+\end{equation}
+
+Because the system requires such a metric to be used for 3D shapes, a similar formula has been derived. We begin by replacing perimeter and area with surface area ($S$) and volume ($V$), their equivalent 3D metrics:
+
+\begin{equation}
+\frac{S}{V}
+\end{equation}
+
+As the result must be dimensionless, these measures must be raised to adequate powers so that their units of measurement cancel out:
+
+\begin{equation}
+\frac{S^3}{V^2}
+\end{equation}
+
+Lastly, the constant ($x$) for the denominator must be determined by ensuring the derived formula will give 1 as the result if the shape in question is a perfect sphere:
+
+\begin{equation}
+\frac{(4\pi R^2)^3}{x(\frac{4}{3}\pi R^3)^2} = 1
+\end{equation}
+
+Solving for $x$, we obtain the result 36$\pi$. Thus, the final compactness formula is:
+
+\begin{equation}
+C_{3D} = \frac{S^3}{36\pi V^2}
+\end{equation}
+
+As mentioned at the start of this question, we use the inverse metric of compactness, circularity, due to the fact that it produces values only between 0 and 1; 1 if the shape is a sphere, and very close to 0 if the shape has a very uneven contour.
+
+\begin{equation}
+Circularity = \frac{36\pi V^2}{S^3}
+\end{equation}
+
+In the program, the two models in \textit{Figure 5} above return expected results for circularity. For the human face (a), the computation returns a value of 0.311646, much larger than the one for the leopard (b), 0.059514.
+
 \subsubsection{Normalizing  features}
-The three features bounding box volume, eccentricity, and compactness all fall in the range [0,1]. If the surface area feature is also to be normalized in this range, extent normalization has to be used by using its minimum and maximum value. However this feature has large outliers. For example the minimum of 1 and maximum of 36 is used to normalize, the distance between a surface area of 3 and 1 would become 0.0571. Even though these 2 meshes would be very different in terms of surface area, their distance does not reflect this. Therefore standardization is used for this feature, and to be consistent, it will also be used for all the other  features. 
+The three features bounding box volume, eccentricity, and circularity all fall in the range [0,1]. If the surface area feature is also to be normalized in this range, extent normalization has to be used by using its minimum and maximum value. However this feature has large outliers. For example the minimum of 1 and maximum of 36 is used to normalize, the distance between a surface area of 3 and 1 would become 0.0571. Even though these 2 meshes would be very different in terms of surface area, their distance does not reflect this. Therefore standardization is used for this feature, and to be consistent, it will also be used for all the other  features. 
 Each new feature value will be calculated with the following formula
 \begin{equation}
 f'_{i,j} = \frac{f_{i,j} - \mu_i}{\delta_i},\quad i \in \{SA,BBV,ECC,DI,C\}
 \end{equation}
-Where $\mu_i$ is the average for feature i, $\delta_i$ the standard deviation, and $f_{i,j}$ the feature value for the $jth$ mesh. This standardization changes  the average of a feature to 0 and the standard deviation to 1. Meaning that if two different feature values differ one standard deviation from each other, there distance will be one. The table below shows the new description values of the different  features.
+Where $\mu_i$ is the average for feature i, $\delta_i$ the standard deviation, and $f_{i,j}$ the feature value for the $jth$ mesh. This standardization changes  the average of a feature to 0 and the standard deviation to 1. Meaning that if two different feature values differ one standard deviation from each other, there distance will be one. The table below shows the new description values of the different features.
 
 \begin{center}
     \begin{tabular}{ | l | l | l | l | l |}
@@ -404,12 +443,12 @@ $FN = N_{c_l} - TP$\\
 Where $c_i$ is the class label of item $i$, $k$ the number of items in the dataset, and $N_{c_l}$ the number of items in the class of query item l. 
 
 \subsection{Evaluation metric}
-There are many evaluation metric that can be used. Furthermore, there are different aspects of the system for which the performance can be evaluated. For example the performance for a single item in the dataset, the average performance of a class, and the overall performance. In the evaluation of this system the performance for each item will be calculated and from those measurements the class averages, and overall performance will be derived. 
-Two interesting evaluation metric are precision and recall. Precision says how many of the returned items in the query are of the correct class, while recall says how many of the correct class are represented in the query. The problem with recall however is that is highly dependent on the size of the query. A query of size 1 can never have a recall of 1, assuming that the class size is higher than 1. Therefore the recall is not a useful performance metric for this system, because it gives little insight. A large query size will result in a high recall and a low query size in low recall. The more interesting metric is precision whose definition is given below.
+There are many evaluation metrics that can be used. Furthermore, there are different aspects of the system for which the performance can be evaluated. For example the performance for a single item in the dataset, the average performance of a class, and the overall performance of the program. In the evaluation of this system the performance for each item will be calculated and, from those measurements, the class averages, and overall performance will be derived. 
+Two interesting evaluation metrics are precision and recall. Precision shows how many of the returned items in the query are of the correct class, while recall shows how many of the correct class are represented in the query. The problem with recall however is that it is highly dependent on the size of the query. A query of size 1 can never have a recall of 1, assuming that the class size is higher than 1. Therefore the recall is not a useful performance metric for this system, because it gives little insight. A large query size will result in a high recall and a low query size in low recall. The more interesting metric is precision whose definition is given below.
 \begin{equation}
 Precision = \frac{TP}{TP+FP}
 \end{equation}
-Another problem that arrives is what query size the evaluation metric should be calculated for. A universal query size is undesirable, because there are large discrepancies between the sizes of different classes. A class with only five different items will have a terrible performance when the query size is set at 100, because the maximum precision is $\frac{5}{100}$. 
-Furthermore even for a specific class choosing the query size is an arbitrary decision. Therefore the Mean Average Precision (MAP) is used. Instead of choosing a single query size, $k = N_{c_l}$ different query sizes will be chosen. The query result that is returned by the matching algorithm is an ordered list of ascending distance values of size $d$, where $d$ is the size of the database. Than for each $i \in {1,...,k}$, the precision and accuracy are calculated for the first $i$ elements in the query. The precision for a specific model is than the average of these values. The MAP quality metric is than the mean of these averages of all the different models. Furthermore the MAP can also be calculated for each individual class, giving insight in what types of models the retrieval system works best on. 
+Another problem that arrives is what query size the evaluation metric should be calculated for. A universal query size is undesirable, because there are large discrepancies between the sizes of different classes. A class with only five items will have a terrible performance when the query size is set to 100, because the maximum precision is $\frac{5}{100}$. 
+Furthermore, even for a specific class, choosing the query size is an arbitrary decision. Therefore the Mean Average Precision (MAP) is used. Instead of choosing a single query size, $k = N_{c_l}$ different query sizes will be chosen. The query result that is returned by the matching algorithm is an ordered list of ascending distance values of size $d$, where $d$ is the size of the database. Then, for each $i \in {1,...,k}$, the precision and accuracy are calculated for the first $i$ elements in the query. The precision for a specific model is then the average of these values. The MAP quality metric is the mean of these averages across all models. Furthermore, the MAP can also be calculated for each individual class, giving insight into what types of models the retrieval system works best on. 
 
 \end{document}

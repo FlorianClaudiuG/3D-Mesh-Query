@@ -41,6 +41,9 @@ histFeature::histFeature(int n, float min, float max, float* values, int nvalues
 		bins[i] /= assignedValues;//normalize so that total value of histogram of 
 	}
 	delete[] values;//wont be needed anymore
+	if (assignedValues != nvalues) {
+		cout << "value didnt fit in bin, should be " << nvalues << ", is really " << assignedValues << endl;
+	}
 	//cout << "should be: " << 1 << ", is really: " << nAssigned << endl;
 };
 
@@ -225,7 +228,7 @@ scalarFeature* eccentricity(UnstructuredGrid3D* g){
 	pcabuildbasis(input, numberPoints, 3, info, eigenValues, eigenVector);
 	float val = eigenValues[2] / eigenValues[0];
 
-	val = standardization(val, 0.148089259, 0.182812364);
+	val = standardization(val, 0.148089259, 0.182812364);//hardcoded standardization values gained from analyzing the feature table
 
 	scalarFeature* f = new scalarFeature(val, "Ecc");
 	return f;
@@ -233,30 +236,23 @@ scalarFeature* eccentricity(UnstructuredGrid3D* g){
 
 scalarFeature* compactness(UnstructuredGrid3D* g)
 {	
-	float totalArea = 0;
-	for (int i = 0; i < g->numCells(); i++) {
-		int vertexIndex[3];//indexes of points
-		float a[3];
-		float b[3];
-		float c[3];
-		g->getCell(i, vertexIndex);
-		g->getPoint(vertexIndex[0], a);
-		g->getPoint(vertexIndex[1], b);
-		g->getPoint(vertexIndex[2], c);
-
-		totalArea += triangleArea(a, b, c);
-	}
-	float A = totalArea;
-	float n = g->numCells();
-	float z = cbrt(n);
-	float C = (n - (A / 6.0f)) / (n - (z * z));
+	float C = g->computeCircularity();
+	
+	C = standardization(C, 0.075533213, 0.137364272);
 	
 	scalarFeature* f = new scalarFeature(C, "CO");
 	return f;
 }
 
 scalarFeature* diameter(UnstructuredGrid3D* g) {
-	scalarFeature* f = new scalarFeature(1, "di");//g->getDiameter(2000)
+	float d = max(g->getDiameter(2000,0),g->getDiameter(2000,1));
+	d = max(d, g->getDiameter(2000, 2));
+	d = max(d, g->getDiameter(2000, 3));
+	d = max(d, g->getDiameter(2000, 4));
+	
+	d = standardization(d, 1.055276205, 0.088772773);
+
+	scalarFeature* f = new scalarFeature(d, "di");//get diameter for 2000 sample points of the grid
 	return f;
 }
 
@@ -291,7 +287,7 @@ histFeature* D1(UnstructuredGrid3D* g, int n, int nBins) {
 		values[i] = newValue;
 	}
 	float tmax = sqrt(2);
-	float binSize = tmax / 20;//20 bins each bin is 1/20
+	float binSize = tmax / 20.0f;//20 bins each bin is 1/20
 	histFeature* h = new histFeature(nBins, 0, binSize*15, values, n,"D1");//*15 because only first 15 bins used
 	
 	return h;
@@ -362,7 +358,7 @@ histFeature* A3(UnstructuredGrid3D* g, int n, int nBins) {
 	
 	double PI = 3.14159265358979323846;  /* pi */
 	double binSize = PI / 20;
-	histFeature* h = new histFeature(nBins, 6*binSize, PI, values, n, "A3");
+	histFeature* h = new histFeature(nBins, binSize*6, PI, values, n, "A3");
 	return h;
 }
 
@@ -488,11 +484,11 @@ float getFeatureDistance(feature* f1, feature* f2)
 	}
 }
 
-float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2)
+float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2, float* weights)
 {
 	float d = 0;
 	for (int i = 0; i < fv1->nFeatures; i++) {
-		d += getFeatureDistance(fv1->features[i], fv2->features[i]);
+		d += (weights[i] * getFeatureDistance(fv1->features[i], fv2->features[i]));
 		//cout <<to_string(i) << ": " <<  to_string(getFeatureDistance(fv1->features[i], fv2->features[i])) << endl;
 	}
 	return sqrt(d);

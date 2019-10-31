@@ -38,6 +38,7 @@ class gridFeatures {
 public:
 	feature** features;
 	int nFeatures;
+	string modelName = "";
 
 	gridFeatures(UnstructuredGrid3D* g, int samples, int binsA3, int binsD1, int binsD2, int binsD3, int binsD4);
 	gridFeatures(string featString, int* binnrs, int nScalar, int nHist);
@@ -65,7 +66,7 @@ histFeature* D4(UnstructuredGrid3D* g, int n, int nBins);
 histFeature* A3(UnstructuredGrid3D* g, int n, int nBins);
 
 //distance functions
-float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2);
+float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2, float* weights);
 float featureDistance(scalarFeature* f1, scalarFeature* f2);
 float featureDistance(histFeature* f1, histFeature* f2);
 

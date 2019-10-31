@@ -19,6 +19,9 @@
     <Filter Include="Header Files\MeshDecimation">
       <UniqueIdentifier>{495b7597-70ef-4381-8087-092f7baf1c5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\KNN">
+      <UniqueIdentifier>{fcc5e75e-8b5d-4e24-b94f-32b3267ddbdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MeshRenderer.cpp">
@@ -136,6 +139,51 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PSBClaParse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\ANN.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\bd_fix_rad_search.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\bd_pr_search.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\bd_search.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\bd_tree.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\brute.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\kd_dump.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\kd_fix_rad_search.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\kd_pr_search.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\kd_search.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\kd_split.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\kd_tree.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\kd_util.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="include\KNN\src\perf.cpp">
+      <Filter>Header Files\KNN</Filter>
+    </ClCompile>
+    <ClCompile Include="Kdd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -288,6 +336,45 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PSBClaParse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\ANN\ANN.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\ANN\ANNperf.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\ANN\ANNx.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\bd_tree.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\kd_fix_rad_search.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\kd_pr_search.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\kd_search.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\kd_split.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\kd_tree.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\kd_util.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\pr_queue.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KNN\src\pr_queue_k.h">
+      <Filter>Header Files\KNN</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Kdd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

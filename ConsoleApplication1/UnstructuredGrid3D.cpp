@@ -1,4 +1,5 @@
 #include "include/UnstructuredGrid3D.h"
+#include "include/featureExtraction.h"
 
 void UnstructuredGrid3D::getPoint(int i,float* p)
 {
@@ -224,12 +225,12 @@ float UnstructuredGrid3D::computeCircularity()
 {
 
 	float area = getTotalArea();
-	cout << "area: " << area << endl;
+	//cout << "area: " << area << endl;
 	float volume = getVolume();
-	cout << "volume: " << volume << endl;
+	//cout << "volume: " << volume << endl;
 	float compactness = pow(area, 3) / (pow(volume, 2) * 36.0f * 3.14159265f);
-	cout << "compactness: " << compactness << endl;
-	return 1.0f / compactness + 0.0000001f;
+	//cout << "compactness: " << compactness << endl;
+	return (1.0f / (compactness + 0.0000001f));
 }
 
 float UnstructuredGrid3D::getTotalArea()
@@ -238,7 +239,15 @@ float UnstructuredGrid3D::getTotalArea()
 
 	for (int i = 0; i < numCells(); i++)
 	{
-		area += getCellArea(i);
+		int vertices[3]{};
+		getCell(i, vertices);
+
+		float p1[3], p2[3], p3[3];
+		getPoint(vertices[0], p1);
+		getPoint(vertices[1], p2);
+		getPoint(vertices[2], p3);
+		float triArea = triangleArea(p1, p2, p3);
+		area += triArea;
 	}
 
 	return area;
@@ -277,16 +286,16 @@ float UnstructuredGrid3D::signedVolumeOfTetrahedron(float* p1, float* p2, float*
 	return (1.0f / 6.0f) * (-v321 + v231 + v312 - v132 - v213 + v123);
 }
 
-float UnstructuredGrid3D::getDiameter(int sampleSize)
+float UnstructuredGrid3D::getDiameter(int sampleSize, int seed)
 {
 		float maxDist = 0;
-		if (sampleSize == 0)
-		{
+		if (sampleSize == 0){
 			sampleSize = numPoints();
 		}
+
 		vector<int> randomIndex;
 		randomIndex.resize(sampleSize);
-		srand(0);
+		srand(seed);
 		for (int i = 0; i < sampleSize; i++) {
 			randomIndex[i] = rand() % numPoints();//get random existing index
 		}

@@ -253,11 +253,11 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/m0.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/m94.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY(filename);
-
+	
 	glutInit(&argc, argv);								//1.  Initialize the GLUT toolkit
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	//2.  Ask GLUT to create next windows with a RGB framebuffer and a Z-buffer too
@@ -289,7 +289,7 @@ int main(int argc, char* argv[])							//Main program
 			cout << categories->_categories[i]->_models[0] << "\n";
 		}
 	}*/
-
+	
 	grid = rdr.read(filename);
 	cout << grid->getVolume() << "\n";
 	//ss.addTriangle(*grid, 0);

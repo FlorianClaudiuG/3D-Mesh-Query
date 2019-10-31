@@ -223,7 +223,6 @@ vector<Cell> UnstructuredGrid3D::sortCellsByArea()
 
 float UnstructuredGrid3D::computeCircularity()
 {
-
 	float area = getTotalArea();
 	//cout << "area: " << area << endl;
 	float volume = getVolume();
@@ -231,6 +230,9 @@ float UnstructuredGrid3D::computeCircularity()
 	float compactness = pow(area, 3) / (pow(volume, 2) * 36.0f * 3.14159265f);
 	//cout << "compactness: " << compactness << endl;
 	return (1.0f / (compactness + 0.0000001f));
+	cout << "volume: " << volume << endl;
+	float circularity = (pow(volume, 2) * 36.0f * 3.14159265f) / pow(area, 3);
+	return circularity;
 }
 
 float UnstructuredGrid3D::getTotalArea()

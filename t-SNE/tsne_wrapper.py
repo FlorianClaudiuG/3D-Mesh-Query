@@ -7,7 +7,7 @@ import seaborn as sns
 import sys
 import mplcursors
 
-perplexity = 70.0
+perplexity = 100.0
 
 fin = open("featureFinal.csv", 'r')
 labelsFile = open("labels.txt", 'r')

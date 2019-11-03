@@ -44,12 +44,12 @@ KNNBuilder::KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids)
 		nDims);						// dimension of space
 }
 
-ANNidxArray KNNBuilder::KNNSearch(gridFeatures* f, int k){
-	ANNidxArray			nnIdx;					// near neighbor indices
-	ANNdistArray		dists;					// near neighbor distances
+void KNNBuilder::KNNSearch(gridFeatures* f, int k, ANNdistArray& dists, ANNidxArray& indices){
+	//ANNidxArray			nnIdx;					// near neighbor indices
+	//ANNdistArray		dists;					// near neighbor distances
 	ANNpoint			queryPt;				// query point
 
-	nnIdx = new ANNidx[k];						// allocate near neigh indices
+	indices = new ANNidx[k];						// allocate near neigh indices
 	dists = new ANNdist[k];
 	queryPt = annAllocPt(nDims);					// allocate query point
 		
@@ -58,7 +58,7 @@ ANNidxArray KNNBuilder::KNNSearch(gridFeatures* f, int k){
 	kdTree->annkSearch(						// search
 		queryPt,						// query point
 		k,								// number of near neighbors
-		nnIdx,							// nearest neighbors (returned)
+		indices,							// nearest neighbors (returned)
 		dists,							// distance (returned)
 		eps);							// error bound
 
@@ -67,8 +67,6 @@ ANNidxArray KNNBuilder::KNNSearch(gridFeatures* f, int k){
 		dists[i] = sqrt(dists[i]);			// unsquare distance
 		//cout << "\t" << i << "\t" << nnIdx[i] << "\t" << dists[i] << "\n";
 	}
-
-	return nnIdx;
 }
 
 void KNNBuilder::readPoint(ANNpoint p, gridFeatures* f) {

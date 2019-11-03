@@ -414,6 +414,32 @@ Where N gives the euclidean norm of a vector, and atan2 the angle in the euclide
   \label{fig:eccentricity}
 \end{figure}
 
+\subsection{Feature vector}
+A model $i$ can be represented in the system using its feature vector $F_i$. This is created by combining all of the previously discussed features $f_{i,j}$.
+\begin{equation}
+F_i = \{f_{1,j}, f_{2,j}, .. , f_{10,j}\}
+\end{equation}
+Each $f_{i,j}$ is a list of $k$ values, where $k$ is 1 for the scalar values and 12 for the histogram values.
+
+\begin{center}
+\begin{tabular}
+{ l | l | l | l | l | l}
+i & feature name & k & min & max\\ \hline
+1 & surface area & 1 \\
+2 & bounding box volume & 1 \\
+3 & eccentricity & 1 \\
+4 & circularity & 1 \\
+5 & diameter & 1 \\
+6 & distance to barycenter & 12 \\
+7 & distance between two points & 12 \\
+8 & area of a random triangle & 12 \\
+9 & area of a random tetrahedron & 12 \\
+10 & angle between 3 random vertices & 12 \\
+\end{tabular}
+\end{center}
+The feature vector is thus a list of 65 values.
+
+
 \section{Matching}
 All the features discussed in the previous section are calculated for each mesh and put in a single feature vector $x = (x_1,...,x_n)$ where each $x_i$ is a single feature. To compare different meshes the distance is to be calculated between their two feature vector. If feature vector $x$ is compared with a different feature vector $y = (y_1,...y_3$, each of their features will be compared individually and the sum of these distances will be regarded as the distance between the two feature vectors.
 
@@ -450,5 +476,209 @@ Precision = \frac{TP}{TP+FP}
 \end{equation}
 Another problem that arrives is what query size the evaluation metric should be calculated for. A universal query size is undesirable, because there are large discrepancies between the sizes of different classes. A class with only five items will have a terrible performance when the query size is set to 100, because the maximum precision is $\frac{5}{100}$. 
 Furthermore, even for a specific class, choosing the query size is an arbitrary decision. Therefore the Mean Average Precision (MAP) is used. Instead of choosing a single query size, $k = N_{c_l}$ different query sizes will be chosen. The query result that is returned by the matching algorithm is an ordered list of ascending distance values of size $d$, where $d$ is the size of the database. Then, for each $i \in {1,...,k}$, the precision and accuracy are calculated for the first $i$ elements in the query. The precision for a specific model is then the average of these values. The MAP quality metric is the mean of these averages across all models. Furthermore, the MAP can also be calculated for each individual class, giving insight into what types of models the retrieval system works best on. 
+
+\begin{minipage}{\linewidth}
+\begin{center}
+\begin{tabular}
+{ l | l | l | l}
+\textbf{class name} & \textbf{MAP} & \textbf{Precision at k} & \textbf{Observed model count} \\ \hline
+winged vehicle & 0.416308 & 0.666527 & 239 \\ \hline
+balloon vehicle & 0.116555 & 0.14375 & 16 \\ \hline
+helicopter & 0.123383 & 0.22 & 35 \\ \hline
+arthropod & 0.0545013 & 0.103704 & 27 \\ \hline
+human & 0.394029 & 0.648993 & 149 \\ \hline
+trex & 0.0641384 & 0.0833333 & 6 \\ \hline
+flying creature & 0.0340165 & 0.05 & 26 \\ \hline
+quadruped & 0.120444 & 0.232258 & 31 \\ \hline
+snake & 0.0491144 & 0.05 & 4 \\ \hline
+underwater creature & 0.131797 & 0.231429 & 35 \\ \hline
+blade & 0.20551 & 0.257895 & 19 \\ \hline
+head & 0.292354 & 0.496104 & 77 \\ \hline
+hand & 0.11159 & 0.176471 & 17 \\ \hline
+skeleton & 0.409468 & 0.18 & 5 \\ \hline
+torso & 0.549304 & 0.15 & 4 \\ \hline
+bridge & 0.103303 & 0.09 & 10 \\ \hline
+building & 0.08743 & 0.161225 & 98 \\ \hline
+chess piece & 0.203151 & 0.276471 & 17 \\ \hline
+chest & 0.0761211 & 0.0285714 & 7 \\ \hline
+city & 0.0492937 & 0.0894737 & 19 \\ \hline
+display device & 0.111166 & 0.18 & 40 \\ \hline
+door & 0.301497 & 0.439286 & 28 \\ \hline
+dragon & 0.0524088 & 0.05 & 6 \\ \hline
+fireplace & 0.0110214 & 0 & 6 \\ \hline
+bed & 0.0463207 & 0.0625 & 8 \\ \hline
+cabinet & 0.0725405 & 0.0666667 & 9 \\ \hline
+seat & 0.159862 & 0.327273 & 77 \\ \hline
+shelves & 0.172277 & 0.276923 & 26 \\ \hline
+table & 0.167187 & 0.342308 & 78 \\ \hline
+geographic map & 0.0562935 & 0.1 & 11 \\ \hline
+gun & 0.112295 & 0.178571 & 28 \\ \hline
+hat & 0.152967 & 0.2125 & 16 \\ \hline
+ladder & 0.0446827 & 0.075 & 4 \\ \hline
+lamp & 0.0475397 & 0.0863636 & 22 \\ \hline
+liquid container & 0.0873931 & 0.19661 & 59 \\ \hline
+mailbox & 0.022605 & 0.0285714 & 7 \\ \hline
+microchip & 0.0683838 & 0.0285714 & 7 \\ \hline
+musical instrument & 0.0932159 & 0.15 & 22 \\ \hline
+plant & 0.194478 & 0.391111 & 135 \\ \hline
+satellite dish & 0.0023526 & 0 & 4 \\ \hline
+sea vessel & 0.098209 & 0.229545 & 44 \\ \hline
+shoe & 0.0831799 & 0.0875 & 8 \\ \hline
+sign & 0.0635423 & 0.1125 & 16 \\ \hline
+sink & 0.00389432 & 0 & 4 \\ \hline
+slot machine & 0.0768283 & 0.075 & 4 \\ \hline
+snowman & 0.15229 & 0.0833333 & 6 \\ \hline
+swingset & 0.0991632 & 0.1 & 4 \\ \hline
+staircase & 0.00529275 & 0 & 7 \\ \hline
+handheld & 0.0996813 & 0.202459 & 122 \\ \hline
+car & 0.24536 & 0.483636 & 110 \\ \hline
+cycle & 0.125922 & 0.138462 & 13 \\ \hline
+train & 0.0980175 & 0.0571429 & 7 \\ \hline
+wheel & 0.0992868 & 0.158824 & 17 \\ \hline
+\textbf{total} & \textbf{0.200032} & \textbf{0.341537} & \textbf{1796} \\ \hline
+\end{tabular}
+\end{center}
+\begin{center}
+Table ?. Performance evaluation using MAP and precision at k (k=10)
+\end{center}
+\end{minipage}
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/m92.png}
+    \caption*{d=0}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos1.png}
+    \caption*{d=0.27}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos2.png}
+    \caption*{d=0.27}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos3.png}
+    \caption*{d=0.31}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos4.png}
+    \caption*{d=0.34}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos5.png}
+    \caption*{d=0.36}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos6.png}
+    \caption*{d=0.36}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos7.png}
+    \caption*{d=0.37}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos8.png}
+    \caption*{d=0.37}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos9.png}
+    \caption*{d=0.38}
+  \end{subfigure}
+  \caption{Query results and their distances for model m92}
+  \label{fig:bunny}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/m42.png}
+    \caption*{d=0}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos1.png}
+    \caption*{d=0.24}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos2.png}
+    \caption*{d=0.32}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos3.png}
+    \caption*{d=0.34}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos4.png}
+    \caption*{d=0.34}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos5.png}
+    \caption*{d=0.34}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos6.png}
+    \caption*{d=0.35}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos7.png}
+    \caption*{d=0.36}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos8.png}
+    \caption*{d=0.37}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos9.png}
+    \caption*{d=0.37}
+  \end{subfigure}
+  \caption{Query results and their distances for model m42}
+  \label{fig:bunny}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/m134.png}
+    \caption*{d=0}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos1.png}
+    \caption*{d=0.14}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos2.png}
+    \caption*{d=0.17}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos3.png}
+    \caption*{d=0.18}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos4.png}
+    \caption*{d=0.19}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos5.png}
+    \caption*{d=0.19}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos6.png}
+    \caption*{d=0.20}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos7.png}
+    \caption*{d=0.20}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos8.png}
+    \caption*{d=0.21}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.09\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos9.png}
+    \caption*{d=0.21}
+  \end{subfigure}
+  \caption{Query results and their distances for model m134}
+  \label{fig:bunny}
+\end{figure}
 
 \end{document}

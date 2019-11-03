@@ -15,7 +15,7 @@ public:
 	KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids);
 
 	//KNN search for the first k neighbours of featurevector f, returns list of indices.
-	ANNidxArray KNNSearch(gridFeatures* f, int k);
+	void KNNSearch(gridFeatures* f, int k, ANNdistArray &dists, ANNidxArray &indices);
 
 private:
 	void readPoint(ANNpoint p, gridFeatures* f);

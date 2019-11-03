@@ -13,6 +13,9 @@
 #include "include/FourStepNorm.h"
 #include "Supersampler.h"
 #include "PSBClaParse.h"
+#include "include/Matching.h"
+#include "include/featureExtraction.h"
+#include "include/Kdd.h"
 
 //Files for pmp (used for mesh decimation)
 #include "include/MeshDecimation/SurfaceMesh.h"
@@ -26,7 +29,9 @@ float z_far = 30;
 MeshRenderer		renderer;
 UnstructuredGrid3D* grid = 0;
 int					drawing_style = 0;
+int					modelToDraw = 0;//index of the model of the 
 
+vector<distanceObject> resultQuery;
 
 void viewing(int W, int H)								//Window resize function, sets up viewing parameters (GLUT callback function)
 {
@@ -60,7 +65,7 @@ void mousemotion(int x, int y)							//Callback for mouse move events. We use th
 
 void setCamera()
 {
-	float eye_x = 1.2, eye_y = 1.2, eye_z = -1.0f;				//Modelview (camera extrinsic) parameters
+	float eye_x = 0, eye_y = 0.2, eye_z = 1.5f;				//Modelview (camera extrinsic) parameters
 	float c_x = 0, c_y = 0, c_z = 0;
 	float up_x = 0, up_y = 0, up_z = -1;
 	glMatrixMode(GL_MODELVIEW);							//1. Set the modelview matrix (including the camera position and view direction)
@@ -82,9 +87,26 @@ void keyboard(unsigned char c, int, int)					//Callback for keyboard events:
 		renderer.setDrawingStyle((MeshRenderer::DRAW_STYLE)drawing_style);
 		break;
 	}
+	case 'n':
+	{
+		OffReader off;
+		delete grid;
+		cout << "number in query result: " << modelToDraw + 1 << "| ";
+		resultQuery[modelToDraw].printDistance();
+		grid = off.ReadOffFile(resultQuery[modelToDraw].pathName.c_str());
+		grid->computeFaceNormals();
+		grid->computeVertexNormals();
+		glutSetWindowTitle(("Position: " + to_string(modelToDraw + 1) + " | name: " + 
+										resultQuery[modelToDraw].name + " | label: " + 
+										resultQuery[modelToDraw].label + " | distance: " +	
+										to_string(resultQuery[modelToDraw].dValue)).c_str());
+		cout <<resultQuery.size() << endl;
+		modelToDraw = (modelToDraw+1) % (resultQuery.size());
+		break;
+	}
 	case 'R':											// 'r','R': Reset the viewpoint
 	case 'r':
-		
+
 		setCamera();
 		//glViewport(0, 0, 500, 500);
 		//glMatrixMode(GL_MODELVIEW);
@@ -107,6 +129,7 @@ void generateDatabaseOverview(string outputDest, string dbLocation)
 	namespace fs = std::experimental::filesystem;
 	UnstructuredGrid3D* mesh;
 	meshDescription::writeColumnString(outputDest);
+	OffReader off;
 
 	for (const auto& entry : fs::directory_iterator(path)) {
 		string directoryName = entry.path().filename().string(); //name of current directory
@@ -115,20 +138,41 @@ void generateDatabaseOverview(string outputDest, string dbLocation)
 			string pathName = entry2.path().string();
 			string fileName = pathName + "\\" + directoryName2 + ".off";
 
-			OFFConverter* converter = new OFFConverter();
-			converter->ConvertOFFToPLY(fileName);
-
-			PlyReader rdr;										
-			mesh = rdr.read((pathName + "\\" + directoryName2 + ".ply").c_str());
-
-			mesh->normalize();
+			mesh = off.ReadOffFile(fileName.c_str());
 
 			meshDescription newMesh = meshDescription(mesh, directoryName, directoryName2);
 			newMesh.writeDescriptionsToFile(outputDest);
 			delete mesh;
-			delete converter;
 		}
+	}
+}
 
+void generateFeatureTable(string outputDest, string dbLocation)
+{
+	string path = dbLocation;
+	namespace fs = std::experimental::filesystem;
+	UnstructuredGrid3D* mesh;
+
+	for (const auto& entry : fs::directory_iterator(path)) {
+		string directoryName = entry.path().filename().string(); //name of current directory
+		for (const auto& entry2 : fs::directory_iterator(entry.path())) {
+			string directoryName2 = entry2.path().filename().string();
+			string pathName = entry2.path().string();
+			string fileName = pathName + "\\" + directoryName2 + ".off";
+
+			OffReader off;
+			mesh = off.ReadOffFile(fileName.c_str());
+
+			gridFeatures feat = gridFeatures(mesh, 100000, 12, 12, 12, 12, 12);
+			string featString = feat.featuresToString();
+
+			ofstream myfile;
+			myfile.open(outputDest, ios::out | ios::app);
+			myfile << directoryName2 << "," << featString << endl;
+			myfile.close();
+			cout << fileName << endl;
+			delete mesh;
+		}
 	}
 }
 
@@ -193,7 +237,7 @@ void createDatabase(string path, int targetVertexCount)
 
 	OffReader ofr;//6.  Read a 3D mesh stored in a file in the PLY format
 	//grid = rdr.read(filename);
-	
+
 
 	for (const auto& entry : fs::directory_iterator(path))
 	{
@@ -204,7 +248,7 @@ void createDatabase(string path, int targetVertexCount)
 			string pathName = entry2.path().string();
 			string fileName = pathName + "\\" + directoryName2 + ".off";
 			cout << fileName << endl;
-			
+
 			mesh = ofr.ReadOffFile(fileName.c_str());
 
 			if (mesh->numPoints() < targetVertexCount)
@@ -228,8 +272,8 @@ void createDatabase(string path, int targetVertexCount)
 			normalizer.flipTest(mesh); //Step 3. make sure most most mass (number triangles is on the let side)
 			normalizer.normalizeInCube(mesh); //Step 4. normalize the model
 
-			string databaseFile = "ShapeDB/benchmark/db/" +directoryName + "/" + directoryName2 + "/" + directoryName2 + ".off";
-			
+			string databaseFile = "ShapeDB/benchmark/db/" + directoryName + "/" + directoryName2 + "/" + directoryName2 + ".off";
+
 			OFFConverter* converter = new OFFConverter();
 			converter->WriteFileOFF(*mesh, databaseFile);
 
@@ -253,11 +297,11 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
 
-	const char* filename = (argc < 2) ? "DATA/m94.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
+	const char* filename = (argc < 2) ? "DATA/bunny.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY(filename);
-	
+
 	glutInit(&argc, argv);								//1.  Initialize the GLUT toolkit
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	//2.  Ask GLUT to create next windows with a RGB framebuffer and a Z-buffer too
@@ -266,56 +310,44 @@ int main(int argc, char* argv[])							//Main program
 	zprInit(0, 0, 0);										//5.  Initialize the viewpoint interaction-tool to look at the point (0,0,0)
 	setCamera();
 
-	//createDatabase("InputShapes/benchmark/db", 20000);
-
 	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
 	PlyWriter writer;
 	Supersampler ss;
 
-	//OFFConverter* converter = new OFFConverter();
-	//converter->ConvertOFFToPLY(filename);
-	//return 1;
-	//const char* newfile = "DATA/m43.ply";
+	OffReader ofr;
 	
-	char classFilePath[50] = "../classification/v1/coarse1/coarse1.cla";
-	/*
-	PSBCategoryList* categories = parseFile(classFilePath);
 
-	for (int i = 0; i < categories->_numCategories; i++)
-	{
-		cout << "Category " << i << ": " << categories->_categories[i]->_fullName << " and name " << categories->_categories[i]->_name << "\n";
-		if (categories->_categories[i]->_numModels > 0)
-		{
-			cout << categories->_categories[i]->_models[0] << "\n";
-		}
-	}*/
-	
-	grid = rdr.read(filename);
-	cout << grid->getVolume() << "\n";
-	//ss.addTriangle(*grid, 0);
+	//KNNBuilder knn = KNNBuilder(1796, 65, 10, "output/featureFinal.csv");
 
-	//ss.supersample(*grid, 20000);
-	//ss.supersample(*grid, 10000);
-
-	//writer.WritePlyFile(filename, grid);
-	//writer.WritePlyFile(filename, grid);
-
-	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
-	//generateDatabaseOverview("output/description.txt", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/psb_v1/benchmark/db");
-	
+	//grid = rdr.read("DATA/sphere.ply");
 	//Perform 4 step normalization on the model
-	FourStepNorm normalizer;
+	/*FourStepNorm normalizer;
 	normalizer.centerOnBary(grid); //Step 1. center on the barycenter (average x,y,z)
 	normalizer.PCA(grid); //Step 2. do PCA and use eigenvectors to translate all vertices
 	normalizer.flipTest(grid); //Step 3. make sure most most mass (number triangles is on the let side)
-	normalizer.normalizeInCube(grid); //Step 4. normalize the model
+	normalizer.normalizeInCube(grid); //Step 4. normalize the model*/
 	
-	grid->computeVertexNormals();
-	grid->computeFaceNormals();
+	grid = ofr.ReadOffFile("shapeDB/benchmark/db/0/m42/m42.off");
+	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
+	//knn.KNNSearch(&feat);
 
-	cout << grid->getVolume() << "\n";
-	cout << grid->getDistance(0, 1) << " " << grid->getDistance(1, 2) << " " << grid->getDistance(0, 2) << "\n";
-	cout << grid->computeCircularity() << "\n";
+	//grid = rdr.read(filename);
+	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
+	//cout << feat.featuresToString() << endl;
+
+	float weights[10] = { 1,1,1,1,1,1,1,1,1,1, };
+	gridMatcher matcher = gridMatcher("output/featureTableFinal.csv", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/shapeDB/benchmark/db/");
+
+	//matcher.matchAll(weights, 10);
+	//matcher.matchAll("shapeDB/benchmark/db/", weights, 10);
+	resultQuery = matcher.matchSingle(grid, "m42", 10, weights);
+	//generateFeatureTable("output/featureTable.txt", "shapeDB/benchmark/db/");
+	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
+	//generateDatabaseOverview("output/description.txt", "shapeDB/benchmark/db/");
+
+	grid->computeFaceNormals();
+	grid->computeVertexNormals();
+	
 
 	glutMouseFunc(mouseclick);							//9.  Bind the mouse click and mouse drag (click-and-move) events to callbacks. This allows us
 	glutMotionFunc(mousemotion);							//    next to control the viewpoint interactively.
@@ -323,7 +355,7 @@ int main(int argc, char* argv[])							//Main program
 	glutDisplayFunc(draw);								//10. Add a drawing callback to the window	
 	glutReshapeFunc(viewing);							//11. Add a resize callback to the window
 	glutMainLoop();										//12. Start the event loop that displays the graph and handles window-resize events
-	
+
 	return 0;
 }
 

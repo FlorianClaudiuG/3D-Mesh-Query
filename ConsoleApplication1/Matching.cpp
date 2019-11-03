@@ -11,9 +11,13 @@
 #include <string>
 #include <map>
 
-gridMatcher::gridMatcher(string tableLocation) {
+gridMatcher::gridMatcher(string ntableLocation, string ndatabaseLocation) {
+	tableLocation = ntableLocation;
+	databaseLocation = ndatabaseLocation;
+	
 	readLabelData();
-	readFeatureTable(nGrids, tableLocation);
+	readFeatureTable(nGrids);
+	getFileLocations();
 
 	knn = new KNNBuilder(nGrids, nDims, grids, nGrids);
 }
@@ -40,7 +44,7 @@ void gridMatcher::readLabelData(){
 	}
 }
 
-void gridMatcher::readFeatureTable(int n, string tableLocation){
+void gridMatcher::readFeatureTable(int n){
 	ifstream infile(tableLocation);
 	string line;
 	string name;
@@ -74,12 +78,12 @@ void labelData::addPrecision(float p) {
 	precision += p;
 }
 
-void labelData::addRecall(float r) {
+void labelData::addprecisionAtk(float r) {
 	//add recall of a model to its class
-	recall += r;
+	precisionAtk += r;
 }
 
-void gridMatcher::matchAll(string databaseLocation, float* weights) {
+void gridMatcher::matchAll(float* weights, int k) {
 	namespace fs = std::experimental::filesystem;
 	UnstructuredGrid3D* mesh; //initalize mesh
 	OffReader ofr; //initialize offreader
@@ -101,20 +105,20 @@ void gridMatcher::matchAll(string databaseLocation, float* weights) {
 			labels[labelName].obsModels++;//count this model in the relevant class
 
 			float prec;//average precision over several query sizes
-			float rec;//average recall over several query sizes
+			float precisionAtk;//average recall over several query sizes
 
-			matchGrid(mesh, prec, rec, directoryName2, weights);//matchgrid with entire dataset
-			cout << "precision: " << prec << "| recall: " << rec << endl;
+			matchGrid(mesh, prec, precisionAtk, directoryName2, weights, k);//matchgrid with entire dataset
+			cout << "precision: " << prec << "| recall: " << precisionAtk << endl;
 
 			labels[modelClasses[directoryName2]].addPrecision(prec);
-			labels[modelClasses[directoryName2]].addRecall(rec);
+			labels[modelClasses[directoryName2]].addprecisionAtk(precisionAtk);
 
 			delete mesh;
 		}
 	}
 
 	float totalPrec = 0;
-	float totalRec = 0;
+	float totalprecisionAtk = 0;
 	float numberOfClasses = 0;
 	float totalInClasses = 0;
 	for (int i = 0; i < categories->_numCategories; i++)
@@ -123,45 +127,45 @@ void gridMatcher::matchAll(string databaseLocation, float* weights) {
 		int nObsModels = labels[labelName].obsModels;
 		if (nObsModels > 0) {
 			labels[labelName].precision /= nObsModels;
-			labels[labelName].recall /= nObsModels;
+			labels[labelName].precisionAtk /= nObsModels;
 
 			totalPrec += labels[labelName].precision * nObsModels;
-			totalRec += labels[labelName].recall * nObsModels;
+			totalprecisionAtk += labels[labelName].precisionAtk * nObsModels;
+			
 			totalInClasses += nObsModels;
-
 			numberOfClasses++;
 
-			cout << labelName << ": " << labels[labelName].precision << " " << labels[labelName].recall << " nModels: " << labels[labelName].nModels << " obsModels: " << labels[labelName].obsModels << endl;
+			cout << labelName << " & " << labels[labelName].precision << " & " << labels[labelName].precisionAtk << " & " << labels[labelName].obsModels << " \\\\ \\hline" << endl;
+			//cout << labelName << ": " << labels[labelName].precision << " " << labels[labelName].precisionAtk << " nModels: " << labels[labelName].nModels << " obsModels: " << labels[labelName].obsModels << endl;
 		}
 	}
-	cout << "MAP: " << totalPrec / totalInClasses << endl;
+	cout << totalInClasses << " " << numberOfClasses << endl;
+	cout << "MAP: " << totalPrec / totalInClasses << " | Precision at k: " << totalprecisionAtk /totalInClasses << endl;
 }
 
-void gridMatcher::matchGrid(UnstructuredGrid3D* g, float &prec, float &rec, string inputName, float* weights){
+vector<distanceObject> gridMatcher::matchSingle(UnstructuredGrid3D* g, string inputName, int k, float* weights)
+{
+	int totalDistances, totalLabel;
+	return getKNNDistances(g, tableLocation, inputName, totalDistances, totalLabel, weights, k+1);//k+1 because first line is ignored (model itself)
+}
+
+void gridMatcher::matchGrid(UnstructuredGrid3D* g, float &prec, float &precisionAtk, string inputName, float* weights, int k){
 	string inputLable = modelClasses[inputName];
 	int totalDistances = 0;//intialize to 0 for counting necessary because missing some models in our database
 	int totalInLable = 0;//initialize to 1 for counting classes in labels (grid itself is part of its own class.
 	
-	vector<distanceObject> distances = getKNNDistances(g, "output/featureFinal.csv", inputName, totalDistances, totalInLable, weights);
-	
+	//vector<distanceObject> distances = getKNNDistances(g, "output/featureFinal.csv", inputName, totalDistances, totalInLable, weights);
+	vector<distanceObject> distances = getDistances(g, "output/featureFinal.csv", inputName, totalDistances, totalInLable, weights);
+
+	//average precision for MAP calculation
 	float avgPrec = calculateAVP(distances, inputLable, totalInLable, totalDistances);
 
-	//wrong implementation MAP
-	float totalPrec = 0;
+	//precision at k for second performance measure
 	float totalRec = 0;
-	for (int i = 1; i <= totalInLable; i++) {
-		float precision;
-		float recall;
-		calculateAccuracy(distances, inputLable, totalInLable, totalDistances, i, precision, recall);
-				totalPrec += precision;
-		totalRec += recall;
-	}
-	totalPrec /= (totalInLable - 1.0f);//k different query sizes where k is all the class of a label, except the model itself, therefore total-1
-	totalRec /= (totalInLable -1.0f);
+	calculateAccuracy(distances, inputLable, totalInLable, totalDistances,k,precisionAtk,totalRec);
 
 	cout << totalInLable << " " << totalDistances << endl;
 	prec = avgPrec;//MAP
-	rec = totalRec;
 }
 
 vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int &totalDistances, int &totalInLable, float* weights) {
@@ -175,7 +179,7 @@ vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string t
 			continue;
 
 		float d = featureVectorDistance(f1, grids[i], weights);
-		distanceList.push_back(distanceObject(name, modelClasses[name], d));
+		distanceList.push_back(distanceObject(name, modelClasses[name], d,filePaths[name]));
 
 		labels[modelClasses[name]].addValue(d);
 		if (modelClasses[name] == modelClasses[inputName]) {
@@ -189,24 +193,26 @@ vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string t
 	return distanceList;
 }
 
-vector<distanceObject> gridMatcher::getKNNDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, float* weights) {
+vector<distanceObject> gridMatcher::getKNNDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, float* weights, int k) {
 	vector<distanceObject> distanceList;//store all distances with names
 
 	gridFeatures* f1 = new gridFeatures(g, 100000, 12, 12, 12, 12, 12);
-	ANNidxArray results = knn->KNNSearch(f1, nGrids);
-	for (int i = 0; i < nGrids; i++) {
-		int index = results[i];//index of the ith element of the resulting distance list
+	ANNdistArray distResults;
+	ANNidxArray indexResults;
+	knn->KNNSearch(f1, k,distResults,indexResults);
+	for (int i = 0; i < k; i++) {
+		int index = indexResults[i];//index of the ith element of the resulting distance list
 		string name = grids[index]->modelName;
 
 		if (name == inputName)//ignore the file itself (distance would always be 0)
 			continue;
-		distanceList.push_back(distanceObject(name, modelClasses[name], 0));
+		distanceList.push_back(distanceObject(name, modelClasses[name], distResults[i],filePaths[name]));
 		if (modelClasses[name] == modelClasses[inputName]) {
 			totalInLable++;
 		}
 		totalDistances++;
 	}
-
+	delete f1;
 	return distanceList;
 }
 
@@ -224,13 +230,7 @@ void gridMatcher::calculateAccuracy(vector<distanceObject> &distances, string in
 	int trueNegative = totalDistances - falseNegative - falsePositives - truePositives;
 	float prec = (float)truePositives / (float)(truePositives + falsePositives);
 	float rec = (float)truePositives / (float)(truePositives + falseNegative);
-	float accuracy = (float)(truePositives + trueNegative) / (float)(truePositives + trueNegative + falsePositives + falseNegative);
-	/*cout << "TP: " << truePositives << endl;
-	cout << "FP: " << falsePositives << endl;
-	cout << "TN: " << trueNegative << endl;
-	cout << "FN: " << falseNegative << endl;
-	cout << "precision: " << precision << " / recall: " << recall << endl;
-	cout << "accuracy: " << accuracy << endl;*/
+
 	precision = prec;
 	recall = rec;
 }
@@ -269,4 +269,23 @@ void printAllDistance(vector<distanceObject>& dists) {
 void distanceObject::printDistance()
 {
 	cout << name << "/" << label << ": " << dValue << endl;
+}
+
+void  gridMatcher::getFileLocations() {
+	namespace fs = std::experimental::filesystem;
+
+	//go through all models in the dataset
+	for (const auto& entry : fs::directory_iterator(databaseLocation))
+	{
+		string directoryName = entry.path().filename().string();
+		for (const auto& entry2 : fs::directory_iterator(entry.path()))
+		{
+			//read the file for this folder
+			string directoryName2 = entry2.path().filename().string();//filename, i.e. "m303"
+			string pathName = entry2.path().string();
+			string fileName = pathName + "\\" + directoryName2 + ".off";
+
+			filePaths[directoryName2] = fileName;
+		}
+	}
 }

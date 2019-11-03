@@ -252,7 +252,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "  Keyboard: visualization options:" << endl;
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
-
+	/*
 	const char* filename = (argc < 2) ? "DATA/m94.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
 	//OFFConverter* converter = new OFFConverter();
@@ -276,9 +276,12 @@ int main(int argc, char* argv[])							//Main program
 	//converter->ConvertOFFToPLY(filename);
 	//return 1;
 	//const char* newfile = "DATA/m43.ply";
-	
+	*/
 	char classFilePath[50] = "../classification/v1/coarse1/coarse1.cla";
-	/*
+	char outputFile[50] = "output/classes.txt";
+	
+	ofstream classFile(outputFile);
+
 	PSBCategoryList* categories = parseFile(classFilePath);
 
 	for (int i = 0; i < categories->_numCategories; i++)
@@ -287,9 +290,15 @@ int main(int argc, char* argv[])							//Main program
 		if (categories->_categories[i]->_numModels > 0)
 		{
 			cout << categories->_categories[i]->_models[0] << "\n";
+			for (int j = 0; j < categories->_categories[i]->_numModels; j++)
+			{
+				//possible crash trying to access models +1
+				classFile << categories->_categories[i]->_models[j] << "," << categories->_categories[i]->_name << "\n";
+			}
 		}
-	}*/
-	
+	}
+	classFile.close();
+	/*
 	grid = rdr.read(filename);
 	cout << grid->getVolume() << "\n";
 	//ss.addTriangle(*grid, 0);
@@ -323,7 +332,9 @@ int main(int argc, char* argv[])							//Main program
 	glutDisplayFunc(draw);								//10. Add a drawing callback to the window	
 	glutReshapeFunc(viewing);							//11. Add a resize callback to the window
 	glutMainLoop();										//12. Start the event loop that displays the graph and handles window-resize events
-	
+	*/
+
+
 	return 0;
 }
 

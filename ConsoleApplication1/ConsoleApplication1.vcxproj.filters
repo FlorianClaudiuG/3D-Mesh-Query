@@ -186,6 +186,9 @@
     <ClCompile Include="Kdd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Desktop\bhtsne\sptree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -375,6 +378,12 @@
       <Filter>Header Files\KNN</Filter>
     </ClInclude>
     <ClInclude Include="include\Kdd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\bhtsne\sptree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Desktop\bhtsne\vptree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

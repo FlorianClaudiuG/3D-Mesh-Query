@@ -327,7 +327,7 @@ int main(int argc, char* argv[])							//Main program
 	normalizer.flipTest(grid); //Step 3. make sure most most mass (number triangles is on the let side)
 	normalizer.normalizeInCube(grid); //Step 4. normalize the model*/
 	
-	grid = ofr.ReadOffFile("shapeDB/benchmark/db/0/m42/m42.off");
+	grid = ofr.ReadOffFile("shapeDB/benchmark/db/0/m94/m94.off");
 	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
 	//knn.KNNSearch(&feat);
 
@@ -340,7 +340,7 @@ int main(int argc, char* argv[])							//Main program
 
 	//matcher.matchAll(weights, 10);
 	//matcher.matchAll("shapeDB/benchmark/db/", weights, 10);
-	resultQuery = matcher.matchSingle(grid, "m42", 10, weights);
+	resultQuery = matcher.matchSingle(grid, "m94", 10, weights);
 	//generateFeatureTable("output/featureTable.txt", "shapeDB/benchmark/db/");
 	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
 	//generateDatabaseOverview("output/description.txt", "shapeDB/benchmark/db/");

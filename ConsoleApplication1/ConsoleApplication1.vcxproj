@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Desktop\bhtsne\sptree.cpp" />
     <ClCompile Include="DatabaseReader.cpp" />
     <ClCompile Include="featureExtraction.cpp" />
     <ClCompile Include="FourStepNorm.cpp" />
@@ -211,6 +212,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Desktop\bhtsne\sptree.h" />
+    <ClInclude Include="..\..\..\..\Desktop\bhtsne\vptree.h" />
     <ClInclude Include="DatabaseReader.h" />
     <ClInclude Include="include\featureExtraction.h" />
     <ClInclude Include="include\FourStepNorm.h" />

@@ -70,5 +70,6 @@ float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2, float* weights
 float featureDistance(scalarFeature* f1, scalarFeature* f2);
 float featureDistance(histFeature* f1, histFeature* f2);
 
-
+//helper functions
+vector<gridFeatures> readFeatureFile(string featureFile);
 

@@ -100,10 +100,10 @@ gridFeatures::gridFeatures(string featString, int* binnrs, int nScalar, int nHis
 	stringstream ss(featString);
 	string item;//value to be added
 	vector<std::string> splittedStrings;
-	char delimeter = ',';
+	char delimiter = ',';
 
 	for (int i = 0; i < nScalar; i++) {
-		getline(ss, item, delimeter);
+		getline(ss, item, delimiter);
 		features[i] = new scalarFeature(stof(item), "");
 	}
 
@@ -111,7 +111,7 @@ gridFeatures::gridFeatures(string featString, int* binnrs, int nScalar, int nHis
 		int size = binnrs[i-nScalar];
 		float* numbers = new float[size];
 		for (int j = 0; j < size; j++) {
-			getline(ss, item, delimeter);
+			getline(ss, item, delimiter);
 			numbers[j] = stof(item);
 		}
 		features[i] = new histFeature(size, numbers);
@@ -493,3 +493,20 @@ float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2, float* weights
 	}
 	return sqrt(d);
 }
+
+/*
+vector<gridFeatures> readFeatureFile(string featureFile, int* binnrs, int nScalar, int nHist)
+{
+	vector<gridFeatures> featureTable;
+	featureTable.resize(1800);
+
+	stringstream ss;
+
+	ifstream in(featureFile);
+	while (!in.eof())
+	{
+		in.read;
+		gridFeatures temp(getline(), binnrs, nScalar, nHist);
+		featureTable.push_back()
+	}
+}*/

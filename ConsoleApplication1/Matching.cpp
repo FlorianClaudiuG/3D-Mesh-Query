@@ -11,15 +11,16 @@
 #include <string>
 #include <map>
 
-gridMatcher::gridMatcher(string ntableLocation, string ndatabaseLocation) {
+gridMatcher::gridMatcher(string ntableLocation, string ndatabaseLocation, float* tweights) {
 	tableLocation = ntableLocation;
 	databaseLocation = ndatabaseLocation;
+	weights = tweights;
 	
 	readLabelData();
 	readFeatureTable(nGrids);
 	getFileLocations();
 
-	knn = new KNNBuilder(nGrids, nDims, grids, nGrids);
+	knn = new KNNBuilder(nGrids, nDims, grids, nGrids, weights);
 }
 
 void gridMatcher::readLabelData(){
@@ -143,10 +144,10 @@ void gridMatcher::matchAll(float* weights, int k) {
 	cout << "MAP: " << totalPrec / totalInClasses << " | Precision at k: " << totalprecisionAtk /totalInClasses << endl;
 }
 
-vector<distanceObject> gridMatcher::matchSingle(UnstructuredGrid3D* g, string inputName, int k, float* weights)
+vector<distanceObject> gridMatcher::matchSingle(UnstructuredGrid3D* g, string inputName, int k)
 {
 	int totalDistances, totalLabel;
-	return getKNNDistances(g, tableLocation, inputName, totalDistances, totalLabel, weights, k+1);//k+1 because first line is ignored (model itself)
+	return getKNNDistances(g, tableLocation, inputName, totalDistances, totalLabel, k+1);//k+1 because first line is ignored (model itself)
 }
 
 void gridMatcher::matchGrid(UnstructuredGrid3D* g, float &prec, float &precisionAtk, string inputName, float* weights, int k){
@@ -155,7 +156,7 @@ void gridMatcher::matchGrid(UnstructuredGrid3D* g, float &prec, float &precision
 	int totalInLable = 0;//initialize to 1 for counting classes in labels (grid itself is part of its own class.
 	
 	//vector<distanceObject> distances = getKNNDistances(g, "output/featureFinal.csv", inputName, totalDistances, totalInLable, weights);
-	vector<distanceObject> distances = getDistances(g, "output/featureFinal.csv", inputName, totalDistances, totalInLable, weights);
+	vector<distanceObject> distances = getDistances(g, "output/featureFinal.csv", inputName, totalDistances, totalInLable);
 
 	//average precision for MAP calculation
 	float avgPrec = calculateAVP(distances, inputLable, totalInLable, totalDistances);
@@ -168,7 +169,7 @@ void gridMatcher::matchGrid(UnstructuredGrid3D* g, float &prec, float &precision
 	prec = avgPrec;//MAP
 }
 
-vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int &totalDistances, int &totalInLable, float* weights) {
+vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int &totalDistances, int &totalInLable) {
 	vector<distanceObject> distanceList;//store all distances with names
 
 	gridFeatures* f1 = new gridFeatures(g, 100000, 12, 12, 12, 12, 12);
@@ -193,7 +194,7 @@ vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string t
 	return distanceList;
 }
 
-vector<distanceObject> gridMatcher::getKNNDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, float* weights, int k) {
+vector<distanceObject> gridMatcher::getKNNDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, int k) {
 	vector<distanceObject> distanceList;//store all distances with names
 
 	gridFeatures* f1 = new gridFeatures(g, 100000, 12, 12, 12, 12, 12);

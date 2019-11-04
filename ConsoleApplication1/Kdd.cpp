@@ -29,10 +29,11 @@ KNNBuilder::KNNBuilder(int pts, int dims, string tableLocation) {
 		nDims);						// dimension of space
 }
 
-KNNBuilder::KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids)
+KNNBuilder::KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids, float* tweights)
 {
 	nPts = pts;
 	nDims = dims;
+	weights = tweights;
 
 	dataPts = annAllocPts(nPts, nDims);			// allocate data points
 
@@ -74,12 +75,12 @@ void KNNBuilder::readPoint(ANNpoint p, gridFeatures* f) {
 	for (int i = 0; i < f->nFeatures; i++) {
 		if (f->features[i]->nElements > 1) {
 			for (int j = 0; j < f->features[i]->nElements; j++) {
-				p[dimIndex] = f->features[i]->bins[j];
+				p[dimIndex] = f->features[i]->bins[j] * weights[i];
 				dimIndex++;
 			}
 		}
 		else {
-			p[dimIndex] = f->features[i]->val;
+			p[dimIndex] = f->features[i]->val * weights[i];
 			dimIndex++;
 		}
 	}

@@ -10,9 +10,10 @@ public:
 	double				eps = 0;
 	ANNpointArray		dataPts;				// data points
 	ANNkd_tree*			kdTree;					// search structure
+	float* weights;								// weights for the feature vector
 
 	KNNBuilder(int pts, int dims, string tableLocation);
-	KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids);
+	KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids, float* tweights);
 
 	//KNN search for the first k neighbours of featurevector f, returns list of indices.
 	void KNNSearch(gridFeatures* f, int k, ANNdistArray &dists, ANNidxArray &indices);

@@ -45,14 +45,15 @@ public:
 
 	//KNN tree
 	KNNBuilder* knn;
+	float* weights;
 
-	gridMatcher(string tableLocation, string databaseLocation);
+	gridMatcher(string tableLocation, string databaseLocation, float* tweights);
 
 	void matchAll(float* weights, int k);
-	vector<distanceObject> matchSingle(UnstructuredGrid3D* g, string inputName, int k, float* weights);
+	vector<distanceObject> matchSingle(UnstructuredGrid3D* g, string inputName, int k);
 	
-	vector<distanceObject> getDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, float* weights);
-	vector<distanceObject> getKNNDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, float* weights, int k);
+	vector<distanceObject> getDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable);
+	vector<distanceObject> getKNNDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, int k);
 
 
 	void calculateAccuracy(vector<distanceObject>& distances, string inputLabel, int numberInClass, int totalDistances, int querySize, float& precision, float& recall);

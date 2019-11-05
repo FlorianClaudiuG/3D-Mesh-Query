@@ -296,20 +296,33 @@ float UnstructuredGrid3D::getDiameter(int sampleSize, int seed)
 		}
 
 		vector<int> randomIndex;
-		randomIndex.resize(sampleSize);
-		srand(seed);
-		for (int i = 0; i < sampleSize; i++) {
-			randomIndex[i] = rand() % numPoints();//get random existing index
-		}
-
-		for (int i = 0; i < sampleSize; i++) {
-			for (int j = i+1; j < sampleSize; j++) {
-				float distance = getDistance(randomIndex[i], randomIndex[j]);
-				if (distance > maxDist){
-					maxDist = distance;
+		if (sampleSize != numPoints())
+		{
+			randomIndex.resize(sampleSize);
+			srand(seed);
+			for (int i = 0; i < sampleSize; i++) {
+				randomIndex[i] = rand() % numPoints();//get random existing index
+			}
+			for (int i = 0; i < sampleSize; i++) {
+				for (int j = i + 1; j < sampleSize; j++) {
+					float distance = getDistance(randomIndex[i], randomIndex[j]);
+					if (distance > maxDist) {
+						maxDist = distance;
+					}
 				}
 			}
 		}
+		else {
+			for (int i = 0; i < sampleSize; i++) {
+				for (int j = i + 1; j < sampleSize; j++) {
+					float distance = getDistance(i, j);
+					if (distance > maxDist) {
+						maxDist = distance;
+					}
+				}
+			}
+		}
+		
 
 		return maxDist;
 }

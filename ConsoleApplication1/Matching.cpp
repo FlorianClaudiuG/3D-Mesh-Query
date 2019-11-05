@@ -10,6 +10,7 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include "include/Matching.h"
 
 gridMatcher::gridMatcher(string ntableLocation, string ndatabaseLocation, float* tweights) {
 	tableLocation = ntableLocation;

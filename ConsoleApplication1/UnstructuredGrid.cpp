@@ -1,4 +1,5 @@
 #include "include/UnstructuredGrid.h"
+#include <iostream>
 
 
 
@@ -12,6 +13,12 @@ void UnstructuredGrid::getPoint(int i,float* p)
 
 void UnstructuredGrid::setPoint(int i,float* p)
 {
+	if (i >= numPoints())
+	{
+		//Only works for increasing its size 1 at a time.
+		pointsX.resize(numPoints() + 1);
+		pointsY.resize(numPoints() + 1);
+	}
 	pointsX[i] = p[0];
 	pointsY[i] = p[1];
 }

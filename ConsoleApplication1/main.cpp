@@ -16,6 +16,8 @@
 #include "include/Matching.h"
 #include "include/featureExtraction.h"
 #include "include/Kdd.h"
+#include "math.h"
+#include <cmath>
 
 //Files for pmp (used for mesh decimation)
 #include "include/MeshDecimation/SurfaceMesh.h"
@@ -299,7 +301,7 @@ int main(int argc, char* argv[])							//Main program
 
 	const char* filename = (argc < 2) ? "DATA/bunny.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
 
-	//OFFConverter* converter = new OFFConverter();
+	OFFConverter* converter = new OFFConverter();
 	//converter->ConvertOFFToPLY(filename);
 
 	glutInit(&argc, argv);								//1.  Initialize the GLUT toolkit
@@ -321,13 +323,36 @@ int main(int argc, char* argv[])							//Main program
 
 	//grid = rdr.read("DATA/sphere.ply");
 	//Perform 4 step normalization on the model
-	/*FourStepNorm normalizer;
+	char path[500];
+	cout << "Input path: ";
+	cin >> path;
+	cout << "\nProcessing input & matching:\n";
+	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/3/m303/m303.off");
+	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/0/m95/m95.off");
+	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/0/m94/m94.off");
+	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/1/m135/m135.off");
+
+	grid = ofr.ReadOffFile(path);
+	//supersampling 
+	ss.supersample(*grid, 20000);
+
+	FourStepNorm normalizer;
 	normalizer.centerOnBary(grid); //Step 1. center on the barycenter (average x,y,z)
 	normalizer.PCA(grid); //Step 2. do PCA and use eigenvectors to translate all vertices
 	normalizer.flipTest(grid); //Step 3. make sure most most mass (number triangles is on the let side)
-	normalizer.normalizeInCube(grid); //Step 4. normalize the model*/
-	
-	grid = ofr.ReadOffFile("shapeDB/benchmark/db/0/m94/m94.off");
+	normalizer.normalizeInCube(grid); //Step 4. normalize the model
+		
+	//grid = ofr.ReadOffFile("shapeDB/benchmark/db/0/m95/m95.off");
+
+	//float d = max(grid->getDiameter(2000, 0), grid->getDiameter(2000, 1));
+	//d = max(d, grid->getDiameter(2000, 2));
+	//d = max(d, grid->getDiameter(2000, 3));
+	//d = max(d, grid->getDiameter(2000, 4));
+
+	//float d = grid->getDiameter(2000, 0);
+
+	//cout<<"\nDiameter: " << d <<"\n";
+
 	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
 	//knn.KNNSearch(&feat);
 
@@ -335,19 +360,25 @@ int main(int argc, char* argv[])							//Main program
 	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
 	//cout << feat.featuresToString() << endl;
 
-	float weights[10] = { 1,1,1,1,1,1,1,1,1,1, };
-	gridMatcher matcher = gridMatcher("output/featureTableFinal.csv", "C:/Users/Diego/Documents/School/MultimediaRetrieval/Datasets/shapeDB/benchmark/db/");
+	float weights[10] = { 2.5f,0.5f,2.5f,2.5f,0.5f,2.5f,2.5f,2.5f,1,1 };
+	//float weights[10] = { 1,1,1,1,1,1,1,1,1,1 };
+
+	converter->WriteFileOFF(*grid, "input/input.off");
+
+	grid = ofr.ReadOffFile("input/input.off");
+
+	gridMatcher matcher = gridMatcher("output/featureTableFinal.csv", "shapeDB/benchmark/db/", weights);
 
 	//matcher.matchAll(weights, 10);
 	//matcher.matchAll("shapeDB/benchmark/db/", weights, 10);
-	resultQuery = matcher.matchSingle(grid, "m94", 10, weights);
+	resultQuery = matcher.matchSingle(grid, "", 10);
 	//generateFeatureTable("output/featureTable.txt", "shapeDB/benchmark/db/");
 	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
 	//generateDatabaseOverview("output/description.txt", "shapeDB/benchmark/db/");
 
+
 	grid->computeFaceNormals();
 	grid->computeVertexNormals();
-	
 
 	glutMouseFunc(mouseclick);							//9.  Bind the mouse click and mouse drag (click-and-move) events to callbacks. This allows us
 	glutMotionFunc(mousemotion);							//    next to control the viewpoint interactively.

@@ -43,8 +43,10 @@ void Supersampler::supersample(UnstructuredGrid3D& grid, int target)
 					vec.push_back(newCells[i]);
 				}
 			}
+			//cout << "Vec size:" << vec.size()<<"\n";
 		}
 	}
+	cout << "Points: " << grid.numPoints() << " Cells: " << grid.numCells();
 }
 
 vector<Cell> Supersampler::addTriangle(UnstructuredGrid3D& grid, int cell)
@@ -82,7 +84,7 @@ vector<Cell> Supersampler::addTriangle(UnstructuredGrid3D& grid, int cell)
 
 	i3 = grid.numPoints();
 	grid.setPoint(i3, mid3);
-
+	
 	int newcell[3];
 	newcell[0] = i1;
 	newcell[1] = i2;
@@ -132,7 +134,58 @@ vector<Cell> Supersampler::addTriangle(UnstructuredGrid3D& grid, int cell)
 	temp3.area = grid.getCellArea(index);
 
 	newCells.push_back(temp3);
+	
+	/*
+	int newcell[3];
+	newcell[2] = i1;
+	newcell[1] = i2;
+	newcell[0] = i3;
 
+	grid.setCell(cell, newcell);
+
+	Cell temp0;
+	temp0.index = cell;
+	temp0.area = grid.getCellArea(cell);
+
+	newCells.push_back(temp0);
+
+	newcell[2] = vertices[0];
+	newcell[1] = i1;
+	newcell[0] = i3;
+
+	int index = grid.numCells();
+	grid.setCell(index, newcell);
+
+	Cell temp1;
+	temp1.index = index;
+	temp1.area = grid.getCellArea(index);
+
+	newCells.push_back(temp1);
+
+	newcell[2] = i1;
+	newcell[1] = vertices[1];
+	newcell[0] = i2;
+
+	grid.setCell(grid.numCells(), newcell);
+
+	Cell temp2;
+	temp2.index = ++index;
+	temp2.area = grid.getCellArea(index);
+
+	newCells.push_back(temp2);
+
+	newcell[2] = i2;
+	newcell[1] = vertices[2];
+	newcell[0] = i3;
+
+	grid.setCell(grid.numCells(), newcell);
+
+	Cell temp3;
+	temp3.index = ++index;
+	temp3.area = grid.getCellArea(index);
+
+	newCells.push_back(temp3);
+	*/
 	return newCells;
 }
 

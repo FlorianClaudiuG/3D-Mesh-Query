@@ -262,13 +262,14 @@ F_{BBV}(M) = V(M_{bot},M_{top})
 The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube. Which is verified by the numbers in table ? for the BBV feature. 
 
 \begin{center}
-    \begin{tabular}{ | l | l | l | l | l |}
+    \begin{tabular}{ l | l | l | l | l }
     \hline
-    & min & Max & Avg & Stddev \\ \hline
-    SA & 0.02194 & 32.961956 & 1.53768275 & 1.648700958 \\ \hline
-    BBV & 0.001874 & 0.986091 & 0.261523862 & 0.2203638 \\ \hline
-    ECC & 0.000004 & 0.956016 & 0.148089259 & 0.182812364 \\ \hline
-
+    Feature encoding & Min & Max & Avg & Stddev \\ \hline
+    SA & 0.02194 & 32.961956 & 1.53768275 & 1.648700958 \\ 
+    BBV & 0.001874 & 0.986091 & 0.261523862 & 0.2203638 \\
+    ECC & 0.000004 & 0.956016 & 0.148089259 & 0.182812364 \\ 
+	CIR & 0 & 0.978213 & 0.075533213 & 0.137364272 \\ 
+	DI & 0.74698 & 1.519733 & 1.055276205  & 0.088772773 \\ 	
     \end{tabular}
 \end{center}
 
@@ -340,21 +341,19 @@ Each new feature value will be calculated with the following formula
 \begin{equation}
 f'_{i,j} = \frac{f_{i,j} - \mu_i}{\delta_i},\quad i \in \{SA,BBV,ECC,DI,C\}
 \end{equation}
-Where $\mu_i$ is the average for feature i, $\delta_i$ the standard deviation, and $f_{i,j}$ the feature value for the $jth$ mesh. This standardization changes  the average of a feature to 0 and the standard deviation to 1. Meaning that if two different feature values differ one standard deviation from each other, there distance will be one. The table below shows the new description values of the different features.
-
-\begin{center}
-    \begin{tabular}{ | l | l | l | l | l |}
-    \hline
-    & min & Max & Avg & Stddev \\ \hline
-    SA & -0.919356 & 19.06002 & 0 & 1 \\ \hline
-    BBV & -1.178278 & 3.28805 & 0 & 1 \\ \hline
-    ECC & -0.810042 & 4.419431 & 0 & 1 \\ \hline
-    \end{tabular}
-\end{center}
+Where $\mu_i$ is the average for feature i, $\delta_i$ the standard deviation, and $f_{i,j}$ the feature value for the $jth$ mesh. This standardization changes  the average of a feature to 0 and the standard deviation to 1. Meaning that if two different feature values differ one standard deviation from each other, there distance will be one. 
 
 \subsection{Histogram features}
-For extracting the histogram features random numbers will be generated. This is done by using the c++ function rand(). For the features that require multiple random numbers it is possible to generate duplicates, which would create large outliers. Therefore the numbers are re-sampled if there are any duplicates. Furthermore for obtaining the values of the histograms 20.000 of these samples will be taken for all histogram features.
+For extracting the histogram features random numbers will be generated. 
 For each histogram feature they will first be generated using a minimum and maximum value based on their theoretical maximum. These results will than be used to adjust the minimum and maximum so that there wont be any bins that are universally unused. The number of bins used bins that will finally be used is set at 12.
+For the histogram features several graphs are displayed showing the histograms of two different classes. This is only for an indication of how the feature might work, it certainly does not mean that the differences in values is the same for all classes, or that all classes share a similar distribution within their own class. It can however be used to show whether the feature itself works correctly. When it gives similar results for similar models, as is the case in several of the histograms. A prediction could be made that these features will help differentiate between different classes. 
+
+\subsubsection{Sampling vertices}
+Ideally for  the histogram features every possible combination of vertices should be considered. This means that for the histogram features that need two points, the number of combinations is approximately $n^2$, where $n$ is the total number of vertices. And for the triangle area, or angle, approximately $n^3$ combinations are possible. Because calculating the features for all these combinations is not possible, only a sample of these combinations will be chosen. Obviously the higher the sample size the better, it is only limited to obtain a reasonable computation time.
+It is important that each combination of vertices has the same probability to be selected as a sample. This is done by randomly sampling points from the uniform distribution using the $c++$ standard library function $rand()$. If a given pair of vertices is identical the pair will be discarded. 
+If for the distance between two pairs vertices n samples are generated, the probability that one of these combinations is included is $1-(\frac{1}{n^2 - 1})^{n}$. However if this same probability has to be achieved for the features that require 3 or 4 random samples, the sample size has to be increased by an order of a magnitude, i.e.
+$n^2$ have to be generated. This is obviously not achievable in a reasonable time, therefore the same sample size is used for all the histogram features.
+The actual sample size that is used in the system is determined by maximizing the sample size while keeping a manageable computation time. The number of samples generated are 100.000 resulting in a computation time of ~400ms. This time is considered reasonable because it allows the features of new models to be calculated in real time. When a query is submitted, the mesh has to be normalized and its features calculated, This should of course be able to be done in real time.
 
 \subsubsection{D1 - distance to barycenter}
 This feature calculates the distance between a randomly generated point and the barycenter. The distance $D$ between two vectors $u$ and $v$ is calculated as follows
@@ -363,6 +362,7 @@ D(u,v) = \sqrt{\sum\limits_{i=1}^3 (u_i - v_i)^2}
 \end{equation}
 The minimum distance is obviously 0, and the maximum distance is equal to the diameter of a unit cube, $\sqrt{3}$, which is an unrealistic scenario.
 In order the evaluate the quality of the features, the histogram distributions of different classes will be plotted on a graph. The blue lines represent the histogram distributions of models m93, m94, m95, m96, and m97, which are all leopard like animals. And the yellow lines are models m1120, m1121, m1122, m1123, and m1124, which are air planes. These graphs will be made for each of the histogram features. 
+Figure 6 indicates that the feature will not be useful for differentiating between classes. There is both large variance between the two classes, as within the classes.
 
 \begin{figure}[h!]
     \includegraphics[width=\linewidth]{Pictures/Part3/D1.png}
@@ -372,7 +372,7 @@ In order the evaluate the quality of the features, the histogram distributions o
 
 \subsubsection{D2 - distance between two points}
 This time two random points are generated and the same distance function as for the D1 feature is used. The min and maximum distances are the same as the previous feature, all though the distances will generally be higher.
-
+Figure 7 shows that the two classes have different types of distributions, however there is a lot of variation within the classes themselves.
 \begin{figure}[h!]
     \includegraphics[width=\linewidth]{Pictures/Part3/D2.png}
     \caption{Histogram distributions for feature D2 for different classes. Yellow = air planes, Blue = leopards}
@@ -380,8 +380,8 @@ This time two random points are generated and the same distance function as for 
 \end{figure}
 
 \subsubsection{D3 - area of a random triangle}
-To get a random triangle three random points are generated. The area of this triangle is calculated the same way as was done for calculating the total surface area. The square root of this value is than added to the histogram. 
-For the area of a triangle the minimum value is 0.
+To get a random triangle three random points are generated. The area of this triangle is calculated the same way as was done for calculating the total surface area. The square root of this value is than added to the histogram, because the other two features were the lengths of line segments.
+Figure 8 shows a difference between the two classes, however there is also some variation within the classes. 
 
 \begin{figure}[h!]
     \includegraphics[width=\linewidth]{Pictures/Part3/D3.png}
@@ -394,10 +394,10 @@ Four random points $a$, $b$, $c$, and $d$ are generated that together will make 
 \begin{equation}
 V(a,b,c,d) = \frac{|(a - d) \cdot ((b - d) \times (c - d))|}{6}
 \end{equation}
-
+Than the cube root of this value is taken, because it is a volume and the other features are the lengths of line segments. Figure 9 a significant difference between distributions of air planes and leopards. Furthermore the in class differences are minimally. Therefore this might indicate that D4 is a good feature. 
 \begin{figure}[h!]
     \includegraphics[width=\linewidth]{Pictures/Part3/D4.png}
-    \caption{Histogram distributions for feature A3 for different classes. Yellow = air planes, Blue = leopards}
+    \caption{Histogram distributions for feature D3 for different classes. Yellow = air planes, Blue = leopards}
   \label{fig:eccentricity}
 \end{figure}
 
@@ -407,6 +407,7 @@ The last histogram features uses three random points $u$, $v$, and $w$ to calcul
 Angle(a,b) = atan2(N(a \times b), (a \cdot b))
 \end{equation}
 Where N gives the euclidean norm of a vector, and atan2 the angle in the euclidean plane. The minimum value that the angle could be is 0, and the maximum is $\pi$.
+In figure 10 it can be seen that the two classes are quite dissimilar, however one of the air planes seems to be an outlier compared to the rest of its class.
 
 \begin{figure}[h!]
     \includegraphics[width=\linewidth]{Pictures/Part3/A3.png}
@@ -425,16 +426,16 @@ Each $f_{i,j}$ is a list of $k$ values, where $k$ is 1 for the scalar values and
 \begin{tabular}
 { l | l | l | l | l | l}
 i & feature name & k & min & max\\ \hline
-1 & surface area & 1 \\
-2 & bounding box volume & 1 \\
-3 & eccentricity & 1 \\
-4 & circularity & 1 \\
-5 & diameter & 1 \\
-6 & distance to barycenter & 12 \\
-7 & distance between two points & 12 \\
-8 & area of a random triangle & 12 \\
-9 & area of a random tetrahedron & 12 \\
-10 & angle between 3 random vertices & 12 \\
+1 & surface area & 1 & -0.919356 & 19.06002 \\
+2 & bounding box volume & 1 & -1.178278 & 3.28805\\
+3 & eccentricity & 1 & -0.810042 & 4.419431\\
+4 & circularity & 1 & -0.549875 & 6.57143\\
+5 & diameter & 1 & -3.472866 & 5.231975\\
+6 & distance to barycenter & 12 & 0 & 1.060660\\
+7 & distance between two points & 12 & 0 & $\sqrt{2}$\\
+8 & area of a random triangle & 12 & 0 & 0.848528 \\
+9 & area of a random tetrahedron & 12 & 0 & 0.565685\\
+10 & angle between 3 random vertices & 12 & 0.942478 & $\pi$\\
 \end{tabular}
 \end{center}
 The feature vector is thus a list of 65 values.
@@ -461,7 +462,7 @@ These distances are calculated for each mesh in the database, obviously excludin
 The final step is to evaluate the performance of the retrieval system. This is done by analysing the query result $Q$ which as a list of items ${x_1,...,x_s}$, where s is the size of the query and each x is an item in the database. As was explained in the matching section, this list is ordered on ascending distance to the query item $l$. First of, there are several values that describe a query result, namely the true positives (TP), false positives (FP), true negatives (TN), and false negatives (FP).
 TP is the number of items with the correct class label in the query result.\\ 
 \\
-$TP = count(\{y \in Q\, |\, c_y = c_l\})$\\
+$TP = |(\{y \in Q\, |\, c_y = c_l\}|$\\
 $FP = s - TP$\\
 $TN = k - TP - FP - FN$\\
 $FN = N_{c_l} - TP$\\

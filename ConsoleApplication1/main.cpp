@@ -359,7 +359,7 @@ int main(int argc, char* argv[])							//Main program
 	//grid = rdr.read(filename);
 	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
 	//cout << feat.featuresToString() << endl;
-
+	//surfArea, BBV, Eccentricity, Circularity, Diameter, AngleH, DistToBaryH, Dist2PtH, AreaTriH, VolTetraH 
 	float weights[10] = { 2.5f,0.5f,2.5f,2.5f,0.5f,2.5f,2.5f,2.5f,1,1 };
 	//float weights[10] = { 1,1,1,1,1,1,1,1,1,1 };
 

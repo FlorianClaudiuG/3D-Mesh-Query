@@ -349,7 +349,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "Under the guidance of Dr. Alexandru Telea" << endl;
 	cout << "***" << endl;
 	cout << "Utrecht University" << endl;
-	cout << "\nPlease insert the path to the query file. (\'\\\' will be replaced by \'/\' automatically)" << endl;
+	cout << "\nPlease insert the path to the query file in OFF format (\'\\\' will be replaced by \'/\' automatically)." << endl;
 	cout << "\nInput path: ";
 	cin >> path;
 	replaceBackslash(path);

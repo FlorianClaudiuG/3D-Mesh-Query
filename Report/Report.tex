@@ -26,11 +26,11 @@ The files from the Princeton Shape Benchmark (PSB) were all provided in the OFF 
 This converter simply creates a PLY header using data from the OFF file, then copies the vertex and face data over. While not a scalable approach for more complex OFF files, the converter was able to successfully process the entire PSB database.
 
 \subsection{Database evaluation}
-The database contains around 1800 models in OFF file format. All of the models contain only triangles as faces. The distribution of faces is shown in figure ?. The average number of vertices is 4221, the minimum 10, and the maximum 160940. The histogram, along with the average, shows that most of the models have a vertex count of smaller than twenty thousand. In order to successfully perform the upcoming steps of feature extraction the models need to have approximately the same number of vertices. Two actions can be undertaken to achieve this, supersampling and subsampling. Supersample the models with a low vertex count, and subsample the models with a large vertex count. A target number of vertices has to be chosen for this. One solution could be to choose the average. However because several of the meshes have a very high resolution (a hundred thousand vertices), subsampling this to reach the four thousand required vertices would ruin the original shape. Therefore the target vertices is chosen to be higher than the average, so that the higher resolution models retain their characteristics. The only downside for choosing a higher target number of vertices is an increase in computation time. The target number of vertices is set at forty thousand, and the methodology for supersampling and subsampling is explained in the following two sections.
+The database contains around 1800 models in OFF file format. All of the models contain only triangles as faces. The distribution of faces is shown in figure 1. The average number of vertices is 4221, the minimum 10, and the maximum 160940. The histogram, along with the average, shows that most of the models have a vertex count of smaller than twenty thousand. In order to successfully perform the upcoming steps of feature extraction the models need to have approximately the same number of vertices. Two actions can be undertaken to achieve this, supersampling and subsampling. Supersample the models with a low vertex count, and subsample the models with a large vertex count. A target number of vertices has to be chosen for this. One solution could be to choose the average. However because several of the meshes have a very high resolution (a hundred thousand vertices), subsampling this to reach the four thousand required vertices would ruin the original shape. Therefore the target vertices is chosen to be higher than the average, so that the higher resolution models retain their characteristics. The only downside for choosing a higher target number of vertices is an increase in computation time. The target number of vertices is set at forty thousand, and the methodology for supersampling and subsampling is explained in the following two sections.
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=\linewidth]{Pictures/verticesHist.png}
+    \includegraphics[width=0.7\linewidth]{Pictures/verticesHist.png}
     \caption{Histogram showing the distribution of vertices in the PSB database}
 \end{figure}
 
@@ -39,7 +39,7 @@ Supersampling is done in this implementation by splitting a larger triangle into
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=\linewidth]{Pictures/triangle.png}
+  \includegraphics[width=0.7\linewidth]{Pictures/triangle.png}
   \caption{Supersampling Example}
 \end{figure}
 
@@ -124,7 +124,7 @@ b_z \\
 The result can be verified by calculating the average coordinates again, which should be 0 after the normalization.
 
 \subsubsection{PCA}
-Prinicipal component analysis is done using the arglib library. The three eigenvectors $e_1$, $e_2$, and $e_3$ are returned by the algorithm. A rotation matrix M is than created using the vectors $x$, $y$, and $z$, that represent the axises of the normal coordinate system.
+Prinicipal component analysis is done using the arglib library. The three eigenvectors $e_1$, $e_2$, and $e_3$ are returned by the algorithm. These three vectors are orthogonal to each other. Therefore these eigenvectors can easily be made to coincide with the x, y, and z axis, because the model only has to be rotated. A rotation matrix M is than created using the vectors $x$, $y$, and $z$, that represent the axises of the normal coordinate system. The eigenvector corresponding to the largest eigenvalue will coincide with the x asis, the next eigenvector with the y axis, and the final one with the z axis.
 
 \[
 x = 
@@ -210,8 +210,8 @@ A visualization is excluded, however the effectiveness of this step can easily b
 
 \subsection{Verifying the normalization}
 Next for each model in the database the following steps are performed: 
-1. if the model has > 20.000 vertices use mesh decimation with target number of vertices set to 20.000.
-2. if the model has < 20.000 vertices use supersampling with target number of vertices set to 20.000.
+1. if the model has $\>$ 20.000 vertices use mesh decimation with target number of vertices set to 20.000.
+2. if the model has $\<$ 20.000 vertices use supersampling with target number of vertices set to 20.000.
 3. Center the model on its barycenter.
 4. Perform PCA and use align the eigenvectors with the x, y, and z axis.
 5. Flip the model if necessary.
@@ -365,7 +365,7 @@ In order the evaluate the quality of the features, the histogram distributions o
 Figure 6 indicates that the feature will not be useful for differentiating between classes. There is both large variance between the two classes, as within the classes.
 
 \begin{figure}[h!]
-    \includegraphics[width=\linewidth]{Pictures/Part3/D1.png}
+    \includegraphics[width=0.7\linewidth]{Pictures/Part3/D1.png}
     \caption{Histogram distributions for feature D1 for different classes. Yellow = air planes, Blue = leopards}
   \label{fig:eccentricity}
 \end{figure}
@@ -374,7 +374,7 @@ Figure 6 indicates that the feature will not be useful for differentiating betwe
 This time two random points are generated and the same distance function as for the D1 feature is used. The min and maximum distances are the same as the previous feature, all though the distances will generally be higher.
 Figure 7 shows that the two classes have different types of distributions, however there is a lot of variation within the classes themselves.
 \begin{figure}[h!]
-    \includegraphics[width=\linewidth]{Pictures/Part3/D2.png}
+    \includegraphics[width=0.7\linewidth]{Pictures/Part3/D2.png}
     \caption{Histogram distributions for feature D2 for different classes. Yellow = air planes, Blue = leopards}
   \label{fig:eccentricity}
 \end{figure}
@@ -384,7 +384,7 @@ To get a random triangle three random points are generated. The area of this tri
 Figure 8 shows a difference between the two classes, however there is also some variation within the classes. 
 
 \begin{figure}[h!]
-    \includegraphics[width=\linewidth]{Pictures/Part3/D3.png}
+    \includegraphics[width=0.7\linewidth]{Pictures/Part3/D3.png}
     \caption{Histogram distributions for feature D3 for different classes. Yellow = air planes, Blue = leopards}
   \label{fig:eccentricity}
 \end{figure}
@@ -396,7 +396,7 @@ V(a,b,c,d) = \frac{|(a - d) \cdot ((b - d) \times (c - d))|}{6}
 \end{equation}
 Than the cube root of this value is taken, because it is a volume and the other features are the lengths of line segments. Figure 9 a significant difference between distributions of air planes and leopards. Furthermore the in class differences are minimally. Therefore this might indicate that D4 is a good feature. 
 \begin{figure}[h!]
-    \includegraphics[width=\linewidth]{Pictures/Part3/D4.png}
+    \includegraphics[width=0.7\linewidth]{Pictures/Part3/D4.png}
     \caption{Histogram distributions for feature D3 for different classes. Yellow = air planes, Blue = leopards}
   \label{fig:eccentricity}
 \end{figure}
@@ -410,7 +410,7 @@ Where N gives the euclidean norm of a vector, and atan2 the angle in the euclide
 In figure 10 it can be seen that the two classes are quite dissimilar, however one of the air planes seems to be an outlier compared to the rest of its class.
 
 \begin{figure}[h!]
-    \includegraphics[width=\linewidth]{Pictures/Part3/A3.png}
+    \includegraphics[width=0.7\linewidth]{Pictures/Part3/A3.png}
     \caption{Histogram distributions for feature A3 for different classes. Yellow = air planes, Blue = leopards}
   \label{fig:eccentricity}
 \end{figure}
@@ -456,13 +456,15 @@ d(x_i,y_i) = \frac{\left(\sum\limits_{j=1}^m|x_{i,j}-y_{i,j}|^2\right)^{1/2}}{m}
 Where $x_{i,j}$ is the jth value of the ith feature of feature vector $x$, the same case for $y$. The sum of all the distances between feature values is divided by $m$ so that each feature has the same weight, i.e. a histogram with 8 values should not be weighted 8 time as much as a scalar feature which has only 1 value.  
 
 \subsection{Query result}
-These distances are calculated for each mesh in the database, obviously excluding the the query item, if it exists. The result is thus a list of distances for a query item i $L_i = {d_1, ... d_k}$, where $k$ is the number of items in the database, and is ordered in ascending order. With an input query size $s$ the first $s$ elements of $L$ are than returned as the query result.
+These distances are calculated for each mesh in the database, obviously excluding the the query item, if it exists. The result is thus a list of distances for a query item i $L_i = {d_1, ... d_k}$, where $k$ is the number of items in the database, and is ordered in ascending order. With an input query size $s$ the first $s$ elements of $L$ are than returned as the query result. An alternative approach by using the KNN algorithm is discussed in the following section. 
+
+\subsection{KNN}
 
 \section{Evaluation}
 The final step is to evaluate the performance of the retrieval system. This is done by analysing the query result $Q$ which as a list of items ${x_1,...,x_s}$, where s is the size of the query and each x is an item in the database. As was explained in the matching section, this list is ordered on ascending distance to the query item $l$. First of, there are several values that describe a query result, namely the true positives (TP), false positives (FP), true negatives (TN), and false negatives (FP).
 TP is the number of items with the correct class label in the query result.\\ 
 \\
-$TP = |(\{y \in Q\, |\, c_y = c_l\}|$\\
+$TP = |\{y \in Q\, |\, c_y = c_l\}|$\\
 $FP = s - TP$\\
 $TN = k - TP - FP - FN$\\
 $FN = N_{c_l} - TP$\\
@@ -470,13 +472,27 @@ $FN = N_{c_l} - TP$\\
 Where $c_i$ is the class label of item $i$, $k$ the number of items in the dataset, and $N_{c_l}$ the number of items in the class of query item l. 
 
 \subsection{Evaluation metric}
-There are many evaluation metrics that can be used. Furthermore, there are different aspects of the system for which the performance can be evaluated. For example the performance for a single item in the dataset, the average performance of a class, and the overall performance of the program. In the evaluation of this system the performance for each item will be calculated and, from those measurements, the class averages, and overall performance will be derived. 
+There are many evaluation metrics that can be used. Furthermore, there are different aspects of the system for which the performance can be evaluated. For example the performance for a single item in the dataset, the average performance of a class, and the overall performance of the program. In the evaluation of this system the performance for each item will be calculated and from those measurements the class averages, and overall performance will be derived. \\
+For calculating precision at k and MAP, the models for which the query result is generated is not taking into account. The distance of a model to itself will always be 0 and would thus give a misleading precision it were to be included.
+
+
+\subsubsection{MAP}
 Two interesting evaluation metrics are precision and recall. Precision shows how many of the returned items in the query are of the correct class, while recall shows how many of the correct class are represented in the query. The problem with recall however is that it is highly dependent on the size of the query. A query of size 1 can never have a recall of 1, assuming that the class size is higher than 1. Therefore the recall is not a useful performance metric for this system, because it gives little insight. A large query size will result in a high recall and a low query size in low recall. The more interesting metric is precision whose definition is given below.
 \begin{equation}
-Precision = \frac{TP}{TP+FP}
+P = \frac{TP}{TP+FP}
 \end{equation}
 Another problem that arrives is what query size the evaluation metric should be calculated for. A universal query size is undesirable, because there are large discrepancies between the sizes of different classes. A class with only five items will have a terrible performance when the query size is set to 100, because the maximum precision is $\frac{5}{100}$. 
-Furthermore, even for a specific class, choosing the query size is an arbitrary decision. Therefore the Mean Average Precision (MAP) is used. Instead of choosing a single query size, $k = N_{c_l}$ different query sizes will be chosen. The query result that is returned by the matching algorithm is an ordered list of ascending distance values of size $d$, where $d$ is the size of the database. Then, for each $i \in {1,...,k}$, the precision and accuracy are calculated for the first $i$ elements in the query. The precision for a specific model is then the average of these values. The MAP quality metric is the mean of these averages across all models. Furthermore, the MAP can also be calculated for each individual class, giving insight into what types of models the retrieval system works best on. 
+Furthermore, even for a specific class, choosing the query size is an arbitrary decision. Therefore the Mean Average Precision (MAP) is used.
+The query result that is returned by the matching algorithm is an ordered list of ascending distance values of size $d$, where $d$ is the size of the database. The MAP for a class is the mean of all the average precisions of its models query results. The average precision for the query result of a given model is defined as:
+\begin{equation}
+AvgP = \frac{\sum_{k=1}^{n}(P(k) \cdot rel(k)}{m}
+\end{equation}
+Where rel(k) is the indicator function and is 1 if the kth item in the query result has the correct label and 0 otherwise, and m is the number of models in the relevant class. The MAP for a class is than the mean of all these average precision values.\\
+MAP  might punish some classes too much when it contains an outlier. If it does than for each model in the class the outlier will yield a precision close to 0. In this case it might be possible that even a perfect system cannot obtain a precision of 1, because of an outlier or even a wrongly sampled mesh. Furthermore calculating precision for items that are very far in the query result can be useless when the user only wants a small result. For example a user would not want to look at more than 20 models, therefore only the first 20 results would be relevant. If a system would return 20 items that have the correct class label, but the other 20 items in the class appear in the back of the query result, the average precision would be close to 0.5, while the returned query is a perfect result for the user. Despite these downsides of the MAP it is still chosen as a strict metric to judge the performance of the entire system. One of the upsides of MAP is that it considers the position of the correct classes, which is not the case for the regular precision. 
+
+\subsubsection{Precision at k}
+In addition to the MAP another performance metric is introduced, the precision at k. For this a value for k has to be decided, which will be the length of the query result. Than for this smaller sized query its precision will be calculated. As was previous discussed, a user might only want to look at a certain number of items, precision at k than measures how many correct items the user will see. In the evaluations in this report the value for k will be set at 10. However because some classes contain less than 10 models, k well be $min(k,n_c-1)$ where $n_c - 1$ is the number of models in class c, excluding the model that is queried for. 
+A downside of precision at k is that it does not account for the position of models. For example a result query with only the first five items being the correct class and a second result query with only  the last five items being the correct class, will have the same precision at k. Intuitively however the first query result is better. 
 
 \begin{minipage}{\linewidth}
 \begin{center}
@@ -488,61 +504,109 @@ balloon vehicle & 0.116555 & 0.14375 & 16 \\ \hline
 helicopter & 0.123383 & 0.22 & 35 \\ \hline
 arthropod & 0.0545013 & 0.103704 & 27 \\ \hline
 human & 0.394029 & 0.648993 & 149 \\ \hline
-trex & 0.0641384 & 0.0833333 & 6 \\ \hline
+trex & 0.0641384 & 0.0666667 & 6 \\ \hline
 flying creature & 0.0340165 & 0.05 & 26 \\ \hline
 quadruped & 0.120444 & 0.232258 & 31 \\ \hline
-snake & 0.0491144 & 0.05 & 4 \\ \hline
+snake & 0.0491144 & 0.0833333 & 4 \\ \hline
 underwater creature & 0.131797 & 0.231429 & 35 \\ \hline
 blade & 0.20551 & 0.257895 & 19 \\ \hline
 head & 0.292354 & 0.496104 & 77 \\ \hline
 hand & 0.11159 & 0.176471 & 17 \\ \hline
-skeleton & 0.409468 & 0.18 & 5 \\ \hline
-torso & 0.549304 & 0.15 & 4 \\ \hline
-bridge & 0.103303 & 0.09 & 10 \\ \hline
+skeleton & 0.409468 & 0.4 & 5 \\ \hline
+torso & 0.549304 & 0.5 & 4 \\ \hline
+bridge & 0.103303 & 0.1 & 10 \\ \hline
 building & 0.08743 & 0.161225 & 98 \\ \hline
 chess piece & 0.203151 & 0.276471 & 17 \\ \hline
-chest & 0.0761211 & 0.0285714 & 7 \\ \hline
+chest & 0.0761211 & 0.047619 & 7 \\ \hline
 city & 0.0492937 & 0.0894737 & 19 \\ \hline
 display device & 0.111166 & 0.18 & 40 \\ \hline
 door & 0.301497 & 0.439286 & 28 \\ \hline
-dragon & 0.0524088 & 0.05 & 6 \\ \hline
+dragon & 0.0524088 & 0.0666667 & 6 \\ \hline
 fireplace & 0.0110214 & 0 & 6 \\ \hline
-bed & 0.0463207 & 0.0625 & 8 \\ \hline
-cabinet & 0.0725405 & 0.0666667 & 9 \\ \hline
+bed & 0.0463207 & 0.0535714 & 8 \\ \hline
+cabinet & 0.0725405 & 0.0833333 & 9 \\ \hline
 seat & 0.159862 & 0.327273 & 77 \\ \hline
 shelves & 0.172277 & 0.276923 & 26 \\ \hline
 table & 0.167187 & 0.342308 & 78 \\ \hline
 geographic map & 0.0562935 & 0.1 & 11 \\ \hline
 gun & 0.112295 & 0.178571 & 28 \\ \hline
 hat & 0.152967 & 0.2125 & 16 \\ \hline
-ladder & 0.0446827 & 0.075 & 4 \\ \hline
+ladder & 0.0446827 & 0 & 4 \\ \hline
 lamp & 0.0475397 & 0.0863636 & 22 \\ \hline
 liquid container & 0.0873931 & 0.19661 & 59 \\ \hline
-mailbox & 0.022605 & 0.0285714 & 7 \\ \hline
-microchip & 0.0683838 & 0.0285714 & 7 \\ \hline
+mailbox & 0.022605 & 0 & 7 \\ \hline
+microchip & 0.0683838 & 0.047619 & 7 \\ \hline
 musical instrument & 0.0932159 & 0.15 & 22 \\ \hline
 plant & 0.194478 & 0.391111 & 135 \\ \hline
 satellite dish & 0.0023526 & 0 & 4 \\ \hline
 sea vessel & 0.098209 & 0.229545 & 44 \\ \hline
-shoe & 0.0831799 & 0.0875 & 8 \\ \hline
+shoe & 0.0831799 & 0.107143 & 8 \\ \hline
 sign & 0.0635423 & 0.1125 & 16 \\ \hline
 sink & 0.00389432 & 0 & 4 \\ \hline
-slot machine & 0.0768283 & 0.075 & 4 \\ \hline
-snowman & 0.15229 & 0.0833333 & 6 \\ \hline
-swingset & 0.0991632 & 0.1 & 4 \\ \hline
+slot machine & 0.0768283 & 0 & 4 \\ \hline
+snowman & 0.15229 & 0.166667 & 6 \\ \hline
+swingset & 0.0991632 & 0 & 4 \\ \hline
 staircase & 0.00529275 & 0 & 7 \\ \hline
 handheld & 0.0996813 & 0.202459 & 122 \\ \hline
 car & 0.24536 & 0.483636 & 110 \\ \hline
 cycle & 0.125922 & 0.138462 & 13 \\ \hline
-train & 0.0980175 & 0.0571429 & 7 \\ \hline
+train & 0.0980175 & 0.0952381 & 7 \\ \hline
 wheel & 0.0992868 & 0.158824 & 17 \\ \hline
-\textbf{total} & \textbf{0.200032} & \textbf{0.341537} & \textbf{1796} \\ \hline
+\textbf{total} & \textbf{0.200032} & \textbf{0.343097} & \textbf{1796} \\ \hline
 \end{tabular}
 \end{center}
 \begin{center}
 Table ?. Performance evaluation using MAP and precision at k (k=10)
 \end{center}
 \end{minipage}
+
+\subsection{dissimilar classes}
+The performance results show that there is a large discrepancy between performances of different classes. The worst classes even have a precision at k of 0, meaning that for none of the models in its class the result query gave even a single relevant model in the first 10 results. This leads to the questions of what causes this bad result, and what can be done to improve performance for this class. For the first question four of the models of the staircase class are shown in figure 11. It is clear that the overall shapes of these model is very different, this leads to their feature values being very different as well. \\
+Some characteristics of a staircase are present in these pictures, namely the large number of 90 degree edges leading to the top. S feature could be added that would encapsulate this characteristic so that all these models will have a distance of 0 for this feature. However even in this case all the other feature value will be very different, making it very unlikely that their overall distances will be small enough to yield good results.
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/staircaseClass/stair1.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/staircaseClass/stair2.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/staircaseClass/stair3.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/staircaseClass/stair4.png}
+  \end{subfigure}
+  \caption{Models m1733, m1734, m1735, and m1736 of the staircase class.}
+  \label{fig:bunny}
+\end{figure}
+
+Looking at another bad performing class, the mailboxes, a less obvious difference in models is visible. The models look a lot more alike, however their distances are still too large. The seemingly small differences in shapes have a large impact on their feature values. For example the first and fourth mailboxes are shorter than the second and fourth. Furthermore the volume of the actual box is different in each model. Finally there are some more small differences, such as the rectangular shape below the box in the fourth model, and the extended rectangles in the third shape. \\
+It could thus be said that even though these models look alike, their actual shapes are still too different for the system. The small differences lead in feature value differences that are too large. Both the mailbox class and the staircase class have a precision at k of 0, however the mailbox class has an MAP value four times that of the staircase class, meaning that the relative distances of mailboxes are smaller than the staircases. This makes sense because intuitively one would say that the mailboxes are more similar to each other than the staircases. 
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/mailboxClass/stair1.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/mailBoxClass/stair2.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/mailBoxClass/stair3.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.2\linewidth}
+    \includegraphics[width=\linewidth]{Pictures/Evaluation/mailBoxClass/stair4.png}
+  \end{subfigure}
+  \caption{Models m515, m516, m517, and m517 of the mailbox class.}
+  \label{fig:bunny}
+\end{figure}
+
+\subsection{Query examples}
+In this section several query results are shown for several different classes. First of is a model from the quadruped class which has a MAP of 0.12, and precision at k of 0.23. For this specific model five out of nine models are of the same class. Three of these wrong models, the hands, can be explained by them having a similar elongated shape and their fingers resembling legs. The turtle does not have a similar shape however it does also have four legs.  \\
+Secondly a query result for a model of the flying creature class is shown, which has an MAP of 0.034, and precision at k of 0.05. In this case only two out of the nine models of the query result are of the same class. Six of these however are air planes and have a very similar shape. The ship is the only of these models that is an unreasonable result. The system thus returns models that are arguably very similar to the input shape, all though not from the same class \\
+Finally the query result for one of the best performing classes, humans, shows a perfect query result. The good results for humans show that they are somewhat clustered in the dataset. This means for a certain amount of models they exist in the middle of the clusters and thus all of its neighbours are other humans. \\
 
 \begin{figure}[h!]
   \centering
@@ -586,11 +650,7 @@ Table ?. Performance evaluation using MAP and precision at k (k=10)
     \includegraphics[width=\linewidth]{Pictures/Evaluation/m92/pos9.png}
     \caption*{d=0.38}
   \end{subfigure}
-  \caption{Query results and their distances for model m92}
-  \label{fig:bunny}
-\end{figure}
 
-\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.09\linewidth}
     \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/m42.png}
@@ -632,11 +692,7 @@ Table ?. Performance evaluation using MAP and precision at k (k=10)
     \includegraphics[width=\linewidth]{Pictures/Evaluation/m42/pos9.png}
     \caption*{d=0.37}
   \end{subfigure}
-  \caption{Query results and their distances for model m42}
-  \label{fig:bunny}
-\end{figure}
 
-\begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.09\linewidth}
     \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/m134.png}
@@ -678,7 +734,7 @@ Table ?. Performance evaluation using MAP and precision at k (k=10)
     \includegraphics[width=\linewidth]{Pictures/Evaluation/m134/pos9.png}
     \caption*{d=0.21}
   \end{subfigure}
-  \caption{Query results and their distances for model m134}
+  \caption{Query results and their squared distances for models m92, m42, and m134 respectively}
   \label{fig:bunny}
 \end{figure}
 

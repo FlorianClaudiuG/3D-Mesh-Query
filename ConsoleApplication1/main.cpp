@@ -18,6 +18,7 @@
 #include "include/Kdd.h"
 #include "math.h"
 #include <cmath>
+#include <algorithm>
 
 //Files for pmp (used for mesh decimation)
 #include "include/MeshDecimation/SurfaceMesh.h"
@@ -224,8 +225,6 @@ UnstructuredGrid3D* decimateMesh(string fileName, int targetVertCount)
 	}
 
 	g->normalize();
-	g->computeFaceNormals();							//8.  Compute face and vertex normals for the mesh. This allows us to shade the mesh next.
-	g->computeVertexNormals();
 	cout << mesh->n_faces() << " " << mesh->n_vertices() << endl;
 
 	return g;
@@ -251,7 +250,9 @@ void createDatabase(string path, int targetVertexCount)
 			string fileName = pathName + "\\" + directoryName2 + ".off";
 			cout << fileName << endl;
 
-			mesh = ofr.ReadOffFile(fileName.c_str());
+			//mesh = ofr.ReadOffFile(fileName.c_str());
+
+			mesh = decimateMesh(fileName.c_str(), targetVertexCount);
 
 			if (mesh->numPoints() < targetVertexCount)
 			{
@@ -287,8 +288,82 @@ void createDatabase(string path, int targetVertexCount)
 	}
 }
 
+void replaceBackslash(char* path)
+{
+	int i = 0;
+	while (path[i] != NULL)
+	{
+		if (path[i] == '\\')
+		{
+			path[i] = '/';
+		}
+		i++;
+	}
+}
+
+UnstructuredGrid3D* prepareMesh(string path, int targetVertexCount)
+{
+	UnstructuredGrid3D* mesh;
+	//read mesh then get it to targetVertexCount
+	mesh = decimateMesh(path, targetVertexCount);
+	if (mesh->numPoints() < targetVertexCount)
+	{
+		Supersampler ss;
+		ss.supersample(*mesh, targetVertexCount);
+	}
+	//normalize
+	FourStepNorm normalizer;
+	normalizer.centerOnBary(mesh); //Step 1. center on the barycenter (average x,y,z)
+	normalizer.PCA(mesh); //Step 2. do PCA and use eigenvectors to translate all vertices
+	normalizer.flipTest(mesh); //Step 3. make sure most mass in left side (larger number triangles is on the left side)
+	normalizer.normalizeInCube(mesh); //Step 4. normalize the model
+
+	//Workaround for error when computing normals: write result of up/downsampling to file and read file again
+	OFFConverter converter;
+	converter.WriteFileOFF(*mesh, "input/input.off");
+	OffReader ofr;
+	mesh = ofr.ReadOffFile("input/input.off");
+
+	mesh->computeFaceNormals();
+	mesh->computeVertexNormals();
+
+	return mesh;
+}
+
 int main(int argc, char* argv[])							//Main program
 {
+	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
+	PlyWriter writer;
+	Supersampler ss;
+	OffReader ofr;
+
+	const int targetVertexCount = 20000;
+	const char* featureTableFilePath = "output/featureTableFinal.csv";
+	const char* databaseFilePath = "shapeDB/benchmark/db/";
+	
+	char path[500];
+	cout << "3D Model Database Query System" << endl;
+	cout << "***" << endl;
+	cout << "By Florian-Claudiu Gheorghica and Diego Renders" << endl;
+	cout << "***" << endl;
+	cout << "Under the guidance of Dr. Alexandru Telea" << endl;
+	cout << "***" << endl;
+	cout << "Utrecht University" << endl;
+	cout << "\nPlease insert the path to the query file. (\'\\\' will be replaced by \'/\' automatically)" << endl;
+	cout << "\nInput path: ";
+	cin >> path;
+	replaceBackslash(path);
+	cout << "\nProcessing input & matching...\n";
+	grid = prepareMesh(path, targetVertexCount);
+
+	//surfArea, BBV, Eccentricity, Circularity, Diameter, AngleH, DistToBaryH, Dist2PtH, AreaTriH, VolTetraH 
+	float weights[10] = { 2.5f, 0.5f, 2.5f, 2.5f, 0.5f, 2.5f, 2.5f, 2.5f, 1, 1 };
+	//float weights[10] = { 1,1,1,1,1,1,1,1,1,1 };
+
+	gridMatcher matcher = gridMatcher(featureTableFilePath, databaseFilePath, weights);
+
+	resultQuery = matcher.matchSingle(grid, "", 10);
+
 	cout << "3D unstructured grid (mesh) visualization." << endl;
 	cout << "Interaction options: " << endl << endl;
 	cout << "  Mouse: changes the viewpoint:" << endl;
@@ -298,11 +373,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "  Keyboard: visualization options:" << endl;
 	cout << "      -r,R:        reset the viewpoint" << endl;
 	cout << "      -space:      cycle through mesh rendering styles" << endl;
-
-	const char* filename = (argc < 2) ? "DATA/bunny.ply" : argv[1];  //Read the PLY file given as 1st argument. If no arguments given, use a default file.
-
-	OFFConverter* converter = new OFFConverter();
-	//converter->ConvertOFFToPLY(filename);
+	cout << "      -n,N:        cycle through result meshes" << endl;
 
 	glutInit(&argc, argv);								//1.  Initialize the GLUT toolkit
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -311,74 +382,6 @@ int main(int argc, char* argv[])							//Main program
 	glutCreateWindow("6. 3D mesh (unstructured grid)");	//4.  Create our window
 	zprInit(0, 0, 0);										//5.  Initialize the viewpoint interaction-tool to look at the point (0,0,0)
 	setCamera();
-
-	PlyReader rdr;										//6.  Read a 3D mesh stored in a file in the PLY format
-	PlyWriter writer;
-	Supersampler ss;
-
-	OffReader ofr;
-	
-
-	//KNNBuilder knn = KNNBuilder(1796, 65, 10, "output/featureFinal.csv");
-
-	//grid = rdr.read("DATA/sphere.ply");
-	//Perform 4 step normalization on the model
-	char path[500];
-	cout << "Input path: ";
-	cin >> path;
-	cout << "\nProcessing input & matching:\n";
-	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/3/m303/m303.off");
-	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/0/m95/m95.off");
-	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/0/m94/m94.off");
-	//grid = ofr.ReadOffFile("C:/Users/claud/Desktop/benchmark/db/1/m135/m135.off");
-
-	grid = ofr.ReadOffFile(path);
-	//supersampling 
-	ss.supersample(*grid, 20000);
-
-	FourStepNorm normalizer;
-	normalizer.centerOnBary(grid); //Step 1. center on the barycenter (average x,y,z)
-	normalizer.PCA(grid); //Step 2. do PCA and use eigenvectors to translate all vertices
-	normalizer.flipTest(grid); //Step 3. make sure most most mass (number triangles is on the let side)
-	normalizer.normalizeInCube(grid); //Step 4. normalize the model
-		
-	//grid = ofr.ReadOffFile("shapeDB/benchmark/db/0/m95/m95.off");
-
-	//float d = max(grid->getDiameter(2000, 0), grid->getDiameter(2000, 1));
-	//d = max(d, grid->getDiameter(2000, 2));
-	//d = max(d, grid->getDiameter(2000, 3));
-	//d = max(d, grid->getDiameter(2000, 4));
-
-	//float d = grid->getDiameter(2000, 0);
-
-	//cout<<"\nDiameter: " << d <<"\n";
-
-	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
-	//knn.KNNSearch(&feat);
-
-	//grid = rdr.read(filename);
-	//gridFeatures feat = gridFeatures(grid, 100000, 12, 12, 12, 12, 12);
-	//cout << feat.featuresToString() << endl;
-	//surfArea, BBV, Eccentricity, Circularity, Diameter, AngleH, DistToBaryH, Dist2PtH, AreaTriH, VolTetraH 
-	float weights[10] = { 2.5f,0.5f,2.5f,2.5f,0.5f,2.5f,2.5f,2.5f,1,1 };
-	//float weights[10] = { 1,1,1,1,1,1,1,1,1,1 };
-
-	converter->WriteFileOFF(*grid, "input/input.off");
-
-	grid = ofr.ReadOffFile("input/input.off");
-
-	gridMatcher matcher = gridMatcher("output/featureTableFinal.csv", "shapeDB/benchmark/db/", weights);
-
-	//matcher.matchAll(weights, 10);
-	//matcher.matchAll("shapeDB/benchmark/db/", weights, 10);
-	resultQuery = matcher.matchSingle(grid, "", 10);
-	//generateFeatureTable("output/featureTable.txt", "shapeDB/benchmark/db/");
-	//generates a summary of all the meshes to the outputfile. dbLocation is benchmark/db
-	//generateDatabaseOverview("output/description.txt", "shapeDB/benchmark/db/");
-
-
-	grid->computeFaceNormals();
-	grid->computeVertexNormals();
 
 	glutMouseFunc(mouseclick);							//9.  Bind the mouse click and mouse drag (click-and-move) events to callbacks. This allows us
 	glutMotionFunc(mousemotion);							//    next to control the viewpoint interactively.

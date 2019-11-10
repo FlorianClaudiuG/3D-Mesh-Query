@@ -364,10 +364,9 @@ int main(int argc, char* argv[])							//Main program
 	replaceBackslash(path);
 	cout << "\nProcessing input & matching...\n";
 	grid = prepareMesh(path, targetVertexCount);
-
 	//surfArea, BBV, Eccentricity, Circularity, Diameter, AngleH, DistToBaryH, Dist2PtH, AreaTriH, VolTetraH 
-	float weights[10] = { 2.5f, 0.5f, 2.5f, 2.5f, 0.5f, 2.5f, 2.5f, 2.5f, 1, 1 };
-	//float weights[10] = { 1,1,1,1,1,1,1,1,1,1 };
+	//float weights[10] = { 2.5f, 0.5f, 2.5f, 2.5f, 0.5f, 2.5f, 2.5f, 2.5f, 1, 1 };
+	float weights[10] = { 1,1,1,1,1,1,1,1,1,1 };
 
 	gridMatcher matcher = gridMatcher(featureTableFilePath, databaseFilePath, weights);
 

@@ -4,6 +4,10 @@
 #include <iostream>
 #include <fstream>
 
+//----------------------------------------------------------------------
+//	meshDescription constructor
+//----------------------------------------------------------------------
+
 meshDescription::meshDescription(UnstructuredGrid3D* g, string directName, string fileName)
 {
 	setNrFaces(g->numCells());
@@ -14,8 +18,11 @@ meshDescription::meshDescription(UnstructuredGrid3D* g, string directName, strin
 	g->getAverages(avgX, avgY, avgZ);
 }
 
+//----------------------------------------------------------------------
+//	returns a string with a summary of the grid
+//----------------------------------------------------------------------
 
-string meshDescription::getFeatureString()
+string meshDescription::getDescriptionString()
 {
 	string s;
 	s += directory; s += ",";
@@ -32,6 +39,10 @@ string meshDescription::getFeatureString()
 	return s;
 }
 
+//----------------------------------------------------------------------
+//	write the collumn header to a file
+//----------------------------------------------------------------------
+
 void meshDescription::writeColumnString(string outputDest)
 {
 	ofstream myfile;
@@ -40,13 +51,15 @@ void meshDescription::writeColumnString(string outputDest)
 	myfile.close();
 }
 
-
+//----------------------------------------------------------------------
+//	write the description of the mesh to a file
+//----------------------------------------------------------------------
 
 void meshDescription::writeDescriptionsToFile(string outputDest)
 {
 	ofstream myfile;
 	myfile.open(outputDest, ios::out | ios::app);
-	myfile << getFeatureString() << endl;
+	myfile << getDescriptionString() << endl;
 	myfile.close();
 }
 

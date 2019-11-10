@@ -6,28 +6,9 @@
 #include <fstream>
 #include <sstream>
 
-void printPt(ostream& out, ANNpoint p, int nDims)			// print point
-{
-	out << "(" << p[0];
-	for (int i = 1; i < nDims; i++) {
-		out << ", " << p[i];
-	}
-	out << ")\n";
-}
-
-KNNBuilder::KNNBuilder(int pts, int dims, string tableLocation) {
-	nPts = pts;
-	nDims = dims;
-
-	dataPts = annAllocPts(nPts, nDims);			// allocate data points
-
-	readData(tableLocation, dataPts);
-
-	kdTree = new ANNkd_tree(					// build search structure
-		dataPts,					// the data points
-		nPts,						// number of points
-		nDims);						// dimension of space
-}
+//----------------------------------------------------------------------
+//	KNNBuilder constructor
+//----------------------------------------------------------------------
 
 KNNBuilder::KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids, float* tweights)
 {
@@ -39,20 +20,24 @@ KNNBuilder::KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids, floa
 
 	readGridFeatures(grids, nGrids);
 
-	kdTree = new ANNkd_tree(					// build search structure
+	kdTree = new ANNkd_tree(		// build search structure
 		dataPts,					// the data points
 		nPts,						// number of points
 		nDims);						// dimension of space
 }
 
+//----------------------------------------------------------------------
+//	Search for k nearest neighbours on the created kd tree.
+//----------------------------------------------------------------------
+
 void KNNBuilder::KNNSearch(gridFeatures* f, int k, ANNdistArray& dists, ANNidxArray& indices){
-	//ANNidxArray			nnIdx;					// near neighbor indices
+	//ANNidxArray			nnIdx;				// near neighbor indices
 	//ANNdistArray		dists;					// near neighbor distances
 	ANNpoint			queryPt;				// query point
 
-	indices = new ANNidx[k];						// allocate near neigh indices
+	indices = new ANNidx[k];					// allocate near neigh indices
 	dists = new ANNdist[k];
-	queryPt = annAllocPt(nDims);					// allocate query point
+	queryPt = annAllocPt(nDims);				// allocate query point
 		
 	readPoint(queryPt, f);
 
@@ -70,6 +55,10 @@ void KNNBuilder::KNNSearch(gridFeatures* f, int k, ANNdistArray& dists, ANNidxAr
 	}
 }
 
+//----------------------------------------------------------------------
+//	Transform a feature vector to a ANNpoint.
+//----------------------------------------------------------------------
+
 void KNNBuilder::readPoint(ANNpoint p, gridFeatures* f) {
 	int dimIndex = 0;
 	for (int i = 0; i < f->nFeatures; i++) {
@@ -86,28 +75,9 @@ void KNNBuilder::readPoint(ANNpoint p, gridFeatures* f) {
 	}
 }
 
-void KNNBuilder::readData(string tableLocation, ANNpointArray &dataPts) {
-	ifstream infile(tableLocation);
-	string line;
-	string name;
-	char delimeter = ',';
-
-	int pointIndex = 0;
-	while (getline(infile, line))
-	{
-		stringstream ss(line);
-		getline(ss, name, delimeter);
-		getline(ss, line);
-
-		int lengths[5] = { 12,12,12,12,12 };
-		gridFeatures* f2 = new gridFeatures(line, lengths, 5, 5);
-
-		readPoint(dataPts[pointIndex],f2);
-
-		pointIndex++;
-		delete f2;
-	}
-}
+//----------------------------------------------------------------------
+//	Read in the entire feature table
+//----------------------------------------------------------------------
 
 void KNNBuilder::readGridFeatures(gridFeatures** grids, int nGrids) {
 	for (int i = 0; i < nGrids; i++) {

@@ -11,42 +11,49 @@
 
 using namespace pmp;
 
+//----------------------------------------------------------------------
+//	Histfeature object functions.
+//----------------------------------------------------------------------
+
+//constructor. given number of bins (n) the minimum (min) and maximum (max) of the histogram. Fill a histogram
+//with an array of float values.
 histFeature::histFeature(int n, float min, float max, float* values, int nvalues, string nName) {
 	minVal = min; maxVal = max; nElements = n; name = nName;
-	bins = new float[nElements] {0};
 	
+	bins = new float[nElements] {0};
 
-	float binsize = (maxVal - minVal) / nElements;
-	int assignedValues = 0;//keep track of number assigned values
+	float binsize = (maxVal - minVal) / nElements;	//each bin should have an equal range
+	int assignedValues = 0;							//keep track of number assigned values
 
-	for (int i = 0; i < nvalues; i++) {
-		float threshold = minVal + binsize;
-		bool assigned = false;
+	for (int i = 0; i < nvalues; i++) {//for each value determine what bin it belongs to
+		float threshold = minVal + binsize;	//threshold for bin nr 1.
+		bool assigned = false;		
 		int j = 0;
-		while ((!assigned) & (j < nElements))
+		while ((!assigned) & (j < nElements))		// loop until value is assigned, or the bins run out
 		{
-			if ((values[i] <= threshold) & (values[i]>= minVal)) {
-				bins[j] = bins[j] + 1;
+			if ((values[i] <= threshold) & (values[i]>= minVal)) {	//if value is below threshold it is the correct bin.
+				bins[j] = bins[j] + 1;								//value is assigned to bin j
 				assigned = true;
 				j++;
 				assignedValues++;
 			}
-			else {
+			else {	// if it doesnt fit in the bin increase the threshold to check the next bin
 				threshold += binsize;
 				j++;
 			}
 		}
 	}
 	for (int i = 0; i < nElements; i++) {
-		bins[i] /= assignedValues;//normalize so that total value of histogram of 
+		bins[i] /= assignedValues;	//normalize so that total value of histogram of 
 	}
-	delete[] values;//wont be needed anymore
+	delete[] values;	// value assigned so wont be needed anymore
+
 	if (assignedValues != nvalues) {
 		cout << "value didnt fit in bin, should be " << nvalues << ", is really " << assignedValues << endl;
 	}
-	//cout << "should be: " << 1 << ", is really: " << nAssigned << endl;
 };
 
+//Histfeature constructor for when the binValues are already known.
 histFeature::histFeature(int nbins, float* binValues) {
 	nElements = nbins;
 	minVal = 0; maxVal = 0;
@@ -56,16 +63,7 @@ histFeature::histFeature(int nbins, float* binValues) {
 	}
 }
 
-gridFeatures::~gridFeatures(){
-	for (int i = 0; i < nFeatures; i++){
-		delete features[i];}
-}
-
-feature::~feature()
-{
-	delete[] bins;
-}
-
+//convert all the bin values to strings and seperate them with comma's
 string histFeature::getFeatureString()
 {
 	string s = "";
@@ -76,6 +74,42 @@ string histFeature::getFeatureString()
 	return s;
 }
 
+//destructor for features, delete all the bins
+feature::~feature()
+{
+	delete[] bins;
+}
+
+//----------------------------------------------------------------------
+//	Scalarfeature object functions.
+//----------------------------------------------------------------------
+
+//construct a scalar feature for a value and name
+scalarFeature::scalarFeature(float v, string nName) {
+	name = nName;
+	nElements = 1;
+	val = v;
+}
+
+//convert feature value to string
+string scalarFeature::getFeatureString() {
+	string s = to_string(val);
+	s += ",";
+	return s;
+}
+
+//----------------------------------------------------------------------
+//	gridFeatures object functions.
+//----------------------------------------------------------------------
+
+//destructor for gridFeatures, delete all feature objects
+gridFeatures::~gridFeatures(){
+	for (int i = 0; i < nFeatures; i++){
+		delete features[i];}
+}
+
+//construct a gridFeature object for a mesh (g) with a given number of samples for the histogram features and
+//bin sizes for the different histogram features.
 gridFeatures::gridFeatures(UnstructuredGrid3D* g, int samples, int binsA3, int binsD1, int binsD2, int binsD3, int binsD4) {
 	nFeatures = 10;
 	features = new feature*[nFeatures];
@@ -93,31 +127,33 @@ gridFeatures::gridFeatures(UnstructuredGrid3D* g, int samples, int binsA3, int b
 	features[9] = D4(g, samples,binsD4);
 }
 
+//construct a gridFeatures object given an already calculated feature string with the number of bins
+//the number of scalar values and number of histogram values
 gridFeatures::gridFeatures(string featString, int* binnrs, int nScalar, int nHist) {
 	nFeatures = nScalar + nHist;
 	features = new feature * [nFeatures];
 	
 	stringstream ss(featString);
-	string item;//value to be added
-	vector<std::string> splittedStrings;
+	string item;							//value to be added
 	char delimiter = ',';
 
 	for (int i = 0; i < nScalar; i++) {
-		getline(ss, item, delimiter);
+		getline(ss, item, delimiter);		//get the next value from the string stream
 		features[i] = new scalarFeature(stof(item), "");
 	}
 
 	for (int i = nScalar; i < nHist+nScalar; i++) {
 		int size = binnrs[i-nScalar];
-		float* numbers = new float[size];
+		float* numbers = new float[size];	//array for storing the bins
 		for (int j = 0; j < size; j++) {
-			getline(ss, item, delimiter);
+			getline(ss, item, delimiter);	//get the next value for bin nr j
 			numbers[j] = stof(item);
 		}
 		features[i] = new histFeature(size, numbers);
 	}
 }
 
+//return the complete feature string.
 string gridFeatures::featuresToString() {
 	string s = {};
 	for (int i = 0; i < nFeatures; i++) {
@@ -126,6 +162,11 @@ string gridFeatures::featuresToString() {
 	return s;
 }
 
+//----------------------------------------------------------------------
+//	Helper functions for creating the feature objects.
+//----------------------------------------------------------------------
+
+//returns true if any values in the array are identical, false otherwise.
 bool checkDuplicates(int* v, int n) {
 	for (int i = 0; i < n; i++) {
 		for (int j = i + 1; j < n; j++) {
@@ -137,18 +178,20 @@ bool checkDuplicates(int* v, int n) {
 	return false;
 }
 
+//standardizes a value given the average and standard deviation of its distribution
 float standardization(float i, float avg, float stddev) {
 	return ((i - avg) / stddev);
 }
 
-//calculate distan
+//calculate distance  between two points
 float distancePoint(float* a, float* b) {
 	Point pa = Point(a[0], a[1], a[2]);
 	Point pb = Point(b[0], b[1], b[2]);
 	float dist = distance(pa, pb);
 	return dist;
 }
-//calculate angle between 3 points
+
+//calculate angle between the lines a-b and a-c
 float calculateAngle(float* a, float* b, float* c){
 	Point pa = Point(b[0]-a[0], b[1]-a[1], b[2]-a[2]);
 	Point pb = Point(c[0]-a[0], c[1]-a[1], c[2]-a[2]);
@@ -164,6 +207,24 @@ float triangleArea(float* a, float* b, float* c) {
 	float area = triangle_area(pa, pb, pc);
 	return area;
 }
+
+//calculate the volume of a tetrahedron formed by points a,b,c,d
+float tetraArea(float* a, float* b, float* c, float* d) {
+	Point pa = Point(a[0], a[1], a[2]);
+	Point pb = Point(b[0], b[1], b[2]);
+	Point pc = Point(c[0], c[1], c[2]);
+	Point pd = Point(d[0], d[1], d[2]);
+
+	//https://en.wikipedia.org/wiki/Tetrahedron general properties -> volume function
+	float nom = abs(dot((pa - pd), (cross(pb - pd, pc - pd))));
+	float V = nom / 6.0f;
+	//cout << to_string(V) << endl;
+	return V;
+}
+
+//----------------------------------------------------------------------
+//	Scalar features. each function returns a scalarFeature object.
+//----------------------------------------------------------------------
 
 scalarFeature* surfaceArea(UnstructuredGrid3D* g){
 	float totalArea = 0;
@@ -256,18 +317,9 @@ scalarFeature* diameter(UnstructuredGrid3D* g) {
 	return f;
 }
 
-float tetraArea(float* a, float* b, float* c, float* d) {
-	Point pa = Point(a[0], a[1], a[2]);
-	Point pb = Point(b[0], b[1], b[2]);
-	Point pc = Point(c[0], c[1], c[2]);
-	Point pd = Point(d[0], d[1], d[2]);
-	
-	//https://en.wikipedia.org/wiki/Tetrahedron general properties -> volume function
-	float nom = abs(dot((pa - pd), (cross(pb - pd, pc - pd))));
-	float V = nom / 6.0f;
-	//cout << to_string(V) << endl;
-	return V;
-}
+//----------------------------------------------------------------------
+//	Histogram features. Each function returns a histFeature object
+//----------------------------------------------------------------------
 
 histFeature* D1(UnstructuredGrid3D* g, int n, int nBins) {
 	int nPoints = g->numPoints();
@@ -440,24 +492,18 @@ histFeature* D4(UnstructuredGrid3D* g, int n, int nBins)
 	return h;
 }
 
-scalarFeature::scalarFeature(float v, string nName){
-	name = nName;
-	nElements = 1;
-	val = v;
-}
+//----------------------------------------------------------------------
+//	Distance calculation between features.
+//----------------------------------------------------------------------
 
-string scalarFeature::getFeatureString() {
-	string s = to_string(val);
-	s += ",";
-	return s;
-}
-
+// returns distance between two scalar features
 float FeatureDistanceScalar(feature* f1, feature* f2)
 {
 	float d = abs(f1->val - f2->val);
 	return d;
 }
 
+// returns distance between two histogram features
 float FeatureDistanceHist(feature* f1, feature* f2)
 {
 	float d = 0;
@@ -467,14 +513,13 @@ float FeatureDistanceHist(feature* f1, feature* f2)
 		float val = abs(v1 - v2);
 		d += val*val;
 	}
-	//d = d / 2.0;//maximum distance between two normalized is 2. diving by 2 means that max distance is 1, 0-1 is the range in which
-	//most of the features are calculated.
 	return sqrt(d);
 }
 
+// returns distance between two features
 float getFeatureDistance(feature* f1, feature* f2)
 {
-	if (f1->nElements == 1) {
+	if (f1->nElements == 1) {// if n elements is 1 its a scalar feature
 		float  d = FeatureDistanceScalar(f1, f2);
 		return d*d;
 	}
@@ -484,29 +529,12 @@ float getFeatureDistance(feature* f1, feature* f2)
 	}
 }
 
+//returns the distance between two feature vectors (represented as gridFeatures objects given a weight vector
 float featureVectorDistance(gridFeatures* fv1, gridFeatures* fv2, float* weights)
 {
 	float d = 0;
 	for (int i = 0; i < fv1->nFeatures; i++) {
 		d += (weights[i] * getFeatureDistance(fv1->features[i], fv2->features[i]));
-		//cout <<to_string(i) << ": " <<  to_string(getFeatureDistance(fv1->features[i], fv2->features[i])) << endl;
 	}
 	return sqrt(d);
 }
-
-/*
-vector<gridFeatures> readFeatureFile(string featureFile, int* binnrs, int nScalar, int nHist)
-{
-	vector<gridFeatures> featureTable;
-	featureTable.resize(1800);
-
-	stringstream ss;
-
-	ifstream in(featureFile);
-	while (!in.eof())
-	{
-		in.read;
-		gridFeatures temp(getline(), binnrs, nScalar, nHist);
-		featureTable.push_back()
-	}
-}*/

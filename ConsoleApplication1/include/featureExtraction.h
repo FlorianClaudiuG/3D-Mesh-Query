@@ -34,6 +34,7 @@ public:
 	string getFeatureString();
 };
 
+//gridFeatures contains all the features for a single mesh.
 class gridFeatures {
 public:
 	feature** features;
@@ -44,11 +45,10 @@ public:
 	gridFeatures(string featString, int* binnrs, int nScalar, int nHist);
 	~gridFeatures();
 	string featuresToString();
-	void stringToFeatures();
 };
 
-float distancePoint(float* a, float* b);
-float calculateAngle(float* a, float* b, float* c);
+float distancePoint(float* a, float* b);//distance between poin a and b
+float calculateAngle(float* a, float* b, float* c);//angle of line a-b and a-c
 float triangleArea(float* a, float* b, float* c);
 
 //Scalar features

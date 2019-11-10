@@ -21,6 +21,7 @@ void FourStepNorm::PCA(UnstructuredGrid3D* g)
 		}
 	}
 	input.setcontent(numberPoints, 3, numbers);
+
 	//Initialize output parameters
 	ae_int_t info;
 	real_1d_array eigenValues;
@@ -58,9 +59,7 @@ void FourStepNorm::PCA(UnstructuredGrid3D* g)
 	A.setlength(3);
 	C.setlength(3);
 	B.setcontent(9, 3, ns);
-	densesolverreport r; //need this for some reason
-
-	float totalX = 0; float totalY = 0; float totalZ = 0;
+	densesolverreport r; 
 
 	for (int i = 0; i < numberPoints; i++)
 	{	//Read the point and convert to real_1d_array, than do matrix multiplication to get new coordinate 
@@ -71,10 +70,9 @@ void FourStepNorm::PCA(UnstructuredGrid3D* g)
 		A[2] = V[2];
 		rmatrixsolve(B, 3, A, info, r, C); //Do matrix multiplication to get the new vertex coordinates
 		float T[3] = { C[0],C[1],C[2] };
-		totalX += C[0]; totalY += C[1]; totalZ += C[2];
+
 		g->setPoint(i, T);
 	}
-	totalX /= g->numPoints(); totalY /= g->numPoints(); totalZ /= g->numPoints();
 }
 
 void FourStepNorm::flipTest(UnstructuredGrid3D* g)

@@ -90,6 +90,7 @@ void keyboard(unsigned char c, int, int)					//Callback for keyboard events:
 		renderer.setDrawingStyle((MeshRenderer::DRAW_STYLE)drawing_style);
 		break;
 	}
+	case 'N':
 	case 'n':
 	{
 		OffReader off;

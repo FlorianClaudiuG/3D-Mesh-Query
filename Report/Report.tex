@@ -102,7 +102,7 @@ The files from the PSB were all provided in the OFF file format and an OFF reade
 
 \subsection{Database evaluation}
 
-The database contains 1815 models in the OFF file format. All of the models contain only triangles as faces. The distribution of faces is shown in \textit{Figure 1}. The average number of vertices is 4221, the minimum 10, and the maximum 160940. The histogram, along with the average, shows that most of the models have a vertex count of smaller than 20,000. In order to successfully perform the upcoming steps of feature extraction the models need to have approximately the same number of vertices. Two actions can be undertaken to achieve this, supersampling and subsampling. The models with a low vertex count are supersampled and the ones with a large vertex count are subsampled. A target number of vertices has to be chosen for this. One solution could be to choose the average. However because several of the meshes have a very high resolution (a hundred thousand vertices), subsampling this to reach the 4000 required vertices would ruin the original shape. Therefore the target vertex count is chosen to be higher than the average, so that the higher resolution models retain their characteristics. The only downside for choosing a higher target number of vertices is an increase in computation time. The target number of vertices is set at 20,000, and the methodology for supersampling and subsampling is explained in the following two sections.
+The database contains 1815 models in the OFF file format. All of the models contain only triangles as faces. The distribution of faces is shown in \textit{Figure 2}. The average number of vertices is 4221, the minimum 10, and the maximum 160940. The histogram, along with the average, shows that most of the models have a vertex count of smaller than 20,000. In order to successfully perform the upcoming steps of feature extraction the models need to have approximately the same number of vertices. Two actions can be undertaken to achieve this, supersampling and subsampling. The models with a low vertex count are supersampled and the ones with a large vertex count are subsampled. A target number of vertices has to be chosen for this. One solution could be to choose the average. However because several of the meshes have a very high resolution (a hundred thousand vertices), subsampling this to reach the 4000 required vertices would ruin the original shape. Therefore the target vertex count is chosen to be higher than the average, so that the higher resolution models retain their characteristics. The only downside for choosing a higher target number of vertices is an increase in computation time. The target number of vertices is set at 20,000, and the methodology for supersampling and subsampling is explained in the following two sections.
 
 \subsection{Supersampling}
 Supersampling is done in this implementation by splitting a larger triangle into 4 smaller ones via adding the midpoints of the original triangle’s edges as vertices and using them to form new triangles with the original vertices. An example is shown below:
@@ -123,7 +123,7 @@ S = \frac{|AB||AC|sin(\theta)}{2}
 \noindent Thus, at each step, only the triangle with the largest surface is split up into smaller triangles. The original triangle is removed from the vector, and the smaller triangles are inserted at positions that maintain the ordered property of the data structure.
 
 \subsection{Subsampling}
-For the task of subsampling the Polygon Mesh Processing (PMP) library is used. The SurfaceSimplification class is used to perform mesh decimation, taking as input the mesh and a target number of vertices. To demonstrate that this algorithm works correctly for our models a pre- and post- visualization is shown in figure 2. This is the largest model in the dataset with 316.498 faces and 160.940 vertices. The post decimation model contains 78.473 faces and 40.000 vertices in the middle picture and 20.000 vertices in the right picture. Even though the model only has a fourth of its original vertices in the second case, it clearly retains its characteristics. And even when the vertex count is brought down to 20.000 vertices it is hard to distinguish them. Therefore we can conclude that the algorithm is a suitable tool for this project.
+For the task of subsampling the Polygon Mesh Processing (PMP) library is used. The SurfaceSimplification class is used to perform mesh decimation, taking as input the mesh and a target number of vertices. To demonstrate that this algorithm works correctly for our models a pre- and post- visualization is shown in figure 4. This is the largest model in the dataset with 316.498 faces and 160.940 vertices. The post decimation model contains 78.473 faces and 40.000 vertices in the middle picture and 20.000 vertices in the right picture. Even though the model only has a fourth of its original vertices in the second case, it clearly retains its characteristics. And even when the vertex count is brought down to 20.000 vertices it is hard to distinguish them. Therefore we can conclude that the algorithm is a suitable tool for this project.
 
 \begin{figure}[h!]
   \centering
@@ -145,7 +145,7 @@ For the task of subsampling the Polygon Mesh Processing (PMP) library is used. T
 
 \subsection{Four step normalization}
 
-Next each mesh will go through the four step normalization pipeline so that it is ready to be used in upcoming tasks. Figure 1 shows a visualization of what each step does, the red, green, and blue represent the $x$, $y$, and $z$ axes respectively from zero to one. The first step is to center on the barycenter, then, in step 2, PCA is done to orient the object in an intuitive way. Step 3 performs a fliptest which results in the majority of the mass in the object to be located in the negative side of the axis. Finally step 4 normalizes the model, which is excluded in the figure because the model was already normalized and thus would show no difference.
+Next each mesh will go through the four step normalization pipeline so that it is ready to be used in upcoming tasks. This four step normalization is also called pose normalization, which refers to the pose of the models. The goal of this is so that similar models will have the same orientation. Figure 5 shows a visualization of what each step does, the red, green, and blue represent the $x$, $y$, and $z$ axes respectively from zero to one. The first step is to center on the barycenter, then, in step 2, PCA is done to orient the object in an intuitive way. Step 3 performs a fliptest which results in the majority of the mass in the object to be located in the negative side of the axis. Finally step 4 normalizes the model, which is excluded in the figure because the model was already normalized and thus would show no difference.
 
 \subsubsection{Center on the barycenter}
 
@@ -169,7 +169,6 @@ b_y \\
 b_z \\
 \end{bmatrix}
 \]
-
 
 \noindent The result can be verified by calculating the average coordinates again, which should be 0 after the normalization.
 
@@ -224,7 +223,7 @@ v_z \\
 The result of the translation can easily be verified. Doing PCA again on the translated mesh returns three eigenvectors that now correspond with the $x$, $y$, and $z$ axis.
 
 \subsubsection{Fliptest}
-The eigenvectors used for the translation in the previous step are unoriented and thus give no information about to which side the model should be directed. Using the fliptest it is ensured that the majority of the mass resides in the negative half-space. Mass in this case is not indicated by the number of the vertices but also takes momentum into consideration, i.e. vertices farther away from the origin have a higher weight. Three variables are introduced: $w_x$, $w_y$, and $w_z$ that indicate the total weight of each of the three coordinates. 
+The eigenvectors used for the translation in the previous step are unoriented and thus give no information about to which side the model should be directed. Using the fliptest it is ensured that the majority of the mass resides in the negative half-space, the important part of this step is that all models are consistently oriented, i.e. two planes should be facing the same way. Mass in this case is not indicated by the number of the vertices but also takes momentum into consideration, i.e. vertices farther away from the origin have a higher weight. Three variables are introduced: $w_x$, $w_y$, and $w_z$ that indicate the total weight of each of the three coordinates. 
 \begin{equation}
 w_i = \sum sign(C_{t,i})(C_{t,i})^2
 \end{equation}
@@ -274,7 +273,7 @@ In total 19 files were unable to processed, leaving a total of 1796 models in th
 	\centering
 	\begin{subfigure}[b]{0.4\linewidth}
 		\includegraphics[width=\linewidth]{Pictures/Part2/Step0.png}
-		\caption{Step 0}
+		\caption{original mesh}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.4\linewidth}
 		\includegraphics[width=\linewidth]{Pictures/Part2/step1.png}
@@ -293,7 +292,8 @@ In total 19 files were unable to processed, leaving a total of 1796 models in th
 \end{figure}
 \section{Feature Extraction}
 
-There are two different types of features used to describe the meshes. The first are features which consist of a single float. And the second are the histogram features, which for a histogram with $n$ bins contain $n$ float values representing the fraction of values contained in each bin. The definition of these features is discussed in the following subsections.
+There are two different types of features used to describe the meshes. The first are features which consist of a single float value, the scalar features. And the second are the histogram features, which for a histogram with $n$ bins contain $n$ float values representing the fraction of values contained in a bin. The definition of these features is discussed in the following subsections.
+
 \subsection{Scalar Features}
 
 \subsubsection{Surface area}
@@ -305,7 +305,23 @@ Where $N(x)$ is the Euclidean norm of a vector $x$. The surface area feature $F_
 \begin{equation}
 F_{SA}(M) = \sum\limits_{i} area(t_i).
 \end{equation}
-where $t_i$ is the $i^{th}$ triangle of mesh M. The minimum value this feature can have is 0, but it does not have a clear theoretical maximum. The maximum as is displayed in \textit{Table 2} is 32.96, with an average of 1.54 and standard deviation of 1.65, which shows that this feature has large outliers. Therefore the feature cannot be normalized by extent normalization, and instead standardization has to be used. 
+where $t_i$ is the $i^{th}$ triangle of mesh M. The minimum value this feature can have is 0, but it does not have an obvious theoretical maximum. The maximum as is displayed in \textit{Table 1} is 32.96, with an average of 1.54 and standard deviation of 1.65, which shows that this feature has large outliers. Therefore the feature cannot be normalized by extent normalization, and instead standardization has to be used. 
+
+\begin{table}[h!]
+\begin{center}
+    \begin{tabular}{ l | l | l | l | l }
+    \hline
+    Feature encoding & Min & Max & Avg & Stddev \\ \hline
+    SA & 0.02194 & 32.961956 & 1.53768275 & 1.648700958 \\ 
+    BBV & 0.001874 & 0.986091 & 0.261523862 & 0.2203638 \\
+    ECC & 0.000004 & 0.956016 & 0.148089259 & 0.182812364 \\ 
+	CIR & 0 & 0.978213 & 0.075533213 & 0.137364272 \\ 
+	DI & 0.74698 & 1.519733 & 1.055276205  & 0.088772773 	
+    \end{tabular}
+\end{center}
+\caption{Scalar feature summary pre standardization}
+\label{Table 1, }
+\end{table}
 
 \subsubsection{Bounding Box Volume}
 The bounding box of a mesh is a rectangle that can be represented as two points, the opposite corners $bot$ and $top$. The volume $V$ is easily calculated as the $width \cdot length \cdot height$.
@@ -330,14 +346,14 @@ The bounding box volume feature $F_{BBV}$ for a mesh $M$ with its bounding box o
 \begin{equation}
 F_{BBV}(M) = V(M_{bot},M_{top}).
 \end{equation}
-The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube. Which is verified by the numbers in \textit{Table 2} for the BBV feature. 
+The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube. Which is verified by the numbers in \textit{Table 1} for the BBV feature. 
 
 \subsubsection{Eccentricity}
-The eccentricity of a mesh the ratio of the biggest eigenvalue of the covariance matrix to the smallest. The alglib library is once again used to do PCA and obtain the eigenvalues of the shape covariance matrix. For the eigenvalues $e_1$, $e_2$, and $e_3$ where $e_1$ is the largest value and $e_3$ the smallest, the eccentricity is
+The eccentricity of a mesh the ratio of the biggest eigenvalue of the covariance matrix to the smallest. The $alglib$ library is once again used to do PCA and obtain the eigenvalues of the shape covariance matrix. For the eigenvalues $e_1$, $e_2$, and $e_3$ where $e_1$ is the largest value and $e_3$ the smallest, the eccentricity is
 \begin{equation}
 F_{EC}(M) = M_{e_3} / M_{e_1}
 \end{equation}
-Where $M_{e_3}$ and $M_{e_1}$ are the smallest and largest eigenvectors of mesh $M$ respectively. This describes the relation between the biggest and smallest eigenvectors, or also between the number of points spread in the x direction and the z direction. An object like a sphere or a head will have a high eccentricity, because their vertices are not spread out in a single direction. The picture of the head in figure 5 has an eccentricity of 0.72, while the leopard on the right has an eccentricity of 0.03.
+Where $M_{e_3}$ and $M_{e_1}$ are the smallest and largest eigenvectors of mesh $M$ respectively. This describes the relation between the biggest and smallest eigenvectors, or also between the number of points spread in the x direction and the z direction. An object like a sphere or a head will have a high eccentricity, because their vertices are not spread out in a single direction. The picture of the head in figure 6 has an eccentricity of 0.72, while the leopard on the right has an eccentricity of 0.03.
 
 \begin{figure}[b!]
   \centering
@@ -394,7 +410,7 @@ C_{3D} = \frac{S^3}{36\pi V^2}
 Circularity = \frac{36\pi V^2}{S^3}
 \end{equation}
 
-\noindent In the program, the two models in \textit{Figure 6} below return expected results for circularity. For the human head (a), the computation returns a value of 0.311646, much larger than the one for the leopard (b), 0.059514.
+\noindent In the program, the two models in \textit{Figure 7} below return expected results for circularity. For the human head (a), the computation returns a value of 0.311646, much larger than the one for the leopard (b), 0.059514.
 
 \begin{figure}[h!]
 	\centering
@@ -433,7 +449,7 @@ While this approximation is fast, it's accuracy is not at all guaranteed. To inc
 		\end{tabular}
 	\end{center}
 	\caption{Diameter result and timing on two models.}
-	\label{Table 3,}
+	\label{Table 2,}
 \end{table}
 
 \subsubsection{Normalizing  features}
@@ -445,23 +461,21 @@ f'_{i,j} = \frac{f_{i,j} - \mu_i}{\delta_i},\quad i \in \{SA,BBV,ECC,DI,C\}
 Where $\mu_i$ is the average for feature i, $\delta_i$ the standard deviation, and $f_{i,j}$ the feature value for the $jth$ mesh. This standardization changes the average of a feature to 0 and the standard deviation to 1. Meaning that if two different feature values differ one standard deviation from each other, there distance will be one. 
 
 \subsection{Histogram features}
-For extracting the histogram features random numbers will be generated. 
-For each histogram feature they will first be generated using a minimum and maximum value based on their theoretical maximum. These results will than be used to adjust the minimum and maximum so that there wont be any bins that are universally unused. The number of bins used bins that will finally be used is set at 12.\\
+For extracting the histogram features random vertices pairs are chosen to calculate the different features. For each histogram feature a histogram is created using a minimum and maximum value based on their theoretical maximum. These results will than be used to adjust the minimum and maximum so that there wont be any bins that are universally unused. The number of bins used bins that will finally be used is set at 12.\\
 For the histogram features several graphs are displayed showing the histograms of two different classes. This is only for an indication of how the feature might work, it certainly does not mean that the differences in values is the same for all classes, or that all classes share a similar distribution within their own class. It can however be used to show whether the feature itself works correctly when it gives similar results for similar models, as is the case in several of the histograms. A prediction could be made that these features will help differentiate between different classes. 
 
 \subsubsection{Sampling vertices}
-Ideally, for the histogram features, every possible combination of vertices should be considered. This means that for the histogram features that need two points, the number of combinations is approximately $n^2$, where $n$ is the total number of vertices. And for the triangle area, or angle, approximately $n^3$ combinations are possible. Because calculating the features for all these combinations is not scalable, especially not with 20,000 vertices, only a sample of these combinations will be chosen. Obviously, the higher the sample size, the better, as the only constraint is obtaining a reasonable computation time.\\
-It is important that each combination of vertices has the same probability to be selected as a sample. This is done by randomly sampling points from the uniform distribution using the $c++$ standard library function $rand()$. If a given pair of vertices is identical, the pair will be discarded. \\
-If, for the distance between two pairs of vertices, n samples are generated, the probability that one of these combinations is included is $1-(\frac{1}{n^2 - 1})^{n}$. However, if this same probability has to be achieved for the features that require 3 or 4 random samples, the sample size has to be increased by an order of magnitude, i.e. $n^2$ have to be generated. This is obviously not achievable in a reasonable time, therefore the same sample size is used for all the histogram features. \\
-The actual sample size that is used in the system is determined by maximizing the sample size while keeping a manageable computation time. The number of samples generated are 100,000 resulting in a computation time of ~400ms. This time is considered reasonable because it allows the features of new models to be calculated in real time which is important for when a query is submitted, as the mesh has to be normalized and its features calculated.
+Ideally, for the histogram features, every possible combination of vertices should be considered. This means that for the histogram features that need two points, the number of combinations is approximately $n^2$, where $n$ is the total number of vertices. And for the triangle area, or angle, approximately $n^3$ combinations are possible. Because calculating the features for all these combinations is not doable, especially not with 20,000 vertices, only a sample of these combinations will be chosen. Obviously, the higher the sample size, the better, as the only constraint is obtaining a reasonable computation time.\\
+It is important that each combination of vertices has the same probability to be selected as a sample. This is done by randomly sampling points from the uniform distribution using the $c++$ standard library function $rand()$. If a given pair of vertices is identical, the pair will be discarded. Note that for each model and each feature the same seed is used, so that the results are reproducible. \\
+If for the distance between two pairs of vertices, n samples are generated, the probability that one of these combinations is included is $1-(\frac{1}{n^2})^{n}$. However, if this same probability has to be achieved for the features that require 3 or 4 random samples, the sample size has to be increased by an order of magnitude, i.e. $n^2$ vertex combination samples have to be generated. This is obviously not achievable in a reasonable time, therefore the same sample size is used for all the histogram features. \\
+The actual sample size that is used in the system is determined by maximizing the sample size while keeping a manageable computation time. The number of samples generated are 100,000 resulting in a computation time of ~400ms. This time is considered reasonable because it allows the features of new models to be calculated in real time which is important for when a query is submitted, because a new input mesh has to be normalized and its features need to be calculated.
 
 \subsubsection{D1 - distance to barycenter}
 This feature calculates the distance between a randomly generated point and the barycenter. The distance $D$ between two vectors $u$ and $v$ is calculated as follows:
 \begin{equation}
 D(u,v) = \sqrt{\sum\limits_{i=1}^3 (u_i - v_i)^2}.
 \end{equation}
-The minimum distance is obviously 0, and the maximum distance is equal to the diameter of a unit cube, $\sqrt{3}$, which is an unrealistic scenario.
-In order to evaluate the quality of the features, the histogram distributions of different classes will be plotted on a graph. The blue lines represent the histogram distributions of models m93, m94, m95, m96, and m97, which are all leopard-like animals, and the yellow lines are models m1120, m1121, m1122, m1123, and m1124, which are airplanes. These graphs will be made for each of the histogram features.\\
+The minimum distance is obviously 0, and the maximum distance is equal to the diameter of a unit cube, $\sqrt{3}$, which is an unrealistic scenario. In order to evaluate the quality of the features, the histogram distributions of different classes will be plotted on a graph. The blue lines represent the histogram distributions of models m93, m94, m95, m96, and m97, which are all leopard-like animals, and the yellow lines are models m1120, m1121, m1122, m1123, and m1124, which are air planes. These graphs will be made for each of the histogram features.\\
  \textit{Figure 8} indicates that the feature will not be useful for differentiating between classes. There is both large variance between the two classes, as well as within the classes.
 
 \begin{figure}[h!]
@@ -484,7 +498,7 @@ This time two random points are generated and the same distance function as for 
 \end{figure}
 
 \subsubsection{D3 - area of a random triangle}
-To get a random triangle, three random points are generated. The area of this triangle is calculated the same way as when calculating the total surface area. The square root of this value is then added to the histogram, since this feature is no longer the length of a line segments, but a 2D area.
+To get a random triangle, three random points are generated. The area of this triangle is calculated the same way as when calculating the total surface area. The square root of this value is then added to the histogram, since this feature is no longer the length of a line segment, but a 2D area.
 \textit{Figure 10} shows a difference between the two classes, however there is also some within-class variation. 
 
 \begin{figure}[h!]	
@@ -495,6 +509,7 @@ To get a random triangle, three random points are generated. The area of this tr
 \end{center}
 \end{figure}
 \newpage
+
 \subsubsection{D4 - volume of a random tetrahedron}
 Four random points $a$, $b$, $c$, and $d$ are generated so that together they will be the vertices of the tetrahedron. The formula used for calculating the volume is:
 \begin{equation}
@@ -530,7 +545,7 @@ A model $i$ can be represented in the system using its feature vector $F_i$. Thi
 \begin{equation}
 F_i = \{f_{1,j}, f_{2,j}, .. , f_{10,j}\}
 \end{equation}
-Each $f_{i,j}$ is a list of $k$ values, where $k$ is 1 for the scalar values and 12 for the histogram values. The feature vector is thus a list of 65 values (\textit{Table 2}).
+Each $f_{i,j}$ is a list of $k$ values, where $k$ is 1 for the scalar values and 12 for the histogram values. The feature vector is thus a list of 65 values (\textit{Table 3}).
 
 \begin{table}[h!]
 \begin{center}
@@ -550,29 +565,30 @@ i & feature name & k & min & max\\ \hline
 \end{tabular}
 \end{center}
 \caption{Feature vector format and standardized extreme values.}
-\label{Table 2, }
+\label{Table 3, }
 \end{table}
 \newpage
+
 \section{Matching}
 All the features discussed in the previous section are calculated for each mesh and put in a single feature vector $x = (x_1,...,x_n)$ where each $x_i$ is a single feature. To compare different meshes the distance is to be calculated between their two feature vectors. If feature vector $x$ is compared with a different feature vector $y = (y_1,...y_n)$, each of their features will be compared individually and the sum of these distances will be regarded as the distance between the two feature vectors.
 
 \subsection{Distance calculation}
-Each feature has $m$ values; for scalar features, $m = 1$ because it only has one value. For histograms, $m$ is equal to the number of bins of that histogram. The distance function $L_(x,y)$ gives the total euclidean distance between two feature vectors $x$ and $y$:
+Each feature has $k$ values; for scalar features $k = 1$ because it only has one value. For histograms $k$ is equal to the number of bins of that histogram. The distance function $L_(x,y)$ gives the total euclidean distance between two feature vectors $x$ and $y$:
 \begin{equation}
 L(x,y) = \left(\sum\limits_{i=1}^nd(x_i,y_i)^2\right)^{1/2},
 \end{equation}
 where $d$ is the distance function between two features:
 \begin{equation}
-d(x_i,y_i) = \frac{\left(\sum\limits_{j=1}^m|x_{i,j}-y_{i,j}|^2\right)^{1/2}}{m}.
+d(x_i,y_i) = \frac{\left(\sum\limits_{j=1}^k|x_{i,j}-y_{i,j}|^2\right)^{1/2}}{k}.
 \end{equation}
- $x_{i,j}$ is the $j^{th}$ value of the $i^{th}$ feature of feature vector $x$, and the same goes for $y$. The sum of all the distances between feature values is divided by $m$ so that each feature has the same weight; i.e. a histogram with 8 values should not be weighted 8 times as much as a scalar feature which only has 1 value.  
+ $x_{i,j}$ is the $j^{th}$ value of the $i^{th}$ feature of feature vector $x$, and the same goes for $y$. The sum of all the distances between feature values is divided by $k$ so that each feature has the same weight, i.e. a histogram with 8 values should not be weighted 8 times as much as a scalar feature which only has 1 value.  
 
 \subsection{Query result}
-These distances are calculated for each mesh in the database, including the query item, if it exists. The result is thus a list of distances for a query item $i$ $L_i = {d_1, ... d_k}$, where $k$ is the number of items in the database, and is ordered in ascending order. With an input query size $s$, the first $s$ elements of $L$ are then returned as the query result. An alternative approach that uses the KNN algorithm is discussed in the following section.
+These distances are calculated for each mesh in the database, including the query item, if it exists. The result is thus a list of distances for a query item $i$ $L_i = {d_1, ... d_k}$, where $k$ is the number of items in the database, and is ordered in ascending order. With an input query size $s$, the first $s$ elements of $L$ are then returned as the query result. An alternative approach that uses a kd-tree as a data structure to facilitate faster searches.
 
 \subsection{kd-tree}
-The system, should return a number of relevant models $k$ as specified by the end user. In the previously described method, the distances are being sorted first resulting in a time complexity of $\mathcal{O}(n\log{}n)$. Alternatively, for a small size of k, instead of sorting the result, it could simply be traversed k times and finding a new nearest neighbor each time. This has a time complexity of $\mathcal{O}(kn)$. In this system, the size of the dataset is not so high that this becomes unreasonable, however, to be able to scale up with an even larger dataset, a search structure can be created. The data structure used is called a kd-tree and is a way to partition the data to allow for fast searches. The cost of creating such a tree is $\mathcal{O}(n\log{}n)$, however this can be precomputed and stored server side so that this overhead cost is irrelevant for the user. Searching for the k nearest neighbours in this tree has an average time complexity of $\mathcal{O}(k\log{}n)$, which thus greatly accelerates the search process. \\
-The library used in this system for creating and searching kd-trees is ANN. In addition to the previously mentioned search, ANN has the functionality of an approximate search, which can further accelerate the search in exchange for a user specified loss in accuracy. In this system however, because the number of models and dimensions is manageable, the exact k-nearest neighbors are returned instead. 
+The system, should return a number of relevant models $k$ as specified by the end user. In the previously described method, the distances are being sorted first resulting in a time complexity of $\mathcal{O}(n\log{}n)$. Alternatively, for a small size of k, instead of sorting the result, the unsorted list of distances could simply be traversed k times and finding a new nearest neighbour each time. This has a time complexity of $\mathcal{O}(kn)$. In this system, the size of the dataset is not so high that this becomes unreasonable, however, to be able to scale up with an even larger dataset, a search structure can be created. The data structure used is called a kd-tree and is a way to partition the data to allow for fast searches. The cost of creating such a tree is $\mathcal{O}(n\log{}n)$, however this can be precomputed and stored server side so that this overhead cost is irrelevant for the user. Searching for the k nearest neighbours in this tree has an average time complexity of $\mathcal{O}(k\log{}n)$, which thus greatly accelerates the search process. \\
+The library used in this system for creating and searching kd-trees is $ANN$. In addition to the previously mentioned search, ANN has the functionality of an approximate search, which can further accelerate the search in exchange for a user specified loss in accuracy. In this system however, because the number of models and dimensions is manageable, the exact k-nearest neighbours are returned instead. 
 
 \section{Dimensionality reduction}
 In order to assess the quality of our feature vectors, a means to visualize the entire dataset and how distinguishable each class is from the others is desirable. As it is impossible to directly plot our 65-dimensional feature vectors into a scatter plot, the dimensionality reduction technique known as t-Distributed Stochastic Neighbor Embedding (t-SNE) has been used to transcribe our feature space into two dimensions. (van der Maaten \& Hinton, 2008) describe the technique in detail. This section discusses how this was achieved, then the resulting plot is shown. 
@@ -593,12 +609,12 @@ Several values between 0 and 100 have been tested in an attempt to select the on
 		\end{tabular}
 	\end{center}
 \caption{t-SNE perplexity and K-L divergence results.}
-\label{Table 3,}
+\label{Table 4,}
 \end{table}
 
 \subsection{Resulting Plot}
 
-However, t-SNE is not deterministic, as it initializes its gradient function randomly. Instead of finding a perfect perplexity, it could be more appropriate to run the algorithm multiple times with the same perplexity and choosing the result with minimal error. After several attempts, the lowest error obtained was 0.660 on 100.0 perplexity. This can be seen in Figure 11. \\
+However, t-SNE is not deterministic, as it initializes its gradient function randomly. Instead of finding a perfect perplexity, it could be more appropriate to run the algorithm multiple times with the same perplexity and choosing the result with minimal error. After several attempts, the lowest error obtained was 0.660 on 100.0 perplexity. This can be seen in Figure 13. \\
 \begin{figure}[!h]
 	\includegraphics[width=1\linewidth]{Pictures/perp100err0-660.png}
 	\label{fig:fig1}
@@ -608,7 +624,7 @@ However, t-SNE is not deterministic, as it initializes its gradient function ran
 \noindent While the figure is hard to read due to the large amount of points and classes, some information that confirms the feature values are not random can be derived from it. For example, the clusters of humans and winged vehicles are fairly well delimited, and so are the clusters for heads and doors.
 
 \section{Evaluation}
-The final step is to evaluate the performance of the retrieval system. This is done by analyzing the query result $Q$ which is a list of items ${x_1,...,x_s}$, where $s$ is the size of the query and each $x$ is an item in the database. As it was explained in the matching section, this list is ordered by ascending distance to the query item $l$. First off, there are several values that describe a query result, namely the true positives (TP), false positives (FP), true negatives (TN), and false negatives (FN). TP is the number of items with the correct class label in a query, FP the number of wrong items in a query, TN the number of wrong items not in the query result, and FN the number of correct items not in query.
+The final step is to evaluate the performance of the retrieval system. This is done by analysing the query result $Q$ which is a list of items ${x_1,...,x_s}$, where $s$ is the size of the query result and each $x$ is an item in the database. As it was explained in the matching section, this list is ordered by ascending distance to the query item $l$. First off, there are several values that describe a query result, namely the true positives (TP), false positives (FP), true negatives (TN), and false negatives (FN). TP is the number of items with the correct class label in a query, FP the number of wrong items in a query, TN the number of wrong items not in the query result, and FN the number of correct items not in query.
 
 \begin{center}
 	$TP = |\{y \in Q\, |\, c_y = c_l\}|$,\\
@@ -621,21 +637,20 @@ The final step is to evaluate the performance of the retrieval system. This is d
 
 \subsection{Evaluation metric}
 There are many evaluation metrics that can be used. Furthermore, there are different aspects of the system for which the performance can be evaluated. For example, the performance for a single item in the dataset, the average performance of a class, and the overall performance of the program. In the evaluation of this system, the performance for each item will be calculated, and from those measurements the class average, and overall performance will be derived. The overall performance is calculated as the average of all items, not an average of all classes.\\
-The performance metric chosen are mean average precision (MAP) and precision at k. For evaluation purposes, the model for which the querying is performed is not included in its own query result list. The distance of a model to itself will always be very close to 0 and would thus give a misleading precision were it to be included. The definition of these performance metrics and why they are chosen is discussed in the following two sections.
+The performance metric chosen are mean average precision (MAP) and precision at k. For evaluation purposes, the model for which the querying is performed is not included in its own query result list. The distance of a model to itself will always be very close to 0 and would thus give a misleading precision if it were to be included. The definition of these performance metrics and why they are chosen is discussed in the following two sections. Furthermore the results of the evaluation are shown in table 5.
 
 \subsubsection{MAP}
-Two interesting evaluation metrics are precision and recall. Precision shows how many of the returned items in the query are of the correct class, while recall shows how many of the correct class are represented in the query. The problem with recall however is that it is highly dependent on the size of the query. A query of size 1 can never have a recall of 1, assuming that the class size is higher than 1. Therefore the recall is not a useful performance metric for this system, because it gives little insight. A large query size will result in a high recall and a low query size in low recall. The more interesting metric is precision whose definition is given below.
+Two interesting evaluation metrics are precision and recall. Precision shows how many of the returned items in the query are of the correct class, while recall shows how many of the correct class are represented in the query. The problem with recall however is that it is highly dependent on the size of the query, and therefore not useful in evaluating the performance of a system that produces a ranked query. A query of size 1 can never have a recall of 1, assuming that the class size is higher than 1. Therefore the recall is not a useful performance metric for this system, because it gives little insight. A large query size will always result in a high recall and a low query size in low recall. The more interesting metric is precision whose definition is given below.
 \begin{equation}
 P = \frac{TP}{TP+FP}
 \end{equation}
-Another problem that arrives is what query size the evaluation metric should be calculated for. A universal query size is undesirable, because there are large discrepancies between the sizes of different classes. A class with only five items will have a terrible performance when the query size is set to 100, because the maximum precision is $\frac{5}{100}$. 
-Furthermore, even for a specific class, choosing the query size is an arbitrary decision. Therefore the Mean Average Precision (MAP) is used.
-The query result that is returned by the matching algorithm is an ordered list of ascending distance values of size $d$, where $d$ is the size of the database. The MAP for a class is the mean of all the average precisions of its models' query results. The average precision for the query result of a given model is defined as:
+Another problem that arrives is what query size the evaluation metric should be calculated for. A universal query size is undesirable, because there are large discrepancies between the sizes of different classes. A class with only five items will have a terrible performance when the query size is set to 100, because the maximum precision is $\frac{5}{100}$. Furthermore, even for a specific class, choosing the query size is an arbitrary decision. Therefore the Mean Average Precision (MAP) is used.\\
+The query result that is returned by the matching algorithm is an ordered list of ascending distance values of size $d - 1$, where $d$ is the size of the database. The MAP for a class is the mean of all the average precisions of its models' query results. The average precision for a query result of a given model is defined as:
 \begin{equation}
 AvgP = \frac{\sum_{k=1}^{n}(P(k) \cdot rel(k)}{m}
 \end{equation}
-Where $rel(k)$ is the indicator function and is 1 if the $k^{th}$ item in the query result has the correct label and 0 otherwise, and m is the number of models in the relevant class. The MAP for a class is then the mean of all of these average precision values.\\
-MAP  might punish some classes too much when they contain an outlier. If it does, then, for each model in the class, the outlier will yield a precision close to 0. In this case, it might be possible that even a perfect system cannot obtain a precision of 1, because of an outlier or even a wrongly sampled mesh. Furthermore, calculating precision for items that are very far in the query result can be useless when the user only wants a small result. For example, perhaps a user would not want to look at more than 20 models, therefore only the first 20 results would be relevant for them. If a system would return 20 items that have the correct class label, but the other 20 items in the class appear in the back of the query result, the average precision would be close to 0.5, while the returned query is a perfect result for the user. Despite these downsides of MAP, it is still chosen as a strict metric to judge the performance of the entire system. One of the upsides of MAP is that it considers the position of the correct classes, which is not the case for the regular precision. 
+Where $rel(k)$ is the indicator function and equals to 1 if the $k^{th}$ item in the query result has the correct label and 0 otherwise, and $m$ is the number of models in the relevant class excluding the model itself. The MAP for a class is then the mean of all of these average precision values.\\
+MAP  might punish some classes too much when they contain an outlier. If it does, then, for each model in the class, the outlier will yield a precision close to 0. In this case, it might be possible that even a perfect system cannot obtain a precision of 1, because of an outlier or even a wrongly sampled mesh. Furthermore, calculating precision for items that are very far in the query result can be useless when the user only wants a small result. For example, perhaps a user would not want to look at more than 20 models, therefore only the first 20 results would be relevant for them. If a system would return 20 items that have the correct class label, but the other 20 items in the class appear in the back of the query result, the average precision would be close to 0.5, while the returned query is a perfect result for the user. Despite these downsides of MAP, it is still chosen as a strict metric to judge the quality of the entire query results. One of the upsides of MAP is that it considers the position of the correct classes, which is not the case for the regular precision. 
 
 \subsubsection{Precision at k}
 In addition to MAP, another performance metric is used, the precision at k. For this a value for $k$ has to be decided, which will be the length of the query result. Then, for this smaller sized query, its precision will be calculated. As it was previous discussed, a user might only want to look at a certain number of items. Precision at k then measures how many correct items the user will see. In the evaluations in this report, the value for k will be set to 10. However because some classes contain less than 10 models, k will be $min(k,n_c-1)$ where $n_c - 1$ is the number of models in class $c$, excluding the model that is queried for.\\ 
@@ -703,12 +718,12 @@ A downside of precision at k is that it does not account for the position of mod
 		\end{tabular}
 	\end{center}
 	\begin{center}
-		Table 4. Performance evaluation using MAP and precision at k (k=10).
+		Table 5. Performance evaluation using MAP and precision at k.
 	\end{center}
 \end{minipage}
 
 \subsection{Dissimilar classes}
-The performance results show that there is a large discrepancy between the performances of different classes. The worst classes even have a precision at k of 0, meaning that for none of the models in its class the result query gave even a single relevant model in the first 10 results. This leads to the questions of what causes this bad result, and what can be done to improve performance for this class. For the first question, four of the models of the staircase class are shown in figure 11. It is clear that the overall shapes of these models are very different, which leads to their feature values being very different as well. \\
+The performance results show that there is a large discrepancy between the performances of different classes. The worst classes even have a precision at k of 0, meaning that for none of the models in its class the result query gave even a single relevant model in the first 10 results. This leads to the questions of what causes this bad result, and what can be done to improve performance for this class. For the first question, four of the models of the staircase class are shown in figure 14. It is clear that the overall shapes of these models are very different, which leads to their feature values being very different as well. \\
 Some characteristics of staircases are present in these pictures, namely the large number of 90 degree edges leading to the top. A feature could be added that would encapsulate this characteristic so that all these models will have a distance of 0 for this feature. However, even in this case, all the other feature values will be very different, making it very unlikely that their overall distances will be small enough to yield good results.
 
 \begin{figure}[h!]
@@ -730,7 +745,7 @@ Some characteristics of staircases are present in these pictures, namely the lar
 \end{figure}
 
 \noindent Looking at another bad performing class, the mailboxes, a less obvious difference in models is visible. They look a lot more alike, however their distances are still too large. The seemingly small differences in shape have a large impact on their feature values. For example the first and fourth mailboxes are shorter than the second and fourth. Furthermore the volume of the actual box is different in each model. Finally there are some more small differences, such as the rectangular shape below the box in the fourth model, and the extended rectangles in the third shape. \\
-It could thus be said that even though these models look alike, their actual shapes are still too different for the system. The small differences lead in feature value differences that are too large. Both the mailbox class and the staircase class have a precision at k of 0, however, the mailbox class has an MAP value four times that of the staircase class, meaning that the relative distances of mailboxes are smaller than that of the staircases. This makes sense because, intuitively, one would say that the mailboxes are more similar to each other than the staircases. 
+It could thus be said that even though these models look alike, their actual shapes are still too different for the system. The small differences cause the feature values differences to be too large. Both the mailbox class and the staircase class have a precision at k of 0, however, the mailbox class has an MAP value four times that of the staircase class, meaning that the relative distances of mailboxes are smaller than that of the staircases. This makes sense because, intuitively, one would say that the mailboxes are more similar to each other than the staircases. 
 
 \begin{figure}[h!]
   \centering
@@ -752,8 +767,8 @@ It could thus be said that even though these models look alike, their actual sha
 
 \subsection{Query examples}
 In this section several query results are shown for several different classes. Firstly, we will query for a model from the quadruped class which has an MAP of 0.12, and precision at k of 0.23. For this specific model, five out of the nine other models are of the same class. Three of these wrong models, the hands, can be explained by them having a similar elongated shape and their fingers resembling legs. The turtle does not have a similar shape however it does also have four legs.  \\
-Secondly a query result for a model of the flying creature class is shown, which has an MAP of 0.034, and precision at k of 0.05. In this case, only two out of the nine models of the query result are of the same class. Six of these, however, are airplanes and have a very similar shape to the bird. The ship is the only of these models that is an unreasonable result. The system thus returns models that are arguably very similar to the input shape, although not from the same class. \\
-Finally the query result for one of the best performing classes, humans, shows a perfect query result. The good results for humans show that they are somewhat clustered in the dataset. This means that for a certain amount of models they exist in the middle of the clusters and thus all of their neighbors are other humans. This cluster can be visualized in the above t-SNE plot, \textit{Figure 13}. \\
+Secondly a query result for a model of the flying creature class is shown, which has a MAP of 0.034, and precision at k of 0.05. In this case, only two out of the nine models of the query result are of the same class. Six of these, however, are airplanes and have a very similar shape to the bird. The ship is the only of these models that is an unreasonable result. The system thus returns models that are arguably very similar to the input shape, although not from the same class. \\
+Finally the query result for one of the best performing classes, humans, shows a perfect query result. The good results for humans show that they are somewhat clustered in the dataset. This means that for a certain amount of models they exist in the middle of the clusters and thus all of their neighbours are other humans. This cluster can be visualized in the above t-SNE plot, \textit{Figure 13}. \\
 
 \begin{figure}[h!]
   \centering
@@ -888,12 +903,12 @@ Finally the query result for one of the best performing classes, humans, shows a
 \section{Conclusion}
 This section begins by presenting a summary of our work. Some limitations of our project are then discussed, followed by possible improvements to our implementation and future work.
 \subsection{Summary}
-This report presented our attempt at a content-based 3D shape retrieval system using scalar features that, given a 3D shape, returns the 10 most similar shapes (excluding itself) from a preprocessed Princeton Shape Benchmark database of 1796 models that are grouped into 53 leaf classes. This search is sped up by the use of a kd-tree and k-nearest neighbors. A visualization of the 65-dimensional feature space is also provided as a 2D plot created using t-SNE and seaborn. \\
-Our system performs much better on some classes, such as humans and winged vehicles, than on some other classes, like staircases and mailboxes, with an average precision at k=10 of 0.34 and an average MAP of 0.20. We discuss these results in the final section, then provide some query examples.
+This report presented our attempt at a content-based 3D shape retrieval system using scalar features that, given a 3D shape, returns the 10 most similar shapes (excluding itself) from a preprocessed Princeton Shape Benchmark database of 1796 models that are grouped into 53 leaf classes. This search is sped up by the use of a kd-tree and k-nearest neighbours. A visualization of the 65-dimensional feature space is also provided as a 2D plot created using t-SNE and seaborn. \\
+Our system performs much better on some classes, such as humans and winged vehicles, than on some other classes, like staircases and mailboxes, with an average precision at k=10 of 0.34 and an average MAP of 0.20. We discussed these results in section 7, and provided some query examples.
 
 \subsection{Limitations}
 
-Due to the choice at the start of the project to use 20,000 vertices and the 1800+ shape database, database-wide evaluation, recomputing features and reprocessing the database were very slow tasks. In addition, because of the database size, bugs with individual shapes were much harder to detect. For example, some of our shapes started looking like in \textit{Figure 16}.
+Due to the choice at the start of the project to use 20,000 vertices and the 1800+ shape database, database-wide evaluation, recomputing features and reprocessing the database were very slow tasks. In addition, because of the database size, bugs with individual shapes were much harder to detect. For example, some of our shapes started looking like in \textit{Figure 17}.
 
 \begin{figure}[h!]
 	\centering
@@ -905,11 +920,11 @@ Due to the choice at the start of the project to use 20,000 vertices and the 180
 		\includegraphics[width=\linewidth]{Pictures/problem2.png}
 		\caption{m361}
 	\end{subfigure}
-	\caption{Models with faces missing after surface simplification.}
+	\caption{Models with faces missing.}
 	\label{fig:problems}
 \end{figure}
 
-This turned out to be a problem with our surface simplification algorithm from the PMP library. Some of the shapes were not correctly read by the library, resulting in some of their feature values being affected (i.e. smaller area due to less triangles). Due to the nature of the problem and the time required to solve it, we elected to repair as much of the database as possible and accept that meshes with too many samples would risk to lose some of their faces. This is clearly a priority for any future version of this system.
+This turned out to be a problem with the PMP library. Some of the shapes were not correctly read by the library, resulting in some of their feature values being affected (i.e. smaller area due to less triangles). Due to the nature of the problem and the time required to solve it, we elected to repair as much of the database as possible and accept that meshes with too many samples would risk to lose some of their faces. This is clearly a priority for any future version of this system.
 
 \pagebreak
 
@@ -917,8 +932,8 @@ This turned out to be a problem with our surface simplification algorithm from t
 
 There are several parts of our system that could be improved. First and foremost, a different mesh decimation library should be used if we cannot identify what causes the problem with the PMP mesh decimation. \\
 Secondly, we could improve the speed of our application by changing the way we compute the diameter. While the method we use right now is much faster than the brute force approach, there are at least two better options to consider. First would be the convex hull approximation which is then used to calculate the diameter much faster, as mentioned in (Xue, J. et al., 2019). Another approach would be to use the technique described by (Har-Peled, S., 2001). \\
-Thirdly, we could improve the quality of our matching function by experimenting with different distance functions for our feature vectors. The same can be done for improving the effectiveness of our histogram features by computing their distance a different way, for instance by using the Earth Mover's Distance suggested by (Rubner, Y. et. al., 2000). \\
-Lastly, we could optimize matching by changing the weights of features to better reflect the class we are querying for. For example, quadrupeds tend to have a larger surface area, hence increasing this feature's weight would result in better matches. If we could identify the class of the input image, for example by using a classifier trained on the dataset features, we could improve matching by only searching for specific related classes for similar shapes (e.g. when querying for a bird, we would first look through shapes in the bird and winged vehicle class, as they are similar in appearance, even if another shape from an unrelated class would return a smaller distance value). \\
+Thirdly, we could improve the quality of our matching function by experimenting with different distance functions for our feature vectors. For example, the effectiveness of our histogram features can be increased by computing their distance a different way, for instance by using the Earth Mover's Distance suggested by (Rubner, Y. et. al., 2000). \\
+Lastly, the weights for each feature are set to 1 in the current system. In future work these weight parameters could be optimized to yield the best results, i.e. bad features would be weighted less and good features would weight more.\\
 On the visualization side, it would be possible to make a plot that better resembles our system's performance by using a distance matrix as input for the t-SNE algorithm. This was omitted due to time constraints and not being possible in the Python implementation we decided on for ease, but could be much more insightful on how our system actually behaves. In addition to this, it could be possible to perform the entire matching on a simple 2D feature space if our dimensionality reduction resulting plot was reliable enough (with well defined clusters).
 
 \newpage

@@ -12,16 +12,12 @@ public:
 	ANNkd_tree*			kdTree;					// search structure
 	float* weights;								// weights for the feature vector
 
-	KNNBuilder(int pts, int dims, string tableLocation);
 	KNNBuilder(int pts, int dims, gridFeatures** grids, int nGrids, float* tweights);
 
-	//KNN search for the first k neighbours of featurevector f, returns list of indices.
+	//KNN search for the first k neighbours of featurevector f.
 	void KNNSearch(gridFeatures* f, int k, ANNdistArray &dists, ANNidxArray &indices);
 
 private:
 	void readPoint(ANNpoint p, gridFeatures* f);
-	void readData(string tableLocation, ANNpointArray& dataPts);
 	void readGridFeatures(gridFeatures** grids, int nGrids);
 };
-	
-void readData(string tableLocation, ANNpointArray& dataPts);

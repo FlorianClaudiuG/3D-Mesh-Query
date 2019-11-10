@@ -7,9 +7,9 @@ class meshDescription
 {
 public:
 	meshDescription(UnstructuredGrid3D* g, string directName, string fileName);
-	string getFeatureString();
-	static void writeColumnString(string outputDest);
 
+	string getDescriptionString();
+	static void writeColumnString(string outputDest);
 	void writeDescriptionsToFile(string outputDest);
 	
 	void setNrVerts(int n) { nrVerts = n; };

@@ -12,6 +12,10 @@
 #include <map>
 #include "include/Matching.h"
 
+//----------------------------------------------------------------------
+//	gridMatcher constructor
+//----------------------------------------------------------------------
+
 gridMatcher::gridMatcher(string ntableLocation, string ndatabaseLocation, float* tweights) {
 	tableLocation = ntableLocation;
 	databaseLocation = ndatabaseLocation;
@@ -24,6 +28,11 @@ gridMatcher::gridMatcher(string ntableLocation, string ndatabaseLocation, float*
 	knn = new KNNBuilder(nGrids, nDims, grids, nGrids, weights);
 }
 
+//----------------------------------------------------------------------
+// Initialize important data for matching.
+//----------------------------------------------------------------------
+
+//read all the data about the different labels
 void gridMatcher::readLabelData(){
 	//arrays for reading class lables
 	char classFilePath1[50] = "../classification/v1/coarse1/coarse1.cla";
@@ -46,6 +55,7 @@ void gridMatcher::readLabelData(){
 	}
 }
 
+//read in the feature table
 void gridMatcher::readFeatureTable(int n){
 	ifstream infile(tableLocation);
 	string line;
@@ -71,6 +81,29 @@ void gridMatcher::readFeatureTable(int n){
 
 }
 
+//retrieves all paths to the models, used for displaying query results.
+void  gridMatcher::getFileLocations() {
+	namespace fs = std::experimental::filesystem;
+
+	//go through all models in the dataset
+	for (const auto& entry : fs::directory_iterator(databaseLocation))
+	{
+		string directoryName = entry.path().filename().string();
+		for (const auto& entry2 : fs::directory_iterator(entry.path()))
+		{
+			//read the file for this folder
+			string directoryName2 = entry2.path().filename().string();//filename, i.e. "m303"
+			string pathName = entry2.path().string();
+			string fileName = pathName + "\\" + directoryName2 + ".off";
+
+			filePaths[directoryName2] = fileName;
+		}
+	}
+}
+
+//----------------------------------------------------------------------
+//	Adding observed performance values for labels
+//----------------------------------------------------------------------
 void labelData::addValue(float f) {
 	value += (f / nModels);
 }
@@ -85,10 +118,16 @@ void labelData::addprecisionAtk(float r) {
 	precisionAtk += r;
 }
 
+//----------------------------------------------------------------------
+//	Matching functions for single mesh or entire database
+//----------------------------------------------------------------------
+
+//matches each model in the database to all different models and prints the evaluation results in console
+//the k parameter is used for the performance metric 'precision at k'
 void gridMatcher::matchAll(float* weights, int k) {
 	namespace fs = std::experimental::filesystem;
-	UnstructuredGrid3D* mesh; //initalize mesh
-	OffReader ofr; //initialize offreader
+	UnstructuredGrid3D* mesh;			//initalize mesh
+	OffReader ofr;						//initialize offreader
 
 	//go through all models in the dataset
 	for (const auto& entry : fs::directory_iterator(databaseLocation))
@@ -106,11 +145,11 @@ void gridMatcher::matchAll(float* weights, int k) {
 			string labelName = modelClasses[directoryName2];
 			labels[labelName].obsModels++;//count this model in the relevant class
 
-			float prec;//average precision over several query sizes
-			float precisionAtk;//average recall over several query sizes
+			float prec;				//average precision for the total query result for mesh
+			float precisionAtk;		//precision for the first k models in the result query
 
 			matchGrid(mesh, prec, precisionAtk, directoryName2, weights, k);//matchgrid with entire dataset
-			cout << "precision: " << prec << "| recall: " << precisionAtk << endl;
+			cout << "avgP: " << prec << "| precAtK: " << precisionAtk << endl;
 
 			labels[modelClasses[directoryName2]].addPrecision(prec);
 			labels[modelClasses[directoryName2]].addprecisionAtk(precisionAtk);
@@ -145,12 +184,18 @@ void gridMatcher::matchAll(float* weights, int k) {
 	cout << "MAP: " << totalPrec / totalInClasses << " | Precision at k: " << totalprecisionAtk /totalInClasses << endl;
 }
 
+//match a single grid against the rest of the database. return the k nearest neighbours
 vector<distanceObject> gridMatcher::matchSingle(UnstructuredGrid3D* g, string inputName, int k)
 {
 	int totalDistances, totalLabel;
-	return getKNNDistances(g, tableLocation, inputName, totalDistances, totalLabel, k+1);//k+1 because first line is ignored (model itself)
+	return getKNNDistances(g, tableLocation, inputName, totalDistances, totalLabel, k);
 }
 
+//----------------------------------------------------------------------
+//	MatchGrid private function used by matchall
+//----------------------------------------------------------------------
+
+//matches a grid with the rest of the dataSet and calculates the MAP and precision at k
 void gridMatcher::matchGrid(UnstructuredGrid3D* g, float &prec, float &precisionAtk, string inputName, float* weights, int k){
 	string inputLable = modelClasses[inputName];
 	int totalDistances = 0;//intialize to 0 for counting necessary because missing some models in our database
@@ -170,6 +215,11 @@ void gridMatcher::matchGrid(UnstructuredGrid3D* g, float &prec, float &precision
 	prec = avgPrec;//MAP
 }
 
+//----------------------------------------------------------------------
+//	Retrieving the list of distances
+//----------------------------------------------------------------------
+
+//getDistances retrieves distances to all models. Does not use a KD-tree because all distances are required.
 vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int &totalDistances, int &totalInLable) {
 	vector<distanceObject> distanceList;//store all distances with names
 
@@ -195,6 +245,7 @@ vector<distanceObject> gridMatcher::getDistances(UnstructuredGrid3D* g, string t
 	return distanceList;
 }
 
+//retrieves the k nearest neighbours using the initialized kd-tree
 vector<distanceObject> gridMatcher::getKNNDistances(UnstructuredGrid3D* g, string tableLocation, string inputName, int& totalDistances, int& totalInLable, int k) {
 	vector<distanceObject> distanceList;//store all distances with names
 
@@ -218,7 +269,11 @@ vector<distanceObject> gridMatcher::getKNNDistances(UnstructuredGrid3D* g, strin
 	return distanceList;
 }
 
+//----------------------------------------------------------------------
+//	performance metric calculations
+//----------------------------------------------------------------------
 
+//calculate the precision at k
 void gridMatcher::calculateAccuracy(vector<distanceObject> &distances, string inputLabel, int numberInClass, int totalDistances, int querySize, float &precision, float &recall)
 {
 	int truePositives = 0;
@@ -237,6 +292,7 @@ void gridMatcher::calculateAccuracy(vector<distanceObject> &distances, string in
 	recall = rec;
 }
 
+//calculate the average precision
 float gridMatcher::calculateAVP(vector<distanceObject>& distances, string inputLabel, int numberInCLass, int totalDistances)
 {
 	int index = 0;
@@ -257,37 +313,28 @@ float gridMatcher::calculateAVP(vector<distanceObject>& distances, string inputL
 	return avgPrec;
 }
 
+//----------------------------------------------------------------------
+//	distanceObject member functions
+//----------------------------------------------------------------------
+
+// overloaded operator for sorting a list of distanceObjects
 bool distanceObject::operator<(distanceObject const& a)
 {
 	return (dValue < a.dValue);
 }
 
+//print the distance for a distance object
+void distanceObject::printDistance()
+{
+	cout << name << "/" << label << ": " << dValue << endl;
+}
+//print all the distances in a query result
 void printAllDistance(vector<distanceObject>& dists) {
 	for (vector<distanceObject>::iterator it = dists.begin(); it != dists.end(); ++it) {
 		it->printDistance();
 	}
 }
 
-void distanceObject::printDistance()
-{
-	cout << name << "/" << label << ": " << dValue << endl;
-}
 
-void  gridMatcher::getFileLocations() {
-	namespace fs = std::experimental::filesystem;
 
-	//go through all models in the dataset
-	for (const auto& entry : fs::directory_iterator(databaseLocation))
-	{
-		string directoryName = entry.path().filename().string();
-		for (const auto& entry2 : fs::directory_iterator(entry.path()))
-		{
-			//read the file for this folder
-			string directoryName2 = entry2.path().filename().string();//filename, i.e. "m303"
-			string pathName = entry2.path().string();
-			string fileName = pathName + "\\" + directoryName2 + ".off";
 
-			filePaths[directoryName2] = fileName;
-		}
-	}
-}

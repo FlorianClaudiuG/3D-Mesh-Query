@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78b569c3-40bd-4160-95e8-4d8ec0d4c091" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Report/Report.aux" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.aux" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Report/Report.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Report/Report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Report/Report.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.synctex.gz" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Report/Report.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/featureFinal.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/featureReader.py" beforeDir="false" afterPath="$PROJECT_DIR$/featureReader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsne_wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/tsne_wrapper.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

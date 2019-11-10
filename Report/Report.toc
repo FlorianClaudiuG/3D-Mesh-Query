@@ -1,0 +1,73 @@
+\contentsline {section}{\numberline {1}Introduction}{3}% 
+\contentsline {subsection}{\numberline {1.1}Overview}{3}% 
+\contentsline {subsection}{\numberline {1.2}Motivation}{3}% 
+\contentsline {subsection}{\numberline {1.3}Literature review}{3}% 
+\contentsline {section}{\numberline {2}Technologies Used}{4}% 
+\contentsline {subsection}{\numberline {2.1}C++}{4}% 
+\contentsline {paragraph}{ALGLIB v3.15.0 Free Edition}{4}% 
+\contentsline {paragraph}{ANN v1.1.2}{4}% 
+\contentsline {paragraph}{nupengl.core}{4}% 
+\contentsline {paragraph}{PMP Library v1.1.0}{4}% 
+\contentsline {paragraph}{3D Unstructured Grid Implementation}{4}% 
+\contentsline {paragraph}{ZPR v0.4}{4}% 
+\contentsline {subsection}{\numberline {2.2}Python}{4}% 
+\contentsline {paragraph}{matplotlib v3.1.1}{4}% 
+\contentsline {paragraph}{numpy}{4}% 
+\contentsline {paragraph}{pandas v0.25.3}{4}% 
+\contentsline {paragraph}{seaborn v0.9.0}{4}% 
+\contentsline {paragraph}{t-SNE Implementation}{5}% 
+\contentsline {section}{\numberline {3}Pre-processing}{5}% 
+\contentsline {subsection}{\numberline {3.1}Database selection}{5}% 
+\contentsline {subsection}{\numberline {3.2}File reading}{5}% 
+\contentsline {subsection}{\numberline {3.3}Database evaluation}{5}% 
+\contentsline {subsection}{\numberline {3.4}Supersampling}{5}% 
+\contentsline {subsection}{\numberline {3.5}Subsampling}{6}% 
+\contentsline {subsection}{\numberline {3.6}Four step normalization}{6}% 
+\contentsline {subsubsection}{\numberline {3.6.1}Center on the barycenter}{7}% 
+\contentsline {subsubsection}{\numberline {3.6.2}PCA}{7}% 
+\contentsline {subsubsection}{\numberline {3.6.3}Fliptest}{7}% 
+\contentsline {subsubsection}{\numberline {3.6.4}Normalization}{8}% 
+\contentsline {subsection}{\numberline {3.7}Verifying the normalization}{9}% 
+\contentsline {section}{\numberline {4}Feature Extraction}{9}% 
+\contentsline {subsection}{\numberline {4.1}Scalar Features}{9}% 
+\contentsline {subsubsection}{\numberline {4.1.1}Surface area}{9}% 
+\contentsline {subsubsection}{\numberline {4.1.2}Bounding Box Volume}{9}% 
+\contentsline {subsubsection}{\numberline {4.1.3}Eccentricity}{10}% 
+\contentsline {subsubsection}{\numberline {4.1.4}Circularity and Compactness}{10}% 
+\contentsline {subsubsection}{\numberline {4.1.5}Normalizing features}{12}% 
+\contentsline {subsection}{\numberline {4.2}Histogram features}{12}% 
+\contentsline {subsubsection}{\numberline {4.2.1}Sampling vertices}{12}% 
+\contentsline {subsubsection}{\numberline {4.2.2}D1 - distance to barycenter}{12}% 
+\contentsline {subsubsection}{\numberline {4.2.3}D2 - distance between two points}{13}% 
+\contentsline {subsubsection}{\numberline {4.2.4}D3 - area of a random triangle}{14}% 
+\contentsline {subsubsection}{\numberline {4.2.5}D4 - are of a random tetrahedron}{14}% 
+\contentsline {subsubsection}{\numberline {4.2.6}A3 - angle between 3 random vertices}{15}% 
+\contentsline {subsection}{\numberline {4.3}Feature vector}{15}% 
+\contentsline {section}{\numberline {5}Matching}{16}% 
+\contentsline {subsection}{\numberline {5.1}Distance calculation}{16}% 
+\contentsline {subsection}{\numberline {5.2}Query result}{16}% 
+\contentsline {subsection}{\numberline {5.3}kd-tree}{16}% 
+\contentsline {section}{\numberline {6}Dimensionality reduction}{16}% 
+\contentsline {subsection}{\numberline {6.1}Perplexity Parameter}{17}% 
+\contentsline {subsection}{\numberline {6.2}Resulting Plot}{17}% 
+\contentsline {section}{\numberline {7}Evaluation}{18}% 
+\contentsline {subsection}{\numberline {7.1}Evaluation metric}{18}% 
+\contentsline {subsubsection}{\numberline {7.1.1}MAP}{18}% 
+\contentsline {subsubsection}{\numberline {7.1.2}Precision at k}{19}% 
+\contentsline {subsection}{\numberline {7.2}Dissimilar classes}{21}% 
+\contentsline {subsection}{\numberline {7.3}Query examples}{21}% 
+\contentsline {section}{\numberline {8}Conclusion}{22}% 
+\contentsline {subsection}{\numberline {8.1}Summary}{22}% 
+\contentsline {subsection}{\numberline {8.2}Limitations}{22}% 
+\contentsline {subsection}{\numberline {8.3}Improvements \& future work}{23}% 
+\contentsline {section}{\numberline {9}References}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 
+\contentsline {paragraph}{}{24}% 

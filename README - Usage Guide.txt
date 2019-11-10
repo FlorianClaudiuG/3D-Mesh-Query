@@ -29,7 +29,7 @@ OFFConverter class. There is also a method for directly converting an OFF file t
 ##USING THE PYTHON T-SNE VISUALIZATION APP##
 ############################################
 
-1.Open t-SNE folder in a Python IDE.
+1.Open the t-SNE folder in a Python IDE.
 2.Make sure the following are installed:
     -numpy
     -pandas

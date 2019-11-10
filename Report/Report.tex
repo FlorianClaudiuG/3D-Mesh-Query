@@ -1,25 +1,48 @@
 \documentclass{bigdata}
 \usepackage[utf8]{inputenc}
+\usepackage{tocloft}
+
+\renewcommand\cftsecfont{\small}
+\renewcommand\cftsubsecfont{\small}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
-\title{Multimedia Retrieval}
+\title{Content-Based 3D Shape Retrieval System}
 \author{Diego Renders (5740894) and Florian-Claudiu Gheorghică (6924123)}
 \date{October 2019}
 \onecolumn
 
 \begin{document}
+\setlength{\cftbeforesecskip}{1pt}
 \maketitle
-\section*{Abstract}
 
 \newpage
+
+\tableofcontents
 
 \section{Introduction}
 
-\paragraph*{Problem statement.}
+This is a technical report detailing the implementation of a content-based 3D shape retrieval system. The aim of this implementation is the exploration of existing techniques for shape querying using meaningful 3D descriptors, either scalar or histogram-based. To this effect, the Princeton Shape Database is used to evaluate the system in an environment closer to a real life application than if a smaller database would be used.
 
-\newpage
+\subsection{Overview}
+This introductory section concludes with a short overview of existing related work. The technologies used for the application are then listed and briefly described. The Pre-processing section explains the choices of dataset, granularity and vertex count before detailing the database creation and normalization pipeline. The Feature Extraction section lists and explains the features that are implemented in our system, as well as some reasoning behind the design of the feature vector. The Matching section explains our distance function and how shape matching is actually performed using a kd-tree and k-nearest neighbors. Before evaluation, a t-SNE-powered visualization of the feature space of our database is provided. After this, the database is evaluated using MAP and precision at k and some query examples are given. Finally, the conclusions sum up our system's behavior and explore the limitations within our project, as well as the possibilities for improvement and future work.
+
+\subsection{Motivation}
+This project was created as part of the \textit{Multimedia Retrieval} course held by Prof. Dr. Alexandru Telea at the University of Utrecht.
+
+\subsection{Literature review}
+Vranić \& Saupe (2003), Körtgen et al. (2003) and Tangelder \& Veltkamp (2007) provide a thorough overview of classical 3D shape retrieval methods using shape descriptors. The features used in this project are also explained in their work. Surveying the existing methods, Tangelder \& Veltkamp generated a diagram showing the conceptual framework for shape retrieval applications (\textit{Figure 1}). This diagram also describes how our application is structured on a high level, minus any implied online functionality.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=0.7\linewidth]{Pictures/conceptualdiagram.png}
+	\caption{Tangelder \& Veltkamp (2007), Conceptual framework for shape retrieval.}
+\end{figure}
+ 
+\noindent Feng et al. (2016) use a different approach than the one described in this paper, using voxel shapes and skeleton descriptors for shape matching. Even so, some alternative Histogram matching techniques are presented, including Earth Mover's Distance and Multilevel Distance, which could represent viable alternatives to the histogram distance function used in our implementation.
+
+\noindent Song (2017) describes some advanced indexing techniques for multimedia data retrieval which we make use of in our project in order to speed up searching. Most notably, he provides some details of kd-tree functionality, as well as some alternative approaches to dimensionality reduction.
 
 \section{Technologies Used}
 This section will list the external libraries used in developing the application. The two programming languages used are C++ for the shape retrieval system and Python for plots and visualization. C++ was selected for its speed and Python for its ease of use.
@@ -33,7 +56,7 @@ This NuGet package contains various libraries required to build OpenGL applicati
 \paragraph{PMP Library v1.1.0}
 The Polygon Mesh Processing (PMP) library contains three main modules used for mesh processing: core (used for data representation), algorithm (used for algorithm implementations) and visualization (used for OpenGL-based visualization). Out of these, the algorithm module is used in our system for mesh decimation. More information, as well as a download link, can be found at: https://www.pmp-library.org/.
 \paragraph{3D Unstructured Grid Implementation}
-The application uses a 3D unstructured grid implementation provided by the University of Groningen as part of their Data Visualization Book. Basic visualization using OpenGL is also included. The implementation can be found here: http://www.cs.rug.nl/svcg/uploads/DataVisualizationBook/sp3\_grids.zip
+The application uses a 3D unstructured grid implementation provided by the University of Groningen as part of their Data Visualization Book. Basic visualization using OpenGL as well as a PLY file reader are also included. The implementation can be found here: http://www.cs.rug.nl/svcg/uploads/DataVisualizationBook/sp3\_grids.zip
 \paragraph{ZPR v0.4}
 Zoom, Pan and Rotate (ZPR) is a mouse manipulation module for C or C++ GLUT/OpenGL programs. In our project, ZPR enables mouse zooming, panning and rotation when visualizing a 3D shape. The implementation may be found here: http://www.nigels.com/glt/gltzpr/.
 
@@ -49,13 +72,15 @@ Seaborn is a Python data visualization library based on matplotlib. It provides 
 \paragraph{t-SNE Implementation}
 T-Distributed Stochastic Neighbor Embedding (t-SNE) is a technique for dimensionality reduction that is well suited for high-dimensional dataset visualization. Our project uses the implementation by Laurens van der Maaten for the Python language, which can be downloaded here: https://lvdmaaten.github.io/tsne/code/tsne\_python.zip. More details about t-SNE can be found on the official web page: https://lvdmaaten.github.io/tsne/.
 
-\section{Methodology}
+\section{Pre-processing}
 
 \subsection{Database selection}
+For the purpose of this project, the Princeton Shape Benchmark (PSB) database of 3D models was selected. Details about this set of 3D models can be found in (Shilane, P. et al, 2004) or on the official website: https://shape.cs.princeton.edu/benchmark/. \\
+This dataset was chosen due to its size, variety, cleanliness and its good options of granularity in terms of classes. A bigger, more diverse database will more accurately reflect the more difficult real-world applications. In addition, the chosen granularity of 53 leaf classes permits for mostly homogeneous shapes within the same class, e.g. the winged vehicle class, while also a flying object, should be very different from the balloon class. Conversely, any coarser the granularity would mean too many classes that would be too specific, which would interfere with the evaluation step. 
 
 \subsection{File reading}
 
-The files from the Princeton Shape Benchmark (PSB) were all provided in the OFF file format and an OFF reader was initially considered as a starting point. However, as a PLY format reader was likely to be necessary in the long-term, an OFF-to-PLY converter was written in order to enforce PLY as the default format for the application.
+The files from the PSB were all provided in the OFF file format and an OFF reader was initially considered as a starting point. However, as a PLY format reader was likely to be necessary in the long-term, an OFF-to-PLY converter was written in order to enforce PLY as the default format for the application.
 This converter simply creates a PLY header using data from the OFF file, then copies the vertex and face data over. While not a scalable approach for more complex OFF files, the converter was able to successfully process the entire PSB database.
 
 \subsection{Database evaluation}
@@ -76,13 +101,14 @@ Supersampling is done in this implementation by splitting a larger triangle into
   \caption{Supersampling Example}
 \end{figure}
 
-To ensure the triangles obtained like this are not outliers in terms of their size, the cells in the model were first sorted by their area inside a vector, from smallest to largest. The area of each cell was calculated using the following formula:
+
+\noindent To ensure the triangles obtained like this are not outliers in terms of their size, the cells in the model were first sorted by their area inside a vector, from smallest to largest. The area of each cell was calculated using the following formula:
 
 \begin{equation}
 S = \frac{|AB||AC|sin(\theta)}{2}
-\end{equation}
+\end{equation}\\
 
-Thus, at each step, only the triangle with the largest surface is split up into smaller triangles. The original triangle is removed from the vector, and the smaller triangles are inserted at positions that do not disturb the ordered property of the data structure.
+\noindent Thus, at each step, only the triangle with the largest surface is split up into smaller triangles. The original triangle is removed from the vector, and the smaller triangles are inserted at positions that do not disturb the ordered property of the data structure.
 
 \subsection{Subsampling}
 For the task of subsampling the Polygon Mesh Processing (pmp) library is used. The SurfaceSimplification class is used to perform mesh decimation, taking as input the mesh and a target number of vertices. To demonstrate that this algorithm works correctly for our models a pre and post visualisation is shown in figure 2. This is the largest model in the dataset with 316.498 faces and 160.940 vertices. The post decimation model contains 78.473 faces and 40.000 vertices in the middle picture and 20.000 vertices in the right picture. Even though the model only has a fourth of its original vertices in the second case, it clearly retains its characteristics. And even when the vertex count is brought down to 20.000 vertices it is hard to distinguish them. Therefore we can conclude that the algorithm is a suitable tool for this project.
@@ -694,7 +720,7 @@ It could thus be said that even though these models look alike, their actual sha
 \subsection{Query examples}
 In this section several query results are shown for several different classes. Firstly, we will query for a model from the quadruped class which has a MAP of 0.12, and precision at k of 0.23. For this specific model five out of nine models are of the same class. Three of these wrong models, the hands, can be explained by them having a similar elongated shape and their fingers resembling legs. The turtle does not have a similar shape however it does also have four legs.  \\
 Secondly a query result for a model of the flying creature class is shown, which has an MAP of 0.034, and precision at k of 0.05. In this case only two out of the nine models of the query result are of the same class. Six of these however are air planes and have a very similar shape. The ship is the only of these models that is an unreasonable result. The system thus returns models that are arguably very similar to the input shape, all though not from the same class \\
-Finally the query result for one of the best performing classes, humans, shows a perfect query result. The good results for humans show that they are somewhat clustered in the dataset. This means for a certain amount of models they exist in the middle of the clusters and thus all of its neighbours are other humans. \\
+Finally the query result for one of the best performing classes, humans, shows a perfect query result. The good results for humans show that they are somewhat clustered in the dataset. This means for a certain amount of models they exist in the middle of the clusters and thus all of its neighbors are other humans. \\
 
 \begin{figure}[h!]
   \centering
@@ -827,6 +853,7 @@ Finally the query result for one of the best performing classes, humans, shows a
 \end{figure}
 
 \section{Conclusion}
+This section begins by presenting a summary of our work. Some limitations of our project are then discussed, followed by possible improvements to our implementation and future work.
 \subsection{Summary}
 This report presented our attempt at a content-based 3D shape retrieval system using scalar features that, given a 3D shape, returns the 10 most similar shapes (excluding itself) from a preprocessed Princeton Shape Benchmark database of 1796 models that are grouped into 53 leaf classes. This search is sped up by the use of a kD-tree and K-nearest neighbors. A visualization of the 65-dimensional feature space is also provided as a 2D plot created using t-SNE. \\
 Our system performs much better on some classes, such as humans and winged vehicles, than some other classes, like fireplaces and mailboxes, with an average precision at k=10 of 0.34 and an average MAP of 0.20. We discuss these results in the final section, then provide some query examples.
@@ -858,12 +885,20 @@ This turned out to be a problem with our surface simplification algorithm from t
 There are several parts of our system that could be improved. First and foremost, a different mesh decimation library should be used if we cannot identify what causes the problem with the PMP mesh decimation. \\
 Secondly, we could improve the speed of our application by changing the way we compute the diameter. While the method we use right now is much faster than the brute force approach, there are at least two better options to consider. First would be the convex hull approximation which is then used to calculate the diameter much faster, as mentioned in (Xue, J. et al., 2019). Another approach would be to use the technique described by (Har-Peled, S., 2001). \\
 Thirdly, we could improve the quality of our matching function by experimenting with different distance functions for our feature vectors. The same can be done for improving the effectiveness of our histogram features by computing their distance a different way, for instance by using the Earth Mover's Distance suggested by (Rubner, Y. et. al., 2000). \\
-Lastly, we could optimize matching by changing the weights of features to better reflect the class we are querying for. For example, quadrupeds tend to have a larger surface area, hence increasing this feature's weight would result in better matches. If we could identify the class of the input image, for example by using a classifier trained on the dataset features, we could improve matching by only searching for specific related classes for similar shapes (e.g. when querying for a bird, we would first look through shapes in the bird and winged vehicle class, as they are similar in appearance, even if another shape from an unrelated class would return a smaller distance value).
+Lastly, we could optimize matching by changing the weights of features to better reflect the class we are querying for. For example, quadrupeds tend to have a larger surface area, hence increasing this feature's weight would result in better matches. If we could identify the class of the input image, for example by using a classifier trained on the dataset features, we could improve matching by only searching for specific related classes for similar shapes (e.g. when querying for a bird, we would first look through shapes in the bird and winged vehicle class, as they are similar in appearance, even if another shape from an unrelated class would return a smaller distance value). \\
+On the visualization side, it would be possible to make a plot that better resembles our system's performance by using a distance matrix as input for the t-SNE algorithm. This was omitted due to time constraints and not being possible in the Python implementation we decided on for ease, but could be much more insightful on how our system actually behaves. In addition to this, it could be possible to perform the entire matching on a simple 2D feature space if our dimensionality reduction resulting plot was reliable enough (with well defined clusters).
+
+\newpage
 
 \section{References}
-\paragraph{} Maaten, L. V. D., \& Hinton, G. (2008). Visualizing data using t-SNE. Journal of machine learning research, 9(Nov), 2579-2605.
-\paragraph{} Xue, J., Li, Y., \& Janardan, R. (2019). On the expected diameter, width, and complexity of a stochastic convex hull. Computational Geometry, 82, 16-31.
+\paragraph{} Feng, C., Jalba, A. C., \& Telea, A. C. (2016, May). A Descriptor for Voxel Shapes Based on the Skeleton Cut Space. In 3DOR.
 \paragraph{} Har-Peled, S. (2001, June). A practical approach for computing the diameter of a point set. In Proceedings of the seventeenth annual symposium on Computational geometry (pp. 177-186). ACM.
+\paragraph{} Körtgen, M., Park, G. J., Novotni, M., \& Klein, R. (2003, April). 3D shape matching with 3D shape contexts. In The 7th central European seminar on computer graphics (Vol. 3, pp. 5-17). Budmerice.
+\paragraph{} Maaten, L. V. D., \& Hinton, G. (2008). Visualizing data using t-SNE. Journal of machine learning research, 9(Nov), 2579-2605.
 \paragraph{} Rubner, Y., Tomasi, C., \& Guibas, L. J. (2000). The earth mover's distance as a metric for image retrieval. International journal of computer vision, 40(2), 99-121.
-
+\paragraph{} Shilane, P., Min, P., Kazhdan, M., \& Funkhouser, T. (2004, June). The princeton shape benchmark. In Proceedings Shape Modeling Applications, 2004. (pp. 167-178). IEEE.
+\paragraph{} Song, J. (2017). Indexing Techniques for Multimedia Data Retrieval. Encyclopedia of Database Systems, 1-6.
+\paragraph{} Tangelder, J. W. H., \& Veltkamp, R. C. (2007). A survey of content based 3D shape retrieval methods. Multimedia Tools and Applications, 39(3), 441–471.
+\paragraph{} Vranic, D. V., \& Saupe, D. (2004). 3D model retrieval (Doctoral dissertation, University of Leipzig).
+\paragraph{} Xue, J., Li, Y., \& Janardan, R. (2019). On the expected diameter, width, and complexity of a stochastic convex hull. Computational Geometry, 82, 16-31.
 \end{document}

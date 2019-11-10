@@ -1,6 +1,7 @@
 \documentclass{bigdata}
 \usepackage[utf8]{inputenc}
 \usepackage{tocloft}
+\usepackage{multirow}
 
 \renewcommand\cftsecfont{\small}
 \renewcommand\cftsubsecfont{\small}
@@ -27,6 +28,9 @@ This is a technical report detailing the implementation of a content-based 3D sh
 
 \subsection{Overview}
 This introductory section concludes with a short overview of existing related work. The technologies used for the application are then listed and briefly described. The Pre-processing section explains the choices of dataset, granularity and vertex count before detailing the database creation and normalization pipeline. The Feature Extraction section lists and explains the features that are implemented in our system, as well as some reasoning behind the design of the feature vector. The Matching section explains our distance function and how shape matching is actually performed using a kd-tree and k-nearest neighbors. Before evaluation, a t-SNE-powered visualization of the feature space of our database is provided. After this, the database is evaluated using MAP and precision at k and some query examples are given. Finally, the conclusions sum up our system's behavior and explore the limitations within our project, as well as the possibilities for improvement and future work.
+
+\subsection{System Specifications}
+All testing has been performed on a Dell Inspiron 7577 with a Windows 10 Pro 64-bit operating system, 16 GB of RAM, an Intel(R) Core(TM) i7-7700HQ CPU @ 2.80 GHz (8CPUs) and NVIDIA Geforce GTX 1060 with Max-Q Design video card.
 
 \subsection{Motivation}
 This project was created as part of the \textit{Multimedia Retrieval} course held by Prof. Dr. Alexandru Telea at the University of Utrecht.
@@ -409,6 +413,32 @@ In the program, the two models in \textit{Figure 6} below return expected result
 	\caption{Two models with different circularity values}
 	\label{fig:circularity}
 \end{figure}
+
+\subsubsection{Diameter}
+The diameter feature represents the maximum distance between two points within the shape. As our shapes have been normalized to fit within a unit cube, the maximum value for the diameter is $\sqrt{2}$, its diagonal. \\
+Computing the diameter can be done through multiple approaches. The naive solution is to try every possible pair of points, resulting in a complexity of $O(n^2)$. As our shapes have around 20,000 vertices, this is not a scalable approach (a single computation can take up to 1 minute). \\
+An approximation for the diameter value is obtained instead by using random samples. By sampling 2000 points from the mesh and running the brute force method, we obtain an approximation of the diameter much faster, reducing the number of steps to just $2000^2$. \\
+While this approximation is fast, it's accuracy is not at all guaranteed. To increase the chances of reaching the ground truth diameter value, we can repeat this technique several times and only keep the maximum value of each approximation. Running the sampling 10 times has proven to almost always reach the ground truth within 7 seconds, down from 58 (\textit{Table 2}).
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{c|l|c|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+			\textbf{Shape} & \textbf{Method} & \textbf{Result} & \textbf{Time} \\
+			\hline
+\multirow{4}{3em}{m303}& Brute Force & 1.01355 & 58s\\
+				  & 2000 samples & 1.01022 & $<$1s\\
+				  & 5 * (2000 samples) & 1.01022 & 4s\\
+				  & 10 * (2000 samples) & 1.01355 & 7s\\
+			\hline
+\multirow{4}{3em}{m94}& Brute Force & 1.01043 & 58s\\
+				  & 2000 samples & 1.00442 & $<$1s\\
+				  & 5 * (2000 samples) & 1.01043 & 4s\\
+				  & 10 * (2000 samples) & 1.01043 & 7s
+		\end{tabular}
+	\end{center}
+	\caption{t-SNE perplexity and K-L divergence results.}
+	\label{Table 3,}
+\end{table}
 
 \subsubsection{Normalizing  features}
 The three features bounding box volume, eccentricity, and circularity all fall in the range [0,1]. If the surface area feature is also to be normalized in this range, extent normalization has to be used by using its minimum and maximum value. However this feature has large outliers. For example the minimum of 1 and maximum of 36 is used to normalize, the distance between a surface area of 3 and 1 would become 0.0571. Even though these 2 meshes would be very different in terms of surface area, their distance does not reflect this. Therefore standardization is used for this feature, and to be consistent, it will also be used for all the other  features. 

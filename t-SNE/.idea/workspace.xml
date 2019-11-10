@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="78b569c3-40bd-4160-95e8-4d8ec0d4c091" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Report/Report.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Report/Report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Report/Report.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.synctex.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Report/Report.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.tex" afterDir="false" />
-    </list>
+    <list default="true" id="78b569c3-40bd-4160-95e8-4d8ec0d4c091" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

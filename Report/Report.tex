@@ -5,12 +5,15 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 
 \title{Multimedia Retrieval}
-\author{Diego Renders (5740894) and Florian-Claudiu Gheorghica (6924123)}
+\author{Diego Renders (5740894) and Florian-Claudiu Gheorghică (6924123)}
 \date{October 2019}
 \onecolumn
 
 \begin{document}
 \maketitle
+\section*{Abstract}
+
+\newpage
 
 \section{Introduction}
 
@@ -18,7 +21,37 @@
 
 \newpage
 
-\section{Part 1}
+\section{Technologies Used}
+This section will list the external libraries used in developing the application. The two programming languages used are C++ for the shape retrieval system and Python for plots and visualization. C++ was selected for its speed and Python for its ease of use.
+\subsection{C++}
+\paragraph{ALGLIB v3.15.0 Free Edition}
+ALGLIB is a cross-platform numerical analysis and data processing library. It contains tools for data analysis, optimization and nonlinear solvers, interpolation and linear/non-linear least-squares fitting, linear algebra and many other algorithms. In our implementation, it is used for PCA. Details can be found here: https://www.alglib.net/.
+\paragraph{ANN v1.1.2}
+ANN (A Library For Approximate Nearest Neighbor Searching) is a library written in C++, which supports data structures and algorithms for both exact and approximate nearest neighbor searching in arbitrarily high dimensions. This is used in our implementation to speed up shape matching using k-nearest neighbors. More details can be found here: https://www.cs.umd.edu/~mount/ANN/.
+\paragraph{nupengl.core}
+This NuGet package contains various libraries required to build OpenGL applications, including FreeGLUT, GLFW and GLEW. Details can be found here: https://www.nuget.org/packages/nupengl.core/.
+\paragraph{PMP Library v1.1.0}
+The Polygon Mesh Processing (PMP) library contains three main modules used for mesh processing: core (used for data representation), algorithm (used for algorithm implementations) and visualization (used for OpenGL-based visualization). Out of these, the algorithm module is used in our system for mesh decimation. More information, as well as a download link, can be found at: https://www.pmp-library.org/.
+\paragraph{3D Unstructured Grid Implementation}
+The application uses a 3D unstructured grid implementation provided by the University of Groningen as part of their Data Visualization Book. Basic visualization using OpenGL is also included. The implementation can be found here: http://www.cs.rug.nl/svcg/uploads/DataVisualizationBook/sp3\_grids.zip
+\paragraph{ZPR v0.4}
+Zoom, Pan and Rotate (ZPR) is a mouse manipulation module for C or C++ GLUT/OpenGL programs. In our project, ZPR enables mouse zooming, panning and rotation when visualizing a 3D shape. The implementation may be found here: http://www.nigels.com/glt/gltzpr/.
+
+\subsection{Python}
+\paragraph{matplotlib v3.1.1}
+Matplotlib is a Python 2D plotting library. It is a requirement for the Seaborn library which was used for generating the 2D plot of the t-SNE result. Website: https://matplotlib.org/.
+\paragraph{numpy}
+Numpy is a fundamental package for scientific computing with Python, as it contains a powerful N-dimensional array object used by other scientific python libraries, such as pandas. Details can be found here: https://numpy.org/.
+\paragraph{pandas v0.25.3}
+Pandas in an open source library providing high-performance, easy-to-use data structures and data analysis tools for Python. The data frame structure it contains can be used with seaborn to simplify plotting. Website: https://pandas.pydata.org/.
+\paragraph{seaborn v0.9.0}
+Seaborn is a Python data visualization library based on matplotlib. It provides a high-level interface for drawing graphs. Seaborn was used to draw the scatter plot resulting from our t-SNE implementation. Details about the library can be found here: https://seaborn.pydata.org/.
+\paragraph{t-SNE Implementation}
+T-Distributed Stochastic Neighbor Embedding (t-SNE) is a technique for dimensionality reduction that is well suited for high-dimensional dataset visualization. Our project uses the implementation by Laurens van der Maaten for the Python language, which can be downloaded here: https://lvdmaaten.github.io/tsne/code/tsne\_python.zip. More details about t-SNE can be found on the official web page: https://lvdmaaten.github.io/tsne/.
+
+\section{Methodology}
+
+\subsection{Database selection}
 
 \subsection{File reading}
 
@@ -26,7 +59,7 @@ The files from the Princeton Shape Benchmark (PSB) were all provided in the OFF 
 This converter simply creates a PLY header using data from the OFF file, then copies the vertex and face data over. While not a scalable approach for more complex OFF files, the converter was able to successfully process the entire PSB database.
 
 \subsection{Database evaluation}
-The database contains around 1800 models in OFF file format. All of the models contain only triangles as faces. The distribution of faces is shown in figure 1. The average number of vertices is 4221, the minimum 10, and the maximum 160940. The histogram, along with the average, shows that most of the models have a vertex count of smaller than twenty thousand. In order to successfully perform the upcoming steps of feature extraction the models need to have approximately the same number of vertices. Two actions can be undertaken to achieve this, supersampling and subsampling. Supersample the models with a low vertex count, and subsample the models with a large vertex count. A target number of vertices has to be chosen for this. One solution could be to choose the average. However because several of the meshes have a very high resolution (a hundred thousand vertices), subsampling this to reach the four thousand required vertices would ruin the original shape. Therefore the target vertices is chosen to be higher than the average, so that the higher resolution models retain their characteristics. The only downside for choosing a higher target number of vertices is an increase in computation time. The target number of vertices is set at twenty thousand, and the methodology for supersampling and subsampling is explained in the following two sections.
+The database contains 1814 models in the OFF file format. All of the models contain only triangles as faces. The distribution of faces is shown in figure 1. The average number of vertices is 4221, the minimum 10, and the maximum 160940. The histogram, along with the average, shows that most of the models have a vertex count of smaller than twenty thousand. In order to successfully perform the upcoming steps of feature extraction the models need to have approximately the same number of vertices. Two actions can be undertaken to achieve this, supersampling and subsampling. Supersample the models with a low vertex count, and subsample the models with a large vertex count. A target number of vertices has to be chosen for this. One solution could be to choose the average. However because several of the meshes have a very high resolution (a hundred thousand vertices), subsampling this to reach the four thousand required vertices would ruin the original shape. Therefore the target vertices is chosen to be higher than the average, so that the higher resolution models retain their characteristics. The only downside for choosing a higher target number of vertices is an increase in computation time. The target number of vertices is set at twenty thousand, and the methodology for supersampling and subsampling is explained in the following two sections.
 
 \begin{figure}[h!]
   \centering
@@ -39,7 +72,7 @@ Supersampling is done in this implementation by splitting a larger triangle into
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.7\linewidth]{Pictures/triangle.png}
+  \includegraphics[width=0.5\linewidth]{Pictures/triangle.png}
   \caption{Supersampling Example}
 \end{figure}
 
@@ -124,7 +157,7 @@ b_z \\
 The result can be verified by calculating the average coordinates again, which should be 0 after the normalization.
 
 \subsubsection{PCA}
-Prinicipal component analysis is done using the arglib library. The three eigenvectors $e_1$, $e_2$, and $e_3$ are returned by the algorithm. These three vectors are orthogonal to each other. Therefore these eigenvectors can easily be made to coincide with the x, y, and z axis, because the model only has to be rotated. A rotation matrix M is than created using the vectors $x$, $y$, and $z$, that represent the axises of the normal coordinate system. The eigenvector corresponding to the largest eigenvalue will coincide with the x asis, the next eigenvector with the y axis, and the final one with the z axis.
+Principal component analysis is done using the alglib library. The three eigenvectors $e_1$, $e_2$, and $e_3$ are returned by the algorithm. These three vectors are orthogonal to each other. Therefore these eigenvectors can easily be made to coincide with the x, y, and z axis, because the model only has to be rotated. A rotation matrix M is than created using the vectors $x$, $y$, and $z$, that represent the axes of the normal coordinate system. The eigenvector corresponding to the largest eigenvalue will coincide with the x axis, the next eigenvector with the y axis, and the final one with the z axis.
 
 \[
 x = 
@@ -223,10 +256,10 @@ In total 21 files were unable to processed, leaving a total of 1796 models in th
 There are two different types of features used to describe the meshes. The first are  features which consist of a single float. And the second are the histogram features, which for a histogram with $n$ bins contain $n$ float values representing the fraction of values contained in each bin. 
 
 The definition of these features is discussed in the following subsections.
-\subsection{Features}
+\subsection{Scalar Features}
 
 \subsubsection{Surface area}
-The surface area of the mesh is the sum of all the face areas. In the dataset all the faces are triangles, therefore the surface area is the sum of all these triangles. The area of a triangle is calculated using the $triangle_area$ function provide by the $pmp$ library. The area of a triangle $t$ with vertices $u$, $v$, and $w$ is defined as followed:
+The surface area of the mesh is the sum of all the face areas. In the dataset all the faces are triangles, therefore the surface area is the sum of all these triangles. The area of a triangle is calculated using the $triangle\_area$ function provided by the $pmp$ library. The area of a triangle $t$ with vertices $u$, $v$, and $w$ is defined as follows:
 \begin{equation}
 area(t) = 0.5 * N((t_v-t_u) \times (t_w-t_u))
 \end{equation}
@@ -260,19 +293,21 @@ The bounding box volume feature $F_{BBV}$ for a mesh $M$ with its bounding box o
 F_{BBV}(M) = V(M_{bot},M_{top})
 \end{equation}
 The minimum value a bounding box can have is 0 when the mesh has no faces, and 1 when the bounding box is equal to the unit cube. Which is verified by the numbers in table ? for the BBV feature. 
-
-\begin{center}
-    \begin{tabular}{ l | l | l | l | l }
-    \hline
-    Feature encoding & Min & Max & Avg & Stddev \\ \hline
-    SA & 0.02194 & 32.961956 & 1.53768275 & 1.648700958 \\ 
-    BBV & 0.001874 & 0.986091 & 0.261523862 & 0.2203638 \\
-    ECC & 0.000004 & 0.956016 & 0.148089259 & 0.182812364 \\ 
-	CIR & 0 & 0.978213 & 0.075533213 & 0.137364272 \\ 
-	DI & 0.74698 & 1.519733 & 1.055276205  & 0.088772773 \\ 	
-    \end{tabular}
-\end{center}
-
+\begin{table}[h!]
+	\begin{center}
+	    \begin{tabular}{ l | l | l | l | l }
+	    \hline
+	    Feature encoding & Min & Max & Avg & Stddev \\ \hline
+	    SA & 0.02194 & 32.961956 & 1.53768275 & 1.648700958 \\ 
+	    BBV & 0.001874 & 0.986091 & 0.261523862 & 0.2203638 \\
+	    ECC & 0.000004 & 0.956016 & 0.148089259 & 0.182812364 \\ 
+		CIR & 0 & 0.978213 & 0.075533213 & 0.137364272 \\ 
+		DI & 0.74698 & 1.519733 & 1.055276205  & 0.088772773 \\ 	
+	    \end{tabular}
+	\end{center}
+\caption{Feature values}
+\label{Table 1, }
+\end{table}
 \subsubsection{Eccentricity}
 The eccentricity of a mesh the ratio of the biggest eigenvalue of the covariance matrix to the smallest. The alglib library is once again used to do PCA and obtain the eigenvalues of the shape covariance matrix. For the eigenvalues $e_1$, $e_2$, and $e_3$ where $e_1$ is the largest value and $e_3$ the smallest, the eccentricity is
 \begin{equation}
@@ -333,7 +368,21 @@ As mentioned at the start of this question, we use the inverse metric of compact
 Circularity = \frac{36\pi V^2}{S^3}
 \end{equation}
 
-In the program, the two models in \textit{Figure 5} above return expected results for circularity. For the human face (a), the computation returns a value of 0.311646, much larger than the one for the leopard (b), 0.059514.
+In the program, the two models in \textit{Figure 6} below return expected results for circularity. For the human head (a), the computation returns a value of 0.311646, much larger than the one for the leopard (b), 0.059514.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Part3/circHead.png}
+		\caption{m303}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/Part3/circLeo.png}
+		\caption{m94}
+	\end{subfigure}
+	\caption{Two models with different circularity values}
+	\label{fig:circularity}
+\end{figure}
 
 \subsubsection{Normalizing  features}
 The three features bounding box volume, eccentricity, and circularity all fall in the range [0,1]. If the surface area feature is also to be normalized in this range, extent normalization has to be used by using its minimum and maximum value. However this feature has large outliers. For example the minimum of 1 and maximum of 36 is used to normalize, the distance between a surface area of 3 and 1 would become 0.0571. Even though these 2 meshes would be very different in terms of surface area, their distance does not reflect this. Therefore standardization is used for this feature, and to be consistent, it will also be used for all the other  features. 
@@ -422,6 +471,7 @@ F_i = \{f_{1,j}, f_{2,j}, .. , f_{10,j}\}
 \end{equation}
 Each $f_{i,j}$ is a list of $k$ values, where $k$ is 1 for the scalar values and 12 for the histogram values.
 
+\begin{table}
 \begin{center}
 \begin{tabular}
 { l | l | l | l | l | l}
@@ -438,6 +488,9 @@ i & feature name & k & min & max\\ \hline
 10 & angle between 3 random vertices & 12 & 0.942478 & $\pi$\\
 \end{tabular}
 \end{center}
+\caption{Feature vector format and standardized extreme values.}
+\label{Table 2, }
+\end{table}
 The feature vector is thus a list of 65 values.
 
 
@@ -459,11 +512,44 @@ Where $x_{i,j}$ is the jth value of the ith feature of feature vector $x$, the s
 These distances are calculated for each mesh in the database, obviously excluding the the query item, if it exists. The result is thus a list of distances for a query item i $L_i = {d_1, ... d_k}$, where $k$ is the number of items in the database, and is ordered in ascending order. With an input query size $s$ the first $s$ elements of $L$ are than returned as the query result. An alternative approach by using the KNN algorithm is discussed in the following section. 
 
 \subsection{kd-tree}
-The system when used by the end user should return a number of relevant models $k$ as specified by the user. In the previous described method the distances are being sorted first resulting in a time complexity of $\mathcal{O}(n\log{}n)$, alternatively for a small size of k, instead of sorting the result it could simply be traversed k times and finding a new nearest neighbour each time, this has a time complexity of $\mathcal{O}(kn)$. In this system the size of the dataset is not so high that this becomes unreasonable, however to be able to scale up with a larger dataset a search structure can be created. The data structure used is called a kd-tree and is a way to partition the data to allow for fast searches. The cost of creating such a tree is $\mathcal{O}(n\log{}n)$, however this can be precomputed and stored server side so that this overhead cost is irrelevant for a user. Searching for the k nearest neighbours in this tree has an average time complexity of $\mathcal{O}(k\log{}n)$, which thus greatly accelerates the search process. 
-The library used in this system for creating and searching kd-trees is ANN. In addition to the previously mentioned search, ANN has the functionality of an approximate search, which accelerates the search in exchange for a user specified loss in accuracy. In this system however, because the number of models and dimensions is small, the exact k nearest neighbours are returned. 
+The system when used by the end user should return a number of relevant models $k$ as specified by the user. In the previous described method the distances are being sorted first resulting in a time complexity of $\mathcal{O}(n\log{}n)$, alternatively for a small size of k, instead of sorting the result it could simply be traversed k times and finding a new nearest neighbor each time, this has a time complexity of $\mathcal{O}(kn)$. In this system the size of the dataset is not so high that this becomes unreasonable, however to be able to scale up with a larger dataset a search structure can be created. The data structure used is called a kd-tree and is a way to partition the data to allow for fast searches. The cost of creating such a tree is $\mathcal{O}(n\log{}n)$, however this can be precomputed and stored server side so that this overhead cost is irrelevant for a user. Searching for the k nearest neighbors in this tree has an average time complexity of $\mathcal{O}(k\log{}n)$, which thus greatly accelerates the search process. 
+The library used in this system for creating and searching kd-trees is ANN. In addition to the previously mentioned search, ANN has the functionality of an approximate search, which accelerates the search in exchange for a user specified loss in accuracy. In this system however, because the number of models and dimensions is small, the exact k nearest neighbors are returned. 
+
+\section{Dimensionality reduction}
+In order to assess the quality of our feature vectors, a means to visualize the entire dataset and how distinguishable each class is from the others is desirable. As it is impossible to directly plot our 65-dimensional feature vectors into a scatter plot, the dimensionality reduction technique known as t-Distributed Stochastic Neighbor Embedding (t-SNE) has been used to transcribe our feature space into two dimensions. (van der Maaten \& Hinton, 2008) describe the technique in detail. This section discusses how this was achieved, then the resulting plot is shown. 
+
+\subsection{Perplexity Parameter}
+T-SNE takes as input, aside from the data itself, three parameters: the number of desired dimensions (2 in our case), the dimensionality of the data (65 dimensions) and perplexity. The latter is defined in (van der Maaten \& Hinton, 2008) as 2 to the power of the Shannon entropy of the probability distribution represented by our multidimensional space. In practice, however, perplexity is a parameter that must be experimented with to determine the best results. \newline
+Several values between 0 and 100 have been tested in an attempt to select the one that minimizes the "error" reported by the algorithm, which is actually the Kullback-Leibler divergence between the original multidimensional data and the 2D result. The table below displays the results:
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{l|c} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+			\textbf{Perplexity} & \textbf{K-L Divergence}\\
+			\hline
+			25.0 & 0.927\\
+			50.0 & 0.915\\
+			75.0 & 0.905\\
+			100.0& 0.909
+		\end{tabular}
+	\end{center}
+\caption{t-SNE perplexity and K-L divergence results.}
+\label{Table 3,}
+\end{table}
+
+\subsection{Resulting Plot}
+
+However, t-SNE is not deterministic, as it initializes its gradient function randomly. Instead of finding a perfect perplexity, it could be more appropriate to run the algorithm multiple times with the same perplexity and choosing the result with minimal error. After several attempts, the lowest error obtained was 0.660 on 100.0 perplexity. This can be seen in Figure 11. \\
+\begin{figure}[!h]
+	\includegraphics[width=1\linewidth]{Pictures/perp100err0-660.png}
+	\label{fig:fig1}
+	\caption{t-SNE plot on feature vector space: 100.0 perplexity and 0.660 error}
+\end{figure}
+
+While the figure is hard to read due to the large amount of points and classes, some information that confirms the feature values are not random can be derived from it. For example, the clusters of humans and winged vehicles are fairly well delimited, and so are the clusters for heads and doors.
 
 \section{Evaluation}
-The final step is to evaluate the performance of the retrieval system. This is done by analysing the query result $Q$ which as a list of items ${x_1,...,x_s}$, where s is the size of the query and each x is an item in the database. As was explained in the matching section, this list is ordered on ascending distance to the query item $l$. First of, there are several values that describe a query result, namely the true positives (TP), false positives (FP), true negatives (TN), and false negatives (FP).
+The final step is to evaluate the performance of the retrieval system. This is done by analyzing the query result $Q$ which as a list of items ${x_1,...,x_s}$, where s is the size of the query and each x is an item in the database. As was explained in the matching section, this list is ordered on ascending distance to the query item $l$. First of, there are several values that describe a query result, namely the true positives (TP), false positives (FP), true negatives (TN), and false negatives (FP).
 TP is the number of items with the correct class label in the query result.\\ 
 \\
 $TP = |\{y \in Q\, |\, c_y = c_l\}|$\\
@@ -562,9 +648,9 @@ Table ?. Performance evaluation using MAP and precision at k (k=10)
 \end{center}
 \end{minipage}
 
-\subsection{dissimilar classes}
+\subsection{Dissimilar classes}
 The performance results show that there is a large discrepancy between performances of different classes. The worst classes even have a precision at k of 0, meaning that for none of the models in its class the result query gave even a single relevant model in the first 10 results. This leads to the questions of what causes this bad result, and what can be done to improve performance for this class. For the first question four of the models of the staircase class are shown in figure 11. It is clear that the overall shapes of these model is very different, this leads to their feature values being very different as well. \\
-Some characteristics of a staircase are present in these pictures, namely the large number of 90 degree edges leading to the top. S feature could be added that would encapsulate this characteristic so that all these models will have a distance of 0 for this feature. However even in this case all the other feature value will be very different, making it very unlikely that their overall distances will be small enough to yield good results.
+Some characteristics of a staircase are present in these pictures, namely the large number of 90 degree edges leading to the top. A feature could be added that would encapsulate this characteristic so that all these models will have a distance of 0 for this feature. However even in this case, all the other feature values will be very different, making it very unlikely that their overall distances will be small enough to yield good results.
 
 \begin{figure}[h!]
   \centering
@@ -606,7 +692,7 @@ It could thus be said that even though these models look alike, their actual sha
 \end{figure}
 
 \subsection{Query examples}
-In this section several query results are shown for several different classes. First of is a model from the quadruped class which has a MAP of 0.12, and precision at k of 0.23. For this specific model five out of nine models are of the same class. Three of these wrong models, the hands, can be explained by them having a similar elongated shape and their fingers resembling legs. The turtle does not have a similar shape however it does also have four legs.  \\
+In this section several query results are shown for several different classes. Firstly, we will query for a model from the quadruped class which has a MAP of 0.12, and precision at k of 0.23. For this specific model five out of nine models are of the same class. Three of these wrong models, the hands, can be explained by them having a similar elongated shape and their fingers resembling legs. The turtle does not have a similar shape however it does also have four legs.  \\
 Secondly a query result for a model of the flying creature class is shown, which has an MAP of 0.034, and precision at k of 0.05. In this case only two out of the nine models of the query result are of the same class. Six of these however are air planes and have a very similar shape. The ship is the only of these models that is an unreasonable result. The system thus returns models that are arguably very similar to the input shape, all though not from the same class \\
 Finally the query result for one of the best performing classes, humans, shows a perfect query result. The good results for humans show that they are somewhat clustered in the dataset. This means for a certain amount of models they exist in the middle of the clusters and thus all of its neighbours are other humans. \\
 
@@ -739,5 +825,45 @@ Finally the query result for one of the best performing classes, humans, shows a
   \caption{Query results and their squared distances for models m92, m42, and m134 respectively}
   \label{fig:bunny}
 \end{figure}
+
+\section{Conclusion}
+\subsection{Summary}
+This report presented our attempt at a content-based 3D shape retrieval system using scalar features that, given a 3D shape, returns the 10 most similar shapes (excluding itself) from a preprocessed Princeton Shape Benchmark database of 1796 models that are grouped into 53 leaf classes. This search is sped up by the use of a kD-tree and K-nearest neighbors. A visualization of the 65-dimensional feature space is also provided as a 2D plot created using t-SNE. \\
+Our system performs much better on some classes, such as humans and winged vehicles, than some other classes, like fireplaces and mailboxes, with an average precision at k=10 of 0.34 and an average MAP of 0.20. We discuss these results in the final section, then provide some query examples.
+
+\subsection{Limitations}
+
+Due to the choice at the start of the project to use 20,000 vertices and the 1800 shape database, database-wide evaluation, recomputing features and reprocessing the database were very slow tasks. In addition, because of the database size, bugs with individual shapes were much harder to detect. For example, some of our shapes started looking like in \textit{Figure 16}.
+
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/problem1.png}
+		\caption{m1769}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.4\linewidth}
+		\includegraphics[width=\linewidth]{Pictures/problem2.png}
+		\caption{m361}
+	\end{subfigure}
+	\caption{Models with faces missing after surface simplification.}
+	\label{fig:problems}
+\end{figure}
+
+This turned out to be a problem with our surface simplification algorithm from the PMP library. Some of the shapes were not correctly read by the library, resulting in some of their feature values being affected (i.e. smaller area due to less triangles). Due to the nature of the problem and the time required to solve it, we elected to repair as much of the database as possible and accept that meshes with too many samples would risk to lose some of their faces. This is clearly a priority for any future version of this system.
+
+\pagebreak
+
+\subsection{Improvements \& future work}
+
+There are several parts of our system that could be improved. First and foremost, a different mesh decimation library should be used if we cannot identify what causes the problem with the PMP mesh decimation. \\
+Secondly, we could improve the speed of our application by changing the way we compute the diameter. While the method we use right now is much faster than the brute force approach, there are at least two better options to consider. First would be the convex hull approximation which is then used to calculate the diameter much faster, as mentioned in (Xue, J. et al., 2019). Another approach would be to use the technique described by (Har-Peled, S., 2001). \\
+Thirdly, we could improve the quality of our matching function by experimenting with different distance functions for our feature vectors. The same can be done for improving the effectiveness of our histogram features by computing their distance a different way, for instance by using the Earth Mover's Distance suggested by (Rubner, Y. et. al., 2000). \\
+Lastly, we could optimize matching by changing the weights of features to better reflect the class we are querying for. For example, quadrupeds tend to have a larger surface area, hence increasing this feature's weight would result in better matches. If we could identify the class of the input image, for example by using a classifier trained on the dataset features, we could improve matching by only searching for specific related classes for similar shapes (e.g. when querying for a bird, we would first look through shapes in the bird and winged vehicle class, as they are similar in appearance, even if another shape from an unrelated class would return a smaller distance value).
+
+\section{References}
+\paragraph{} Maaten, L. V. D., \& Hinton, G. (2008). Visualizing data using t-SNE. Journal of machine learning research, 9(Nov), 2579-2605.
+\paragraph{} Xue, J., Li, Y., \& Janardan, R. (2019). On the expected diameter, width, and complexity of a stochastic convex hull. Computational Geometry, 82, 16-31.
+\paragraph{} Har-Peled, S. (2001, June). A practical approach for computing the diameter of a point set. In Proceedings of the seventeenth annual symposium on Computational geometry (pp. 177-186). ACM.
+\paragraph{} Rubner, Y., Tomasi, C., \& Guibas, L. J. (2000). The earth mover's distance as a metric for image retrieval. International journal of computer vision, 40(2), 99-121.
 
 \end{document}

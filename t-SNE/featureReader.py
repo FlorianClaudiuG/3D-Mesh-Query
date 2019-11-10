@@ -3,7 +3,7 @@ from tsne import tsne
 import numpy as np
 import pylab
 
-fin = open("featureFinal.csv", 'r')
+fin = open("featureTableFinal.csv", 'r')
 fout = open("data.dat", 'wb')
 labels = open("labels.txt", 'w')
 lines = fin.readlines()

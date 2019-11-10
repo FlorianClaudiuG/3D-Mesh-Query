@@ -1,20 +1,17 @@
 from tsne import tsne
-import pylab
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
-import mplcursors
 
-perplexity = 100.0
+perplexity = 75.0
 
-fin = open("featureFinal.csv", 'r')
+fin = open("featureTableFinal.csv", 'r')
 labelsFile = open("labels.txt", 'r')
 classesFile = open("classes.txt", 'r')
 
 labelsLines = labelsFile.readlines()
-#labels = np.zeros(shape=1796)
 labels = [None] * 1796
 
 classMapRaw = {}

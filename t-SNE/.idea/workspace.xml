@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78b569c3-40bd-4160-95e8-4d8ec0d4c091" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../ConsoleApplication1/input/input.off" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApplication1/input/input.off" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ConsoleApplication1/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleApplication1/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Report/Report.aux" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.aux" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Report/Report.log" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Report/Report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Report/Report.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.synctex.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Report/Report.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../Report/Report.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/featureFinal.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/featureReader.py" beforeDir="false" afterPath="$PROJECT_DIR$/featureReader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsne_wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/tsne_wrapper.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +22,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tsne.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2091">
-              <caret line="124" column="19" selection-start-line="124" selection-start-column="19" selection-end-line="124" selection-end-column="19" />
+            <state relative-caret-position="3230">
+              <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
               <folding>
                 <element signature="e#491#509#0" expanded="true" />
               </folding>
@@ -28,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/featureReader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="8" selection-start-line="8" selection-end-line="8" selection-end-column="23" />
+            <state relative-caret-position="136">
+              <caret line="8" column="23" lean-forward="true" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -40,11 +46,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tsne_wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1326">
-              <caret line="102" column="88" lean-forward="true" selection-start-line="102" selection-start-column="88" selection-end-line="102" selection-end-column="88" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="21" selection-start-column="21" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -62,6 +65,7 @@
     <findStrings>
       <find>canvas</find>
       <find>error</find>
+      <find>tsne</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -70,8 +74,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/featureReader.py" />
         <option value="$PROJECT_DIR$/tsne.py" />
+        <option value="$PROJECT_DIR$/featureReader.py" />
         <option value="$PROJECT_DIR$/tsne_wrapper.py" />
       </list>
     </option>
@@ -86,7 +90,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="976" />
@@ -98,6 +102,22 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="t-SNE" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t-SNE" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="t-SNE" type="b2602c69:ProjectViewProjectNode" />
+              <item name="t-SNE" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -114,22 +134,6 @@
               <item name="t-SNE" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="C:\Users\claud\Documents\Github\3D-Mesh-Query\t-SNE" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="venv" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="t-SNE" type="b2602c69:ProjectViewProjectNode" />
-              <item name="t-SNE" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="t-SNE" type="b2602c69:ProjectViewProjectNode" />
-              <item name="t-SNE" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -237,13 +241,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.36836404" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.36836404" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934355" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -255,37 +260,34 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Project" order="3" visible="true" weight="0.11247335" />
+      <window_info anchor="right" content_ui="combo" id="Project" order="3" visible="true" weight="0.11353944" />
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tsne.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2091">
-          <caret line="124" column="19" selection-start-line="124" selection-start-column="19" selection-end-line="124" selection-end-column="19" />
-          <folding>
-            <element signature="e#491#509#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/featureReader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="8" selection-start-line="8" selection-end-line="8" selection-end-column="23" />
+        <state relative-caret-position="136">
+          <caret line="8" column="23" lean-forward="true" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tsne.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3230">
+          <caret line="190" lean-forward="true" selection-start-line="190" selection-end-line="190" />
+          <folding>
+            <element signature="e#491#509#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tsne_wrapper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1326">
-          <caret line="102" column="88" lean-forward="true" selection-start-line="102" selection-start-column="88" selection-end-line="102" selection-end-column="88" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
+        <state>
+          <caret column="21" selection-start-column="21" selection-end-column="21" />
         </state>
       </provider>
     </entry>

@@ -250,11 +250,14 @@ void createDatabase(string path, int targetVertexCount)
 			string fileName = pathName + "\\" + directoryName2 + ".off";
 			cout << fileName << endl;
 
-			//mesh = ofr.ReadOffFile(fileName.c_str());
+			mesh = ofr.ReadOffFile(fileName.c_str());
 
-			mesh = decimateMesh(fileName.c_str(), targetVertexCount);
+			if (mesh->numPoints() > targetVertexCount + 1000)
+			{
+				mesh = decimateMesh(fileName.c_str(), targetVertexCount);
+			}
 
-			if (mesh->numPoints() < targetVertexCount)
+			if (mesh->numPoints() < targetVertexCount - 1000)
 			{
 				Supersampler ss;
 				try
@@ -305,11 +308,17 @@ UnstructuredGrid3D* prepareMesh(string path, int targetVertexCount)
 {
 	UnstructuredGrid3D* mesh;
 	//read mesh then get it to targetVertexCount
-	mesh = decimateMesh(path, targetVertexCount);
-	if (mesh->numPoints() < targetVertexCount)
+	//mesh = decimateMesh(path, targetVertexCount);
+	OffReader ofr;
+	mesh = ofr.ReadOffFile(path.c_str());
+	if (mesh->numPoints() < targetVertexCount - 1000)
 	{
 		Supersampler ss;
 		ss.supersample(*mesh, targetVertexCount);
+	}
+	else if (mesh->numPoints() > targetVertexCount + 1000)
+	{
+		mesh = decimateMesh(path, targetVertexCount);
 	}
 	//normalize
 	FourStepNorm normalizer;
@@ -320,9 +329,9 @@ UnstructuredGrid3D* prepareMesh(string path, int targetVertexCount)
 
 	//Workaround for error when computing normals: write result of up/downsampling to file and read file again
 	OFFConverter converter;
-	converter.WriteFileOFF(*mesh, "input/input.off");
-	OffReader ofr;
-	mesh = ofr.ReadOffFile("input/input.off");
+	converter.WriteFileOFF(*mesh, "input.off");
+	//OffReader ofr;
+	mesh = ofr.ReadOffFile("input.off");
 
 	mesh->computeFaceNormals();
 	mesh->computeVertexNormals();
@@ -346,7 +355,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "***" << endl;
 	cout << "By Florian-Claudiu Gheorghica and Diego Renders" << endl;
 	cout << "***" << endl;
-	cout << "Under the guidance of Dr. Alexandru Telea" << endl;
+	cout << "Under the guidance of Prof. Dr. Alexandru Telea" << endl;
 	cout << "***" << endl;
 	cout << "Utrecht University" << endl;
 	cout << "\nPlease insert the path to the query file in OFF format (\'\\\' will be replaced by \'/\' automatically)." << endl;
@@ -376,8 +385,7 @@ int main(int argc, char* argv[])							//Main program
 	cout << "      -n,N:        cycle through result meshes" << endl;
 
 	glutInit(&argc, argv);								//1.  Initialize the GLUT toolkit
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-	//2.  Ask GLUT to create next windows with a RGB framebuffer and a Z-buffer too
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);//2.  Ask GLUT to create next windows with a RGB framebuffer and a Z-buffer too
 	glutInitWindowSize(500, 500);							//3.  Tell GLUT how large are the windows we want to create next
 	glutCreateWindow("6. 3D mesh (unstructured grid)");	//4.  Create our window
 	zprInit(0, 0, 0);										//5.  Initialize the viewpoint interaction-tool to look at the point (0,0,0)
